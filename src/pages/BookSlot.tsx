@@ -13,12 +13,13 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { CalendarIcon, Clock, ArrowRight, CreditCard, Check } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 const BookSlot = () => {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   
   // Form state
   const [service, setService] = useState('');
@@ -81,6 +82,14 @@ const BookSlot = () => {
       description: "Guidance and review for take-home coding challenges"
     }
   ];
+  
+  // Prefill user information if logged in
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setName(user.name || '');
+      setEmail(user.email || '');
+    }
+  }, [isAuthenticated, user]);
   
   // Get pricing based on selected service
   const getServicePrice = () => {
@@ -160,21 +169,6 @@ const BookSlot = () => {
     }
   };
   
-  // Simulate checking authentication status
-  useEffect(() => {
-    // In a real app, you would check if the user is authenticated
-    const checkAuth = async () => {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For demo purposes, let's assume user is not logged in
-      setIsLoggedIn(false);
-      setIsLoading(false);
-    };
-    
-    checkAuth();
-  }, []);
-  
   // Handle next step
   const handleNextStep = () => {
     // Validation for each step
@@ -213,7 +207,7 @@ const BookSlot = () => {
     setCurrentStep(currentStep + 1);
     
     // If not logged in and moving to final step, redirect to login
-    if (currentStep === 3 && !isLoggedIn) {
+    if (currentStep === 3 && !isAuthenticated) {
       toast.error("Please log in to complete your booking", {
         action: {
           label: "Login",
@@ -367,7 +361,6 @@ const BookSlot = () => {
                       date < new Date(new Date().setHours(0, 0, 0, 0)) || 
                       date > new Date(new Date().setDate(new Date().getDate() + 30))
                     }
-                    className="pointer-events-auto"
                   />
                 </PopoverContent>
               </Popover>
@@ -646,7 +639,7 @@ const BookSlot = () => {
     <>
       <Navbar />
       
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 mt-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <h1 className="text-3xl font-bold text-center mb-8">Book a Session</h1>

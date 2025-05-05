@@ -1,619 +1,413 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin, File, BookOpen, Check, X, AlertCircle } from "lucide-react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, Clock, MapPin, Calendar as CalendarIcon, CheckCircle, User, FileText, Briefcase } from "lucide-react";
+import { format } from "date-fns";
+import { useAuth } from '@/contexts/AuthContext';
+
+// Mock data for booked services
+const bookedServices = [
+  {
+    id: 1,
+    service: "Resume Building",
+    date: new Date("2024-05-15T10:00:00"),
+    status: "scheduled",
+    notes: "Focus on highlighting my Java and Spring Boot experience"
+  },
+  {
+    id: 2,
+    service: "Mock Interview",
+    date: new Date("2024-05-20T14:00:00"),
+    status: "scheduled",
+    notes: "Practice for Google technical interview"
+  },
+  {
+    id: 3,
+    service: "Resume Building",
+    date: new Date("2024-04-10T11:00:00"),
+    status: "completed",
+    notes: "Resume was delivered and I got positive feedback"
+  }
+];
+
+// Mock data for job applications
+const jobApplications = [
+  {
+    id: 1,
+    position: "Frontend Developer",
+    company: "TechStart Inc.",
+    appliedDate: new Date("2024-05-01"),
+    status: "Applied"
+  },
+  {
+    id: 2,
+    position: "Full Stack Engineer",
+    company: "InnovateCorp",
+    appliedDate: new Date("2024-04-28"),
+    status: "Interview Scheduled"
+  },
+  {
+    id: 3,
+    position: "React Developer",
+    company: "WebSolutions",
+    appliedDate: new Date("2024-04-15"),
+    status: "Rejected"
+  }
+];
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Sample user data - in a real app, this would come from your authentication system
-  const [userData, setUserData] = useState({
-    name: "Rahul Sharma",
-    email: "rahul.sharma@example.com",
-    profilePicture: "https://randomuser.me/api/portraits/men/32.jpg"
-  });
-
-  // Sample bookings data
-  const [bookings, setBookings] = useState({
-    upcoming: [
-      {
-        id: 1,
-        service: "Mock Interview",
-        date: "May 20, 2024",
-        time: "10:00 AM",
-        status: "confirmed",
-        mentor: "Priya Singh",
-        notes: "React and JavaScript focus"
-      },
-      {
-        id: 2,
-        service: "Resume Review",
-        date: "May 25, 2024",
-        time: "2:30 PM",
-        status: "pending",
-        mentor: "Aman Gupta",
-        notes: "Looking for feedback on format and content"
-      }
-    ],
-    past: [
-      {
-        id: 3,
-        service: "Career Guidance",
-        date: "April 15, 2024",
-        time: "11:00 AM",
-        status: "completed",
-        mentor: "Neha Sharma",
-        feedback: "Great session with actionable advice. Highly recommend!"
-      },
-      {
-        id: 4,
-        service: "Mock Interview",
-        date: "March 30, 2024",
-        time: "4:00 PM",
-        status: "completed",
-        mentor: "Rohit Verma",
-        feedback: "Very helpful practice session. Received good feedback on areas to improve."
-      },
-      {
-        id: 5,
-        service: "Resume Review",
-        date: "March 10, 2024",
-        time: "1:00 PM",
-        status: "completed",
-        mentor: "Priya Singh",
-        feedback: "Excellent suggestions that helped me land interviews at top companies."
-      }
-    ]
-  });
-
-  // Sample saved materials
-  const [savedMaterials, setSavedMaterials] = useState([
-    {
-      id: 1,
-      title: "Complete DSA Interview Preparation",
-      type: "PDF",
-      downloadedOn: "May 5, 2024"
-    },
-    {
-      id: 2,
-      title: "System Design Interview Guide",
-      type: "PDF",
-      downloadedOn: "April 20, 2024"
-    },
-    {
-      id: 3,
-      title: "TCS NQT Aptitude Questions",
-      type: "PDF",
-      downloadedOn: "April 15, 2024"
-    }
-  ]);
-
-  // Sample saved jobs
-  const [savedJobs, setSavedJobs] = useState([
-    {
-      id: 1,
-      title: "Frontend Developer",
-      company: "TechCorp Inc.",
-      location: "Bangalore, India",
-      savedOn: "May 8, 2024"
-    },
-    {
-      id: 2,
-      title: "React Developer",
-      company: "WebSolutions",
-      location: "Remote",
-      savedOn: "May 5, 2024"
-    }
-  ]);
-
-  // Simulate checking authentication status
-  useEffect(() => {
-    // In a real app, you would check if the user is authenticated
-    const checkAuth = async () => {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // For demo purposes, let's assume user is logged in
-      setIsLoggedIn(true);
-      setIsLoading(false);
-    };
-    
-    checkAuth();
-  }, []);
-
-  // If not authenticated, redirect to login page
-  useEffect(() => {
-    if (!isLoading && !isLoggedIn) {
-      toast.error("Please log in to access the dashboard");
-      navigate("/login");
-    }
-  }, [isLoading, isLoggedIn, navigate]);
-
-  // Handle logout
-  const handleLogout = () => {
-    // In a real app, you would call your logout API here
-    toast.success("Logged out successfully");
-    setIsLoggedIn(false);
-    navigate("/login");
-  };
-
-  // Render loading state
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview");
+  
   if (isLoading) {
     return (
-      <>
-        <Navbar />
-        <div className="py-20 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-red mx-auto"></div>
-          <p className="mt-4 text-lg">Loading your dashboard...</p>
-        </div>
-        <Footer />
-      </>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-red"></div>
+      </div>
     );
   }
-
-  // Get status badge color
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'confirmed':
-        return <Badge className="bg-green-500">Confirmed</Badge>;
-      case 'pending':
-        return <Badge variant="outline" className="border-yellow-500 text-yellow-500">Pending</Badge>;
-      case 'completed':
-        return <Badge variant="outline" className="border-gray-500 text-gray-500">Completed</Badge>;
-      case 'cancelled':
-        return <Badge variant="destructive">Cancelled</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
-    }
-  };
-
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  
+  const upcomingServices = bookedServices.filter(
+    service => service.status === "scheduled" && new Date(service.date) > new Date()
+  );
+  
+  const pastServices = bookedServices.filter(
+    service => service.status === "completed" || new Date(service.date) < new Date()
+  );
+  
   return (
     <>
       <Navbar />
       
-      <section className="bg-gray-50 py-16">
+      <div className="bg-gray-50 py-10">
         <div className="container mx-auto px-4">
-          {/* User Info Header */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-            <div className="p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
-              <div className="w-20 h-20 rounded-full overflow-hidden">
-                <img 
-                  src={userData.profilePicture} 
-                  alt={userData.name} 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              <div className="text-center md:text-left md:flex-grow">
-                <h1 className="text-2xl font-bold mb-1">{userData.name}</h1>
-                <p className="text-gray-600">{userData.email}</p>
-              </div>
-              
-              <div className="flex gap-3">
-                <Link to="/profile/edit">
-                  <Button variant="outline">Edit Profile</Button>
-                </Link>
-                
-                <Button 
-                  variant="outline" 
-                  className="border-red-500 text-red-500 hover:bg-red-50"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </Button>
-              </div>
-            </div>
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <p className="text-gray-600">Welcome back, {user?.name || 'User'}</p>
           </div>
           
-          {/* Dashboard Tabs */}
-          <Tabs defaultValue="bookings" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-1 md:grid-cols-4 h-auto">
-              <TabsTrigger value="bookings">My Bookings</TabsTrigger>
-              <TabsTrigger value="materials">Saved Materials</TabsTrigger>
-              <TabsTrigger value="jobs">Saved Jobs</TabsTrigger>
-              <TabsTrigger value="settings">Account Settings</TabsTrigger>
-            </TabsList>
-            
-            {/* Bookings Tab */}
-            <TabsContent value="bookings" className="space-y-8">
-              {/* Upcoming Bookings */}
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Upcoming Sessions</h2>
-                  <Link to="/book-slot">
-                    <Button className="bg-brand-red hover:bg-red-600 text-white">
-                      Book New Session
-                    </Button>
-                  </Link>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Sidebar */}
+            <div className="md:col-span-1">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="text-center mb-6">
+                  <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-4">
+                    <User className="h-10 w-10 text-gray-500" />
+                  </div>
+                  <h2 className="font-bold text-xl">{user?.name || 'User'}</h2>
+                  <p className="text-gray-600 text-sm">{user?.email || 'user@example.com'}</p>
                 </div>
                 
-                {bookings.upcoming.length > 0 ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {bookings.upcoming.map((booking) => (
-                      <div key={booking.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
-                        <div className="p-6">
-                          <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-lg font-bold">{booking.service}</h3>
-                            {getStatusBadge(booking.status)}
-                          </div>
-                          
-                          <div className="space-y-2 mb-4">
-                            <div className="flex items-center text-gray-600">
-                              <Calendar size={18} className="mr-2 text-brand-red" />
-                              <span>{booking.date}</span>
-                            </div>
-                            
-                            <div className="flex items-center text-gray-600">
-                              <Clock size={18} className="mr-2 text-brand-red" />
-                              <span>{booking.time}</span>
-                            </div>
-                            
-                            <div className="flex items-center text-gray-600">
-                              <svg className="w-5 h-5 mr-2 text-brand-red" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                              </svg>
-                              <span>Mentor: {booking.mentor}</span>
-                            </div>
-                          </div>
-                          
-                          <p className="text-gray-600 text-sm border-t border-gray-100 pt-4">
-                            <span className="font-semibold">Notes:</span> {booking.notes}
-                          </p>
-                          
-                          <div className="mt-6 flex justify-end gap-3">
-                            <Button variant="outline" className="text-brand-red border-brand-red hover:bg-red-50">
-                              Reschedule
-                            </Button>
-                            
-                            <Button variant="outline" className="text-red-500 border-red-500 hover:bg-red-50">
-                              Cancel
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 rounded-lg p-8 text-center">
-                    <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold mb-2">No Upcoming Sessions</h3>
-                    <p className="text-gray-600 mb-6">
-                      You don't have any upcoming sessions scheduled. Book a new session to get started.
-                    </p>
-                    <Link to="/book-slot">
-                      <Button className="bg-brand-red hover:bg-red-600 text-white">
-                        Book a Session
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </div>
-              
-              {/* Past Bookings */}
-              <div>
-                <h2 className="text-xl font-bold mb-6">Past Sessions</h2>
-                
-                {bookings.past.length > 0 ? (
-                  <div className="space-y-4">
-                    {bookings.past.map((booking) => (
-                      <div key={booking.id} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
-                        <div className="p-6">
-                          <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-lg font-bold">{booking.service}</h3>
-                            {getStatusBadge(booking.status)}
-                          </div>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <div className="flex items-center text-gray-600">
-                              <Calendar size={18} className="mr-2 text-brand-red" />
-                              <span>{booking.date}</span>
-                            </div>
-                            
-                            <div className="flex items-center text-gray-600">
-                              <Clock size={18} className="mr-2 text-brand-red" />
-                              <span>{booking.time}</span>
-                            </div>
-                            
-                            <div className="flex items-center text-gray-600">
-                              <svg className="w-5 h-5 mr-2 text-brand-red" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                              </svg>
-                              <span>Mentor: {booking.mentor}</span>
-                            </div>
-                          </div>
-                          
-                          <div className="bg-gray-50 p-4 rounded-lg">
-                            <p className="text-gray-700 italic">"{booking.feedback}"</p>
-                          </div>
-                          
-                          <div className="mt-4 flex justify-end">
-                            <Button variant="outline" className="text-brand-red border-brand-red hover:bg-red-50">
-                              Book Again
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 rounded-lg p-8 text-center">
-                    <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold mb-2">No Past Sessions</h3>
-                    <p className="text-gray-600">
-                      You don't have any past sessions. Once you complete a session, it will appear here.
-                    </p>
-                  </div>
-                )}
-              </div>
-            </TabsContent>
-            
-            {/* Saved Materials Tab */}
-            <TabsContent value="materials">
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Saved Study Materials</h2>
-                  <Link to="/study-material">
-                    <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
-                      Browse More Materials
-                    </Button>
-                  </Link>
-                </div>
-                
-                {savedMaterials.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {savedMaterials.map((material) => (
-                      <div key={material.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
-                        <div className="p-6">
-                          <div className="flex items-start justify-between mb-4">
-                            <h3 className="text-lg font-bold line-clamp-1">{material.title}</h3>
-                            <Badge variant="outline">{material.type}</Badge>
-                          </div>
-                          
-                          <div className="text-gray-600 text-sm mb-6">
-                            Downloaded on {material.downloadedOn}
-                          </div>
-                          
-                          <div className="flex justify-between">
-                            <Button 
-                              variant="outline" 
-                              className="text-brand-red border-brand-red hover:bg-red-50"
-                              onClick={() => toast.success("Downloading material...")}
-                            >
-                              <File size={18} className="mr-2" />
-                              Download Again
-                            </Button>
-                            
-                            <Button 
-                              variant="ghost" 
-                              size="icon"
-                              onClick={() => {
-                                setSavedMaterials(savedMaterials.filter(m => m.id !== material.id));
-                                toast.success("Material removed from saved items");
-                              }}
-                            >
-                              <X size={18} />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 rounded-lg p-8 text-center">
-                    <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold mb-2">No Saved Materials</h3>
-                    <p className="text-gray-600 mb-6">
-                      You haven't saved any study materials yet. Browse our collection and download what interests you.
-                    </p>
-                    <Link to="/study-material">
-                      <Button className="bg-brand-red hover:bg-red-600 text-white">
-                        Browse Materials
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </TabsContent>
-            
-            {/* Saved Jobs Tab */}
-            <TabsContent value="jobs">
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Saved Jobs</h2>
-                  <Link to="/jobs">
-                    <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
-                      Browse More Jobs
-                    </Button>
-                  </Link>
-                </div>
-                
-                {savedJobs.length > 0 ? (
-                  <div className="space-y-4">
-                    {savedJobs.map((job) => (
-                      <div key={job.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 p-6">
-                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                          <div>
-                            <h3 className="text-lg font-bold mb-1">{job.title}</h3>
-                            <p className="text-gray-700 mb-2">{job.company}</p>
-                            <div className="flex items-center text-gray-600 text-sm">
-                              <MapPin size={16} className="mr-1" />
-                              <span>{job.location}</span>
-                              <span className="mx-2">•</span>
-                              <span>Saved on {job.savedOn}</span>
-                            </div>
-                          </div>
-                          
-                          <div className="flex gap-3">
-                            <Link to={`/jobs/${job.id}`}>
-                              <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
-                                View Details
-                              </Button>
-                            </Link>
-                            
-                            <Button 
-                              variant="ghost" 
-                              size="icon"
-                              onClick={() => {
-                                setSavedJobs(savedJobs.filter(j => j.id !== job.id));
-                                toast.success("Job removed from saved items");
-                              }}
-                            >
-                              <X size={18} />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 rounded-lg p-8 text-center">
-                    <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold mb-2">No Saved Jobs</h3>
-                    <p className="text-gray-600 mb-6">
-                      You haven't saved any jobs yet. Browse available positions and save those that interest you.
-                    </p>
-                    <Link to="/jobs">
-                      <Button className="bg-brand-red hover:bg-red-600 text-white">
-                        Browse Jobs
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </TabsContent>
-            
-            {/* Account Settings Tab */}
-            <TabsContent value="settings">
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="p-6">
-                  <h2 className="text-xl font-bold mb-6">Account Settings</h2>
+                <div className="space-y-2">
+                  <Button
+                    variant="outline"
+                    className={`w-full justify-start ${activeTab === "overview" ? "border-brand-red text-brand-red" : ""}`}
+                    onClick={() => setActiveTab("overview")}
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    Overview
+                  </Button>
                   
-                  <div className="space-y-6 max-w-2xl">
-                    {/* Personal Information */}
-                    <div className="bg-gray-50 p-6 rounded-lg">
-                      <h3 className="text-lg font-bold mb-4">Personal Information</h3>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="fullName">Full Name</Label>
-                          <Input id="fullName" defaultValue={userData.name} />
-                        </div>
-                        <div>
-                          <Label htmlFor="email">Email</Label>
-                          <Input id="email" defaultValue={userData.email} />
-                        </div>
-                        <div>
-                          <Label htmlFor="phone">Phone Number</Label>
-                          <Input id="phone" placeholder="Add your phone number" />
-                        </div>
-                      </div>
-                      <Button className="mt-4 bg-brand-red hover:bg-red-600 text-white">
-                        Update Information
-                      </Button>
-                    </div>
-                    
-                    {/* Password Security */}
-                    <div className="bg-gray-50 p-6 rounded-lg">
-                      <h3 className="text-lg font-bold mb-4">Password & Security</h3>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="currentPassword">Current Password</Label>
-                          <Input id="currentPassword" type="password" />
-                        </div>
-                        <div>
-                          <Label htmlFor="newPassword">New Password</Label>
-                          <Input id="newPassword" type="password" />
-                        </div>
-                        <div>
-                          <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                          <Input id="confirmPassword" type="password" />
-                        </div>
-                      </div>
-                      <Button className="mt-4 bg-brand-red hover:bg-red-600 text-white">
-                        Change Password
-                      </Button>
-                    </div>
-                    
-                    {/* Notification Preferences */}
-                    <div className="bg-gray-50 p-6 rounded-lg">
-                      <h3 className="text-lg font-bold mb-4">Notification Preferences</h3>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">Email Notifications</p>
-                            <p className="text-sm text-gray-600">Receive updates about your bookings and account</p>
-                          </div>
-                          <div className="flex items-center h-5">
-                            <input
-                              id="emailNotifications"
-                              type="checkbox"
-                              defaultChecked
-                              className="focus:ring-brand-red h-4 w-4 text-brand-red border-gray-300 rounded"
-                            />
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">Job Alerts</p>
-                            <p className="text-sm text-gray-600">Receive notifications about new job listings</p>
-                          </div>
-                          <div className="flex items-center h-5">
-                            <input
-                              id="jobAlerts"
-                              type="checkbox"
-                              defaultChecked
-                              className="focus:ring-brand-red h-4 w-4 text-brand-red border-gray-300 rounded"
-                            />
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">Study Material Updates</p>
-                            <p className="text-sm text-gray-600">Receive notifications about new study materials</p>
-                          </div>
-                          <div className="flex items-center h-5">
-                            <input
-                              id="materialAlerts"
-                              type="checkbox"
-                              defaultChecked
-                              className="focus:ring-brand-red h-4 w-4 text-brand-red border-gray-300 rounded"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <Button className="mt-4 bg-brand-red hover:bg-red-600 text-white">
-                        Save Preferences
-                      </Button>
-                    </div>
-                    
-                    {/* Delete Account */}
-                    <div className="bg-gray-50 p-6 rounded-lg border border-red-100">
-                      <h3 className="text-lg font-bold mb-4 text-red-600">Delete Account</h3>
-                      <p className="text-gray-600 mb-4">
-                        Once you delete your account, all of your data will be permanently removed. This action cannot be undone.
-                      </p>
-                      <Button variant="outline" className="text-red-600 border-red-600 hover:bg-red-50">
-                        Delete Account
-                      </Button>
-                    </div>
-                  </div>
+                  <Button
+                    variant="outline"
+                    className={`w-full justify-start ${activeTab === "services" ? "border-brand-red text-brand-red" : ""}`}
+                    onClick={() => setActiveTab("services")}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    Booked Services
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    className={`w-full justify-start ${activeTab === "applications" ? "border-brand-red text-brand-red" : ""}`}
+                    onClick={() => setActiveTab("applications")}
+                  >
+                    <Briefcase className="mr-2 h-4 w-4" />
+                    Job Applications
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    onClick={logout}
+                  >
+                    Log Out
+                  </Button>
                 </div>
               </div>
-            </TabsContent>
-          </Tabs>
+            </div>
+            
+            {/* Main Content */}
+            <div className="md:col-span-3">
+              {/* Overview Tab */}
+              {activeTab === "overview" && (
+                <div className="space-y-6">
+                  {/* Stats Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-gray-500">
+                          Upcoming Services
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-2xl font-bold">{upcomingServices.length}</div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-gray-500">
+                          Completed Services
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-2xl font-bold">{pastServices.length}</div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-gray-500">
+                          Job Applications
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-2xl font-bold">{jobApplications.length}</div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  
+                  {/* Recent Activity */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Recent Activity</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {upcomingServices.length > 0 ? (
+                          upcomingServices.slice(0, 3).map((service) => (
+                            <div key={service.id} className="flex items-start space-x-4 border-b pb-4 last:border-0">
+                              <div className="bg-brand-red/10 p-2 rounded-full">
+                                <Calendar className="h-5 w-5 text-brand-red" />
+                              </div>
+                              <div>
+                                <h4 className="font-medium">{service.service} session booked</h4>
+                                <p className="text-sm text-gray-600">
+                                  {format(new Date(service.date), "MMMM dd, yyyy 'at' h:mm a")}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-4">
+                            <p className="text-gray-500">No recent activity</p>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button variant="outline" className="w-full" onClick={() => setActiveTab("services")}>
+                        View All Services
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </div>
+              )}
+              
+              {/* Services Tab */}
+              {activeTab === "services" && (
+                <div className="space-y-6">
+                  <Tabs defaultValue="upcoming">
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+                      <TabsTrigger value="past">Past</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="upcoming" className="mt-6">
+                      {upcomingServices.length > 0 ? (
+                        <div className="space-y-4">
+                          {upcomingServices.map((service) => (
+                            <Card key={service.id}>
+                              <CardHeader>
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <CardTitle>{service.service}</CardTitle>
+                                    <CardDescription>
+                                      Scheduled for {format(new Date(service.date), "MMMM dd, yyyy")}
+                                    </CardDescription>
+                                  </div>
+                                  <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+                                    {service.status}
+                                  </div>
+                                </div>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="flex flex-col space-y-3">
+                                  <div className="flex items-center text-sm">
+                                    <Calendar className="mr-2 h-4 w-4 text-gray-500" />
+                                    <span>{format(new Date(service.date), "EEEE, MMMM dd, yyyy")}</span>
+                                  </div>
+                                  <div className="flex items-center text-sm">
+                                    <Clock className="mr-2 h-4 w-4 text-gray-500" />
+                                    <span>{format(new Date(service.date), "h:mm a")}</span>
+                                  </div>
+                                  {service.notes && (
+                                    <div className="mt-2 text-sm text-gray-700">
+                                      <p className="font-medium">Notes:</p>
+                                      <p>{service.notes}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              </CardContent>
+                              <CardFooter className="flex justify-between">
+                                <Button variant="outline">Reschedule</Button>
+                                <Button variant="destructive">Cancel</Button>
+                              </CardFooter>
+                            </Card>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-8 bg-gray-50 rounded-lg">
+                          <h3 className="text-lg font-medium mb-2">No upcoming services</h3>
+                          <p className="text-gray-600 mb-4">You don't have any upcoming service appointments.</p>
+                          <Link to="/services">
+                            <Button className="bg-brand-red hover:bg-red-600 text-white">
+                              Book a Service
+                            </Button>
+                          </Link>
+                        </div>
+                      )}
+                    </TabsContent>
+                    
+                    <TabsContent value="past" className="mt-6">
+                      {pastServices.length > 0 ? (
+                        <div className="space-y-4">
+                          {pastServices.map((service) => (
+                            <Card key={service.id}>
+                              <CardHeader>
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <CardTitle>{service.service}</CardTitle>
+                                    <CardDescription>
+                                      {format(new Date(service.date), "MMMM dd, yyyy")}
+                                    </CardDescription>
+                                  </div>
+                                  <div className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium">
+                                    {service.status}
+                                  </div>
+                                </div>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="flex flex-col space-y-3">
+                                  <div className="flex items-center text-sm">
+                                    <Calendar className="mr-2 h-4 w-4 text-gray-500" />
+                                    <span>{format(new Date(service.date), "EEEE, MMMM dd, yyyy")}</span>
+                                  </div>
+                                  <div className="flex items-center text-sm">
+                                    <Clock className="mr-2 h-4 w-4 text-gray-500" />
+                                    <span>{format(new Date(service.date), "h:mm a")}</span>
+                                  </div>
+                                  {service.notes && (
+                                    <div className="mt-2 text-sm text-gray-700">
+                                      <p className="font-medium">Notes:</p>
+                                      <p>{service.notes}</p>
+                                    </div>
+                                  )}
+                                </div>
+                              </CardContent>
+                              <CardFooter>
+                                <Button variant="outline" className="w-full">Book Again</Button>
+                              </CardFooter>
+                            </Card>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-8 bg-gray-50 rounded-lg">
+                          <h3 className="text-lg font-medium mb-2">No past services</h3>
+                          <p className="text-gray-600 mb-4">You haven't booked any services yet.</p>
+                          <Link to="/services">
+                            <Button className="bg-brand-red hover:bg-red-600 text-white">
+                              Book a Service
+                            </Button>
+                          </Link>
+                        </div>
+                      )}
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              )}
+              
+              {/* Applications Tab */}
+              {activeTab === "applications" && (
+                <div className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Your Job Applications</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {jobApplications.length > 0 ? (
+                        <div className="space-y-4">
+                          {jobApplications.map((job) => (
+                            <div key={job.id} className="border rounded-lg p-4">
+                              <div className="flex justify-between items-start mb-2">
+                                <div>
+                                  <h3 className="font-bold">{job.position}</h3>
+                                  <p className="text-gray-600">{job.company}</p>
+                                </div>
+                                <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                  job.status === "Applied" ? "bg-blue-100 text-blue-800" :
+                                  job.status === "Interview Scheduled" ? "bg-green-100 text-green-800" :
+                                  "bg-red-100 text-red-800"
+                                }`}>
+                                  {job.status}
+                                </div>
+                              </div>
+                              
+                              <div className="flex items-center text-sm text-gray-500">
+                                <Calendar className="mr-2 h-4 w-4" />
+                                <span>Applied on {format(new Date(job.appliedDate), "MMMM dd, yyyy")}</span>
+                              </div>
+                              
+                              <div className="mt-4 flex space-x-2">
+                                <Button variant="outline" size="sm">View Details</Button>
+                                {job.status === "Interview Scheduled" && (
+                                  <Button size="sm" className="bg-brand-red hover:bg-red-600 text-white">
+                                    Prepare for Interview
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-8">
+                          <h3 className="text-lg font-medium mb-2">No job applications yet</h3>
+                          <p className="text-gray-600 mb-4">Start applying for jobs to track your applications here.</p>
+                          <Link to="/jobs">
+                            <Button className="bg-brand-red hover:bg-red-600 text-white">
+                              Browse Jobs
+                            </Button>
+                          </Link>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
       
       <Footer />
     </>
