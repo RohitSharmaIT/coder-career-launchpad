@@ -1,5 +1,5 @@
 
-import { ServiceItem, ServiceItemProps } from './ServiceItem';
+import ServiceItem, { ServiceItemProps } from './ServiceItem';
 import { 
   FileText, 
   Code, 
