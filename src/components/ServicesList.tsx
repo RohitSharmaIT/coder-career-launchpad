@@ -1,7 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import ServiceItem, { ServiceItemProps } from './ServiceItem';
-import { Aspect } from "lucide-react"; 
 import { 
   FileText, 
   Code, 
@@ -12,6 +11,8 @@ import {
   Laptop 
 } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const ServicesList = () => {
   const services: ServiceItemProps[] = [
