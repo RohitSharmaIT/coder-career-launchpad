@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -17,12 +17,16 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const BookSlot = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, isAuthenticated } = useAuth();
-  const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   
+  // Get service from URL parameters if available
+  const queryParams = new URLSearchParams(location.search);
+  const serviceParam = queryParams.get('service');
+  
   // Form state
-  const [service, setService] = useState('');
+  const [service, setService] = useState(serviceParam || '');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -30,6 +34,9 @@ const BookSlot = () => {
   const [notes, setNotes] = useState('');
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState('');
+  
+  // Set initial step based on whether service is already selected
+  const [currentStep, setCurrentStep] = useState(serviceParam ? 2 : 1);
   
   // Available time slots
   const timeSlots = [
@@ -582,7 +589,7 @@ const BookSlot = () => {
       <div className="mb-8">
         <div className="flex items-center justify-center">
           {steps.map((step, index) => (
-            <div key={index} className="flex items-center">
+            <div key={index} className={`flex items-center ${currentStep === 1 && index === 0 ? 'hidden' : ''}`}>
               <div
                 className={`flex items-center justify-center w-8 h-8 rounded-full ${
                   currentStep > index + 1
@@ -595,7 +602,7 @@ const BookSlot = () => {
                 {currentStep > index + 1 ? (
                   <Check className="w-5 h-5" />
                 ) : (
-                  <span>{index + 1}</span>
+                  <span>{serviceParam && index > 0 ? index : index + 1}</span>
                 )}
               </div>
               

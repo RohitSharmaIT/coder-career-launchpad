@@ -14,6 +14,7 @@ const ServiceListContainer = ({ services, limit = services.length }: ServiceList
         <ServiceItem 
           key={service.id}
           {...service}
+          bookLink={`/book-slot?service=${service.id}`}
         />
       ))}
     </div>
