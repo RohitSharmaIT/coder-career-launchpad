@@ -29,19 +29,20 @@ const ServiceItem = ({
   };
   
   return (
-    <div className="service-card transition-all duration-300">
-      <div className="flex items-start mb-4">
-        <div className="text-brand-red mr-4">{icon}</div>
-        <div>
-          <h3 className="text-xl font-bold mb-2">{title}</h3>
-          <p className="text-gray-600">
-            {expanded ? longDescription : shortDescription}
-          </p>
+    <div className={`border-t-4 border-t-brand-red bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 ${expanded ? 'shadow-md' : ''}`}>
+      <div className="flex items-start gap-3 mb-3">
+        <div className="bg-red-100 rounded-full p-2 text-brand-red mt-1">
+          {icon}
         </div>
+        <h3 className="text-xl font-bold">{title}</h3>
       </div>
       
+      <p className="text-gray-600 ml-12 mb-4">
+        {expanded ? longDescription : shortDescription}
+      </p>
+      
       {expanded && (
-        <div className="mt-4 border-t border-gray-100 pt-4">
+        <div className="mt-4 border-t border-gray-100 pt-4 ml-12">
           <div className="mb-4">
             <h4 className="font-bold mb-2">What's Included:</h4>
             <ul className="list-disc pl-5 text-gray-600">
@@ -57,7 +58,7 @@ const ServiceItem = ({
         </div>
       )}
       
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex justify-between items-center mt-4 ml-12">
         <button
           onClick={toggleExpand}
           className="text-brand-red font-medium hover:underline"
@@ -66,7 +67,7 @@ const ServiceItem = ({
         </button>
         
         <Link to="/book-slot">
-          <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
+          <Button variant="default" className="bg-brand-red hover:bg-red-600 text-white">
             Book Slot
           </Button>
         </Link>

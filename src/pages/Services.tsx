@@ -11,10 +11,11 @@ const Services = () => {
   return (
     <>
       <Navbar />
-      <ServicesHero />
-      <ServicesList />
-      <ServicesFAQ />
-      <ServicesCTA />
+      <div className="pt-16 bg-white">
+        <ServicesList />
+        <ServicesFAQ />
+        <ServicesCTA />
+      </div>
       <Footer />
     </>
   );
