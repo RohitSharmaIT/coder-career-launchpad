@@ -7,12 +7,14 @@ interface ServicesActionsProps {
   showLearnMore?: boolean;
   showBookSlot?: boolean;
   showPricing?: boolean;
+  bookLink?: string; // Added bookLink property as optional
 }
 
 const ServicesActions = ({ 
   showLearnMore = true, 
   showBookSlot = true,
-  showPricing = false 
+  showPricing = false,
+  bookLink = "/book-slot" // Default value if not provided
 }: ServicesActionsProps) => {
   return (
     <div className="mt-8 flex flex-wrap gap-4">
@@ -23,7 +25,7 @@ const ServicesActions = ({
       )}
       
       {showBookSlot && (
-        <Link to="/book-slot" className="inline-block">
+        <Link to={bookLink} className="inline-block">
           <Button className="bg-brand-red hover:bg-red-600 text-white">
             Book Slot
           </Button>

@@ -20,6 +20,7 @@ export interface ServiceItemProps {
     viewPricing: boolean;
   };
   includes: string[];
+  bookLink?: string; // Added the bookLink property as optional
 }
 
 const ServiceItem = ({ 
@@ -29,7 +30,8 @@ const ServiceItem = ({
   icon, 
   imageSrc,
   imageAlt,
-  buttons
+  buttons,
+  bookLink // Add the prop here
 }: ServiceItemProps) => {
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -58,6 +60,7 @@ const ServiceItem = ({
           showLearnMore={buttons.learnMore}
           showBookSlot={buttons.bookSlot}
           showPricing={buttons.viewPricing}
+          bookLink={bookLink} // Pass the bookLink to ServicesActions
         />
       </CardContent>
     </Card>
