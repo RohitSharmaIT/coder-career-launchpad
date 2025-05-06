@@ -1,17 +1,13 @@
+
 import React from 'react';
 import { 
   FileText, 
   Code, 
-  MessageSquare, 
-  GraduationCap, 
-  Compass, 
-  Briefcase, 
-  Laptop 
+  MessageSquare,
+  Compass
 } from "lucide-react";
 import { ServiceItemProps } from './ServiceItem';
 import ServicesHeader from './services/ServicesHeader';
-import ServicesActions from './services/ServicesActions';
-import ServicesImage from './services/ServicesImage';
 import ServiceListContainer from './services/ServiceListContainer';
 
 const ServicesList = () => {
@@ -23,6 +19,13 @@ const ServicesList = () => {
       longDescription: "Our resume building service transforms your professional experience into a compelling document that gets you noticed by recruiters. We focus on highlighting your relevant skills, achievements, and experience, while optimizing for ATS systems. Each resume is crafted by industry experts who understand what recruiters look for in your specific field.",
       icon: <FileText className="w-10 h-10" />,
       price: "₹999",
+      imageSrc: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      imageAlt: "Person working on resume",
+      buttons: {
+        learnMore: true,
+        bookSlot: true,
+        viewPricing: false
+      },
       includes: [
         "Professional resume crafting",
         "ATS optimization",
@@ -38,6 +41,13 @@ const ServicesList = () => {
       longDescription: "Our web design and development service creates beautiful, functional websites that showcase your professional brand. Whether you need a portfolio site, a blog, or a business website, our team of designers and developers will create a custom solution that meets your specific needs and goals.",
       icon: <Code className="w-10 h-10" />,
       price: "₹4999",
+      imageSrc: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      imageAlt: "Web development workspace",
+      buttons: {
+        learnMore: true,
+        bookSlot: true,
+        viewPricing: false
+      },
       includes: [
         "Custom design",
         "Mobile-responsive layouts",
@@ -54,6 +64,13 @@ const ServicesList = () => {
       longDescription: "Our mock interview service prepares you for real-world interviews by simulating the actual experience. You'll practice with industry experts who will challenge you with common and difficult questions, provide constructive feedback, and help you refine your responses. We cover technical, behavioral, and situational interviews.",
       icon: <MessageSquare className="w-10 h-10" />,
       price: "₹1499",
+      imageSrc: "/lovable-uploads/cff881fb-3608-47ae-86a8-aec53fd7fa66.png",
+      imageAlt: "Mock interview session",
+      buttons: {
+        learnMore: true,
+        bookSlot: true,
+        viewPricing: false
+      },
       includes: [
         "1-hour mock interview session",
         "Industry-specific questions",
@@ -64,62 +81,24 @@ const ServicesList = () => {
     },
     {
       id: 4,
-      title: "Company Assessment Preparation",
-      shortDescription: "Prepare for specific company assessments and tests with tailored strategies and practice.",
-      longDescription: "Our company assessment preparation service helps you succeed in the specific tests and assessments used by your target companies. We cover aptitude tests, technical assessments, case studies, and other evaluation methods commonly used in the hiring process.",
-      icon: <GraduationCap className="w-10 h-10" />,
-      price: "₹1299",
-      includes: [
-        "Company-specific test preparation",
-        "Practice materials and resources",
-        "Personalized strategy session",
-        "Performance analysis",
-        "Improvement recommendations"
-      ]
-    },
-    {
-      id: 5,
       title: "Career Guidance",
-      shortDescription: "Get personalized advice on career paths, skill development, and industry trends.",
+      shortDescription: "Get personalized career advice based on your goals, strengths, and interests.",
       longDescription: "Our career guidance service provides you with personalized advice from experienced professionals who understand the tech industry landscape. Whether you're just starting out, looking to advance, or considering a career change, we'll help you navigate your options and make informed decisions.",
       icon: <Compass className="w-10 h-10" />,
       price: "₹899",
+      imageSrc: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      imageAlt: "Career guidance session",
+      buttons: {
+        learnMore: false,
+        bookSlot: false,
+        viewPricing: true
+      },
       includes: [
         "1-hour consultation session",
         "Personalized career roadmap",
         "Skill gap analysis",
         "Learning resource recommendations",
         "Follow-up email support"
-      ]
-    },
-    {
-      id: 6,
-      title: "Career Strategy & Projects",
-      shortDescription: "Develop a comprehensive career strategy with projects to enhance your portfolio.",
-      longDescription: "Our career strategy and projects service helps you build a comprehensive plan for your professional growth, complemented by meaningful projects that enhance your portfolio. We identify the skills you need to develop, the experiences you should seek, and the projects that will showcase your abilities to potential employers.",
-      icon: <Briefcase className="w-10 h-10" />,
-      price: "₹2499",
-      includes: [
-        "Career strategy development",
-        "Portfolio project planning",
-        "Project guidance and feedback",
-        "Skill development roadmap",
-        "3 months of email support"
-      ]
-    },
-    {
-      id: 7,
-      title: "Take-home Projects",
-      shortDescription: "Guidance and review for take-home coding challenges and project assignments.",
-      longDescription: "Our take-home projects service provides guidance and review for coding challenges and project assignments that are increasingly common in the tech hiring process. We'll help you understand requirements, plan your approach, and review your solution before submission to ensure you present your best work.",
-      icon: <Laptop className="w-10 h-10" />,
-      price: "₹1999",
-      includes: [
-        "Project requirement analysis",
-        "Solution planning assistance",
-        "Code review and feedback",
-        "Best practices recommendations",
-        "Documentation guidance"
       ]
     }
   ];
@@ -128,19 +107,13 @@ const ServicesList = () => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <ServicesHeader 
-          title="Career Strategy & Projects"
-          subtitle="Strategic guidance for your career growth and practical projects to enhance your portfolio and marketability"
+          category="CAREER SERVICES"
+          title="Our Professional Services"
+          subtitle="We offer tailored services to help you advance your career and achieve your professional goals."
         />
 
-        <div className="flex flex-col lg:flex-row gap-10">
-          <div className="lg:w-3/5">
-            <ServiceListContainer services={services} limit={3} />
-            <ServicesActions />
-          </div>
-
-          <div className="lg:w-2/5">
-            <ServicesImage />
-          </div>
+        <div className="mt-12">
+          <ServiceListContainer services={services} />
         </div>
       </div>
     </section>
