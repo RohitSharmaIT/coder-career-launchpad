@@ -1,17 +1,25 @@
 
 import { Book, FileText, Code } from "lucide-react";
 import { StudyMaterial } from "./MaterialCard";
+import { LucideIcon } from "lucide-react";
+
+// Define a type for our category items
+export interface CategoryItem {
+  id: string;
+  name: string;
+  icon: LucideIcon;
+}
 
 // Sample categories
-export const categories = [
-  { id: 'all', name: 'All', icon: <Book size={18} /> },
-  { id: 'interview', name: 'Interview Preparation', icon: <FileText size={18} /> },
-  { id: 'dsa', name: 'Data Structures & Algorithms', icon: <Code size={18} /> },
-  { id: 'tcs', name: 'TCS Specific', icon: <FileText size={18} /> },
-  { id: 'wipro', name: 'Wipro Specific', icon: <FileText size={18} /> },
-  { id: 'infosys', name: 'Infosys Specific', icon: <FileText size={18} /> },
-  { id: 'cognizant', name: 'Cognizant Specific', icon: <FileText size={18} /> },
-  { id: 'accenture', name: 'Accenture Specific', icon: <FileText size={18} /> }
+export const categories: CategoryItem[] = [
+  { id: 'all', name: 'All', icon: Book },
+  { id: 'interview', name: 'Interview Preparation', icon: FileText },
+  { id: 'dsa', name: 'Data Structures & Algorithms', icon: Code },
+  { id: 'tcs', name: 'TCS Specific', icon: FileText },
+  { id: 'wipro', name: 'Wipro Specific', icon: FileText },
+  { id: 'infosys', name: 'Infosys Specific', icon: FileText },
+  { id: 'cognizant', name: 'Cognizant Specific', icon: FileText },
+  { id: 'accenture', name: 'Accenture Specific', icon: FileText }
 ];
 
 // Sample study materials
