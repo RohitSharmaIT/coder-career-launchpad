@@ -1,6 +1,4 @@
-
-import { Card, CardContent } from "@/components/ui/card";
-import ServiceItem, { ServiceItemProps } from './ServiceItem';
+import React from 'react';
 import { 
   FileText, 
   Code, 
@@ -10,9 +8,11 @@ import {
   Briefcase, 
   Laptop 
 } from "lucide-react";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { ServiceItemProps } from './ServiceItem';
+import ServicesHeader from './services/ServicesHeader';
+import ServicesActions from './services/ServicesActions';
+import ServicesImage from './services/ServicesImage';
+import ServiceListContainer from './services/ServiceListContainer';
 
 const ServicesList = () => {
   const services: ServiceItemProps[] = [
@@ -127,50 +127,19 @@ const ServicesList = () => {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="mb-12">
-          <div className="text-brand-red uppercase font-medium mb-2">CAREER DEVELOPMENT</div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Career Strategy & Projects</h2>
-          <p className="text-gray-600 max-w-2xl">
-            Strategic guidance for your career growth and practical projects to enhance your portfolio and marketability
-          </p>
-          <div className="mt-4 w-24 h-1 bg-brand-red"></div>
-        </div>
+        <ServicesHeader 
+          title="Career Strategy & Projects"
+          subtitle="Strategic guidance for your career growth and practical projects to enhance your portfolio and marketability"
+        />
 
         <div className="flex flex-col lg:flex-row gap-10">
           <div className="lg:w-3/5">
-            <div className="space-y-6">
-              {services.slice(0, 3).map((service) => (
-                <ServiceItem 
-                  key={service.id}
-                  {...service}
-                />
-              ))}
-            </div>
-            
-            <div className="mt-8">
-              <Link to="/book-slot" className="inline-block">
-                <Button className="bg-brand-red hover:bg-red-600 text-white mr-4">
-                  Book Career Guidance
-                </Button>
-              </Link>
-              <Link to="/pricing" className="inline-block">
-                <Button variant="outline" className="border-gray-300 text-gray-600">
-                  View Pricing
-                </Button>
-              </Link>
-            </div>
+            <ServiceListContainer services={services} limit={3} />
+            <ServicesActions />
           </div>
 
           <div className="lg:w-2/5">
-            <Card className="border-0 shadow-md overflow-hidden">
-              <AspectRatio ratio={4/3}>
-                <img 
-                  src="/lovable-uploads/5105666c-eb2c-4b5b-a040-b069b241e082.png"
-                  alt="Person working on laptop" 
-                  className="object-cover w-full h-full"
-                />
-              </AspectRatio>
-            </Card>
+            <ServicesImage />
           </div>
         </div>
       </div>
