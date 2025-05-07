@@ -30,6 +30,12 @@ export const useBookingForm = () => {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState('');
   
+  // Validation state
+  const [isServiceValid, setIsServiceValid] = useState(!!serviceParam);
+  const [isPersonalInfoValid, setIsPersonalInfoValid] = useState(false);
+  const [isDateTimeValid, setIsDateTimeValid] = useState(false);
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  
   // Set initial step based on whether service is already selected
   const [currentStep, setCurrentStep] = useState(serviceParam ? 2 : 1);
   
@@ -121,6 +127,16 @@ export const useBookingForm = () => {
     isLoading,
     setIsLoading,
     serviceParam,
+    
+    // Validation state
+    isServiceValid,
+    setIsServiceValid,
+    isPersonalInfoValid,
+    setIsPersonalInfoValid,
+    isDateTimeValid, 
+    setIsDateTimeValid,
+    isTermsAccepted,
+    setIsTermsAccepted,
     
     // Constants
     timeSlots,

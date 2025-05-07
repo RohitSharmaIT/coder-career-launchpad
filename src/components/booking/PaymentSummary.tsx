@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
-import { CreditCard } from "lucide-react";
+import { CreditCard, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ServiceOption {
   id: string;
@@ -22,6 +23,9 @@ interface PaymentSummaryProps {
   notes: string;
   isLoading: boolean;
   onSubmit: () => void;
+  isTermsAccepted: boolean;
+  setIsTermsAccepted: (value: boolean) => void;
+  setIsValid?: (isValid: boolean) => void;
 }
 
 const PaymentSummary = ({
@@ -34,8 +38,25 @@ const PaymentSummary = ({
   phone,
   notes,
   isLoading,
-  onSubmit
+  onSubmit,
+  isTermsAccepted,
+  setIsTermsAccepted,
+  setIsValid
 }: PaymentSummaryProps) => {
+  const [error, setError] = useState<string | null>(null);
+  
+  useEffect(() => {
+    if (setIsValid) {
+      setIsValid(isTermsAccepted);
+    }
+    
+    if (!isTermsAccepted) {
+      setError("Please accept the terms and conditions to continue");
+    } else {
+      setError(null);
+    }
+  }, [isTermsAccepted, setIsValid]);
+  
   const getServicePrice = () => {
     const selectedService = services.find(s => s.id === service);
     return selectedService ? selectedService.price : "₹0";
@@ -141,7 +162,9 @@ const PaymentSummary = ({
           id="terms"
           name="terms"
           type="checkbox"
-          className="h-4 w-4 mt-1 text-brand-red focus:ring-brand-red"
+          className={`h-4 w-4 mt-1 text-brand-red focus:ring-brand-red ${!isTermsAccepted && error ? 'border-red-500' : ''}`}
+          checked={isTermsAccepted}
+          onChange={(e) => setIsTermsAccepted(e.target.checked)}
           required
         />
         <label htmlFor="terms" className="text-sm">
@@ -156,12 +179,19 @@ const PaymentSummary = ({
         </label>
       </div>
       
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4 mr-2" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      
       <div className="pt-4">
         <Button
           type="button"
           className="bg-brand-red hover:bg-red-600 text-white w-full"
           onClick={onSubmit}
-          disabled={isLoading}
+          disabled={isLoading || !isTermsAccepted}
         >
           {isLoading ? "Processing..." : "Confirm & Pay"}
         </Button>

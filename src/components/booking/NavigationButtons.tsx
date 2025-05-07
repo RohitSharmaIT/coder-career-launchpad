@@ -9,6 +9,7 @@ interface NavigationButtonsProps {
   handleNextStep: () => void;
   isLoading: boolean;
   isLastStep: boolean;
+  isNextDisabled?: boolean;
 }
 
 const NavigationButtons = ({ 
@@ -16,7 +17,8 @@ const NavigationButtons = ({
   handleBackStep, 
   handleNextStep,
   isLoading,
-  isLastStep
+  isLastStep,
+  isNextDisabled = false
 }: NavigationButtonsProps) => {
   return (
     <div className={`flex ${currentStep > 1 ? 'justify-between' : 'justify-end'} mt-8`}>
@@ -35,6 +37,7 @@ const NavigationButtons = ({
           type="button"
           className="bg-brand-red hover:bg-red-600 text-white"
           onClick={handleNextStep}
+          disabled={isNextDisabled}
         >
           Continue
           <ArrowRight className="ml-2 h-4 w-4" />
@@ -44,7 +47,7 @@ const NavigationButtons = ({
           type="button"
           className="bg-brand-red hover:bg-red-600 text-white"
           onClick={handleNextStep}
-          disabled={isLoading}
+          disabled={isLoading || isNextDisabled}
         >
           {isLoading ? "Processing..." : "Confirm & Pay"}
         </Button>

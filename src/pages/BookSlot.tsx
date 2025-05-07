@@ -1,4 +1,5 @@
 
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -31,6 +32,12 @@ const BookSlot = () => {
     isLoading, setIsLoading,
     serviceParam,
     
+    // Validation state
+    isServiceValid, setIsServiceValid,
+    isPersonalInfoValid, setIsPersonalInfoValid,
+    isDateTimeValid, setIsDateTimeValid,
+    isTermsAccepted, setIsTermsAccepted,
+    
     // Constants
     timeSlots,
     services,
@@ -38,10 +45,6 @@ const BookSlot = () => {
     
     // Auth
     isAuthenticated,
-    
-    // Validation helpers
-    validateEmail,
-    validatePhone,
     
     // Utility
     showToast
@@ -66,38 +69,29 @@ const BookSlot = () => {
         showToast("Please select a service", 'error');
         return;
       }
+      setCurrentStep(currentStep + 1);
     } else if (currentStep === 2) {
-      if (!name || !email || !phone) {
-        showToast("Please fill in all required fields", 'error');
+      if (!isPersonalInfoValid) {
+        showToast("Please fill all required fields correctly", 'error');
         return;
       }
-      
-      // Basic email validation
-      if (!validateEmail(email)) {
-        showToast("Please enter a valid email address", 'error');
-        return;
-      }
-      
-      // Basic phone validation
-      if (!validatePhone(phone)) {
-        showToast("Please enter a valid 10-digit phone number", 'error');
-        return;
-      }
+      setCurrentStep(currentStep + 1);
     } else if (currentStep === 3) {
-      if (!date || !time) {
+      if (!isDateTimeValid) {
         showToast("Please select both date and time", 'error');
         return;
       }
-    }
-    
-    // Proceed to next step
-    setCurrentStep(currentStep + 1);
-    
-    // If not logged in and moving to final step, redirect to login
-    if (currentStep === 3 && !isAuthenticated) {
-      showToast("Please log in to complete your booking", 'error');
-      navigate("/login");
-      return;
+      
+      // If not logged in and moving to final step, redirect to login
+      if (!isAuthenticated) {
+        showToast("Please log in to complete your booking", 'error');
+        navigate("/login");
+        return;
+      }
+      
+      setCurrentStep(currentStep + 1);
+    } else if (currentStep === 4) {
+      handleSubmitBooking();
     }
   };
   
@@ -108,6 +102,11 @@ const BookSlot = () => {
   
   // Handle booking submission
   const handleSubmitBooking = () => {
+    if (!isTermsAccepted) {
+      showToast("Please accept the terms and conditions", 'error');
+      return;
+    }
+    
     setIsLoading(true);
     
     // Simulate API call
@@ -128,7 +127,10 @@ const BookSlot = () => {
           <ServiceSelection 
             services={services}
             selectedService={service}
-            onServiceSelect={setService}
+            onServiceSelect={(selectedService) => {
+              setService(selectedService);
+              setIsServiceValid(true);
+            }}
           />
         );
       case 2:
@@ -146,6 +148,7 @@ const BookSlot = () => {
             setNotes={setNotes}
             service={service}
             getDynamicFields={getDynamicFields}
+            setIsValid={setIsPersonalInfoValid}
           />
         );
       case 3:
@@ -156,6 +159,7 @@ const BookSlot = () => {
             time={time}
             setTime={setTime}
             timeSlots={timeSlots}
+            setIsValid={setIsDateTimeValid}
           />
         );
       case 4:
@@ -171,6 +175,9 @@ const BookSlot = () => {
             notes={notes}
             isLoading={isLoading}
             onSubmit={handleSubmitBooking}
+            isTermsAccepted={isTermsAccepted}
+            setIsTermsAccepted={setIsTermsAccepted}
+            setIsValid={setIsValid => {}} // We handle this in the component
           />
         );
       case 5:
@@ -185,6 +192,22 @@ const BookSlot = () => {
         );
       default:
         return null;
+    }
+  };
+
+  // Determine if next button should be disabled based on current step
+  const isNextButtonDisabled = () => {
+    switch (currentStep) {
+      case 1:
+        return !isServiceValid;
+      case 2:
+        return !isPersonalInfoValid;
+      case 3:
+        return !isDateTimeValid;
+      case 4:
+        return !isTermsAccepted;
+      default:
+        return false;
     }
   };
   
@@ -230,6 +253,7 @@ const BookSlot = () => {
                   handleNextStep={handleNextStep}
                   isLoading={isLoading}
                   isLastStep={currentStep === 4}
+                  isNextDisabled={isNextButtonDisabled()}
                 />
               )}
             </div>
