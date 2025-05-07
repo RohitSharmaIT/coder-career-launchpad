@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -8,9 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useJobs } from '@/contexts/JobsContext';
 
 const PostJob = () => {
   const navigate = useNavigate();
+  const { addJob } = useJobs();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,7 +88,20 @@ const PostJob = () => {
     
     setIsSubmitting(true);
     
-    // Simulate API call
+    // Parse skills into an array
+    const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
+    
+    // Add job to the context
+    addJob({
+      title: jobTitle,
+      company: company,
+      location: location,
+      type: jobType,
+      salary: salary || undefined,
+      experience: experience || undefined,
+      skills: skillsArray.length > 0 ? skillsArray : undefined
+    });
+    
     setTimeout(() => {
       toast.success("Job posted successfully!", {
         description: "Your job has been published and is now visible to all users."
@@ -106,6 +120,9 @@ const PostJob = () => {
       setApplyBy('');
       
       setIsSubmitting(false);
+      
+      // Navigate to jobs page to see the new job
+      navigate('/jobs');
     }, 1500);
   };
   

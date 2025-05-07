@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -10,10 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useAuth } from '@/contexts/AuthContext';
+import { useJobs } from '@/contexts/JobsContext';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, isAdmin } = useAuth();
+  const { addJob } = useJobs();
   
   // Job form state
   const [jobTitle, setJobTitle] = useState('');
@@ -59,6 +60,25 @@ const AdminPanel = () => {
       return;
     }
     
+    // Combine description and requirements for the skills array
+    const skills = requirements
+      .split(',')
+      .map(req => req.trim())
+      .filter(Boolean);
+    
+    // Add job to context
+    addJob({
+      title: jobTitle,
+      company: company,
+      location: location,
+      type: jobType === 'full-time' ? 'Full-time' : 
+            jobType === 'part-time' ? 'Part-time' :
+            jobType === 'contract' ? 'Contract' :
+            jobType === 'internship' ? 'Internship' : 'Remote',
+      salary: salary,
+      skills: skills
+    });
+    
     // Simulate API call
     setTimeout(() => {
       toast.success("Job posted successfully");
@@ -71,6 +91,9 @@ const AdminPanel = () => {
       setJobDescription('');
       setRequirements('');
       setIsSubmitting(false);
+      
+      // Navigate to jobs page to see the new job
+      navigate('/jobs');
     }, 1500);
   };
   
@@ -208,7 +231,7 @@ const AdminPanel = () => {
                       <Label htmlFor="requirements" className="required">Requirements & Qualifications</Label>
                       <Textarea
                         id="requirements"
-                        placeholder="List the skills, experience, and qualifications required for this role..."
+                        placeholder="List the skills, experience, and qualifications required for this role (comma separated)..."
                         rows={5}
                         value={requirements}
                         onChange={(e) => setRequirements(e.target.value)}

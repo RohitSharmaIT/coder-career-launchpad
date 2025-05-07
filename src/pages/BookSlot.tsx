@@ -1,10 +1,8 @@
 
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { toast } from "sonner";
-import ServiceFields from "@/components/booking/ServiceFields";
 import BookingSteps from "@/components/booking/BookingSteps";
 import ServiceSelection from "@/components/booking/ServiceSelection";
 import PersonalInformation from "@/components/booking/PersonalInformation";
@@ -13,30 +11,46 @@ import PaymentSummary from "@/components/booking/PaymentSummary";
 import BookingConfirmation from "@/components/booking/BookingConfirmation";
 import NavigationButtons from "@/components/booking/NavigationButtons";
 import { useBookingForm } from "@/hooks/useBookingForm";
+import { useBooking } from '@/contexts/BookingContext';
+import { toast } from "sonner";
 
 const BookSlot = () => {
   const navigate = useNavigate();
+  const { addBooking } = useBooking();
   const {
     // Form state
-    service, setService,
-    name, setName,
-    email, setEmail,
-    phone, setPhone,
-    resumeLink, setResumeLink,
-    notes, setNotes,
-    date, setDate,
-    time, setTime,
+    service,
+    setService,
+    name,
+    setName,
+    email, 
+    setEmail,
+    phone,
+    setPhone,
+    resumeLink,
+    setResumeLink,
+    notes,
+    setNotes,
+    date,
+    setDate,
+    time,
+    setTime,
     
     // UI state
-    currentStep, setCurrentStep,
-    isLoading, setIsLoading,
-    serviceParam,
+    currentStep,
+    setCurrentStep,
+    isLoading,
+    setIsLoading,
     
     // Validation state
-    isServiceValid, setIsServiceValid,
-    isPersonalInfoValid, setIsPersonalInfoValid,
-    isDateTimeValid, setIsDateTimeValid,
-    isTermsAccepted, setIsTermsAccepted,
+    isServiceValid,
+    setIsServiceValid,
+    isPersonalInfoValid,
+    setIsPersonalInfoValid,
+    isDateTimeValid,
+    setIsDateTimeValid,
+    isTermsAccepted,
+    setIsTermsAccepted,
     
     // Constants
     timeSlots,
@@ -45,221 +59,191 @@ const BookSlot = () => {
     
     // Auth
     isAuthenticated,
+    user,
     
-    // Utility
+    // Utility functions
     showToast
   } = useBookingForm();
   
-  // Dynamic fields based on selected service
-  const getDynamicFields = () => {
-    return (
-      <ServiceFields
-        service={service}
-        resumeLink={resumeLink}
-        setResumeLink={setResumeLink}
-      />
-    );
-  };
-  
-  // Handle next step
-  const handleNextStep = () => {
-    // Validation for each step
-    if (currentStep === 1) {
-      if (!service) {
-        showToast("Please select a service", 'error');
-        return;
-      }
-      setCurrentStep(currentStep + 1);
-    } else if (currentStep === 2) {
-      if (!isPersonalInfoValid) {
-        showToast("Please fill all required fields correctly", 'error');
-        return;
-      }
-      setCurrentStep(currentStep + 1);
-    } else if (currentStep === 3) {
-      if (!isDateTimeValid) {
-        showToast("Please select both date and time", 'error');
-        return;
-      }
-      
-      // If not logged in and moving to final step, redirect to login
-      if (!isAuthenticated) {
-        showToast("Please log in to complete your booking", 'error');
-        navigate("/login");
-        return;
-      }
-      
-      setCurrentStep(currentStep + 1);
-    } else if (currentStep === 4) {
-      handleSubmitBooking();
+  // Back button handler
+  const handleBackStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
     }
   };
   
-  // Handle back step
-  const handleBackStep = () => {
-    setCurrentStep(currentStep - 1);
-  };
-  
-  // Handle booking submission
-  const handleSubmitBooking = () => {
-    if (!isTermsAccepted) {
+  // Next button handler
+  const handleNextStep = async () => {
+    // Validate current step
+    if (currentStep === 1 && !isServiceValid) {
+      showToast("Please select a service to continue", 'error');
+      return;
+    }
+    
+    if (currentStep === 2 && !isPersonalInfoValid) {
+      showToast("Please fill in all required fields correctly", 'error');
+      return;
+    }
+    
+    if (currentStep === 3 && !isDateTimeValid) {
+      showToast("Please select both date and time", 'error');
+      return;
+    }
+    
+    if (currentStep === 4 && !isTermsAccepted) {
       showToast("Please accept the terms and conditions", 'error');
       return;
     }
     
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      showToast("Your booking has been confirmed!", 'success');
+    // Process payment in step 4
+    if (currentStep === 4) {
+      setIsLoading(true);
       
-      // Move to confirmation step
-      setCurrentStep(5);
-      setIsLoading(false);
-    }, 2000);
-  };
-  
-  // Render step content based on current step
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <ServiceSelection 
-            services={services}
-            selectedService={service}
-            onServiceSelect={(selectedService) => {
-              setService(selectedService);
-              setIsServiceValid(true);
-            }}
-          />
-        );
-      case 2:
-        return (
-          <PersonalInformation
-            name={name}
-            setName={setName}
-            email={email}
-            setEmail={setEmail}
-            phone={phone}
-            setPhone={setPhone}
-            resumeLink={resumeLink}
-            setResumeLink={setResumeLink}
-            notes={notes}
-            setNotes={setNotes}
-            service={service}
-            getDynamicFields={getDynamicFields}
-            setIsValid={setIsPersonalInfoValid}
-          />
-        );
-      case 3:
-        return (
-          <DateTimeSelection
-            date={date}
-            setDate={setDate}
-            time={time}
-            setTime={setTime}
-            timeSlots={timeSlots}
-            setIsValid={setIsDateTimeValid}
-          />
-        );
-      case 4:
-        return (
-          <PaymentSummary
-            service={service}
-            services={services}
-            date={date}
-            time={time}
-            name={name}
-            email={email}
-            phone={phone}
-            notes={notes}
-            isLoading={isLoading}
-            onSubmit={handleSubmitBooking}
-            isTermsAccepted={isTermsAccepted}
-            setIsTermsAccepted={setIsTermsAccepted}
-            setIsValid={setIsValid => {}} // We handle this in the component
-          />
-        );
-      case 5:
-        return (
-          <BookingConfirmation
-            service={service}
-            services={services}
-            date={date}
-            time={time}
-            email={email}
-          />
-        );
-      default:
-        return null;
+      try {
+        // Simulate payment processing
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Add the booking to the dashboard
+        const selectedService = services.find(s => s.id === service);
+        
+        if (selectedService) {
+          addBooking({
+            id: Math.floor(Math.random() * 1000),
+            service: selectedService.title,
+            date: date ? new Date(`${date.toDateString()} ${time}`) : new Date(),
+            status: "scheduled",
+            notes: notes || `New ${selectedService.title} appointment`
+          });
+        }
+        
+        // Move to confirmation step
+        setCurrentStep(currentStep + 1);
+        showToast("Payment successful!", 'success');
+      } catch (error) {
+        showToast("Payment failed. Please try again.", 'error');
+      } finally {
+        setIsLoading(false);
+      }
+      return;
     }
-  };
-
-  // Determine if next button should be disabled based on current step
-  const isNextButtonDisabled = () => {
-    switch (currentStep) {
-      case 1:
-        return !isServiceValid;
-      case 2:
-        return !isPersonalInfoValid;
-      case 3:
-        return !isDateTimeValid;
-      case 4:
-        return !isTermsAccepted;
-      default:
-        return false;
+    
+    // Move to next step for steps 1-3
+    if (currentStep < steps.length) {
+      setCurrentStep(currentStep + 1);
     }
   };
   
-  // If checking authentication status, show loading
-  if (isLoading && currentStep !== 5 && currentStep !== 4) {
-    return (
-      <>
-        <Navbar />
-        <div className="py-20 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-red mx-auto"></div>
-          <p className="mt-4 text-lg">Loading booking form...</p>
-        </div>
-        <Footer />
-      </>
-    );
-  }
+  // Handle booking completion
+  const handleComplete = () => {
+    navigate('/dashboard');
+  };
+  
+  // Determine if current step is last step
+  const isLastStep = currentStep === 4; // Payment is the last actionable step
+  
+  // Determine next button disabled state
+  const isNextDisabled = 
+    (currentStep === 1 && !isServiceValid) ||
+    (currentStep === 2 && !isPersonalInfoValid) ||
+    (currentStep === 3 && !isDateTimeValid) ||
+    (currentStep === 4 && !isTermsAccepted);
   
   return (
     <>
       <Navbar />
       
-      <section className="py-16 bg-gray-50 mt-16">
+      <div className="py-10 bg-gray-50 min-h-screen">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl font-bold text-center mb-8">Book a Session</h1>
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl font-bold mb-6">Book a Service</h1>
             
-            {/* Step Indicator */}
-            <BookingSteps 
-              currentStep={currentStep}
+            <BookingSteps
               steps={steps}
-              serviceParam={serviceParam}
+              currentStep={currentStep}
             />
             
-            {/* Step Content */}
-            <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
-              {renderStepContent()}
+            <div className="bg-white rounded-lg shadow-md p-6 mt-8">
+              {/* Step 1: Service Selection */}
+              {currentStep === 1 && (
+                <ServiceSelection 
+                  services={services}
+                  selectedService={service}
+                  onServiceSelect={setService}
+                  setIsValid={setIsServiceValid}
+                />
+              )}
+              
+              {/* Step 2: Personal Information */}
+              {currentStep === 2 && (
+                <PersonalInformation
+                  name={name}
+                  setName={setName}
+                  email={email}
+                  setEmail={setEmail}
+                  phone={phone}
+                  setPhone={setPhone}
+                  resumeLink={resumeLink}
+                  setResumeLink={setResumeLink}
+                  notes={notes}
+                  setNotes={setNotes}
+                  service={service}
+                  services={services}
+                  setIsValid={setIsPersonalInfoValid}
+                />
+              )}
+              
+              {/* Step 3: Date & Time Selection */}
+              {currentStep === 3 && (
+                <DateTimeSelection
+                  date={date}
+                  setDate={setDate}
+                  time={time}
+                  setTime={setTime}
+                  timeSlots={timeSlots}
+                  setIsValid={setIsDateTimeValid}
+                />
+              )}
+              
+              {/* Step 4: Payment Summary */}
+              {currentStep === 4 && (
+                <PaymentSummary
+                  service={services.find(s => s.id === service)}
+                  date={date}
+                  time={time}
+                  name={name}
+                  email={email}
+                  phone={phone}
+                  isTermsAccepted={isTermsAccepted}
+                  onTermsAcceptedChange={setIsTermsAccepted}
+                />
+              )}
+              
+              {/* Step 5: Confirmation */}
+              {currentStep === 5 && (
+                <BookingConfirmation
+                  service={services.find(s => s.id === service)?.title || ''}
+                  date={date}
+                  time={time}
+                  email={email}
+                  onComplete={handleComplete}
+                />
+              )}
               
               {/* Navigation Buttons */}
-              {currentStep < 5 && currentStep !== 4 && (
+              {currentStep < 5 && (
                 <NavigationButtons
                   currentStep={currentStep}
                   handleBackStep={handleBackStep}
                   handleNextStep={handleNextStep}
                   isLoading={isLoading}
-                  isLastStep={currentStep === 4}
-                  isNextDisabled={isNextButtonDisabled()}
+                  isLastStep={isLastStep}
+                  isNextDisabled={isNextDisabled}
                 />
               )}
             </div>
           </div>
         </div>
-      </section>
+      </div>
       
       <Footer />
     </>

@@ -21,6 +21,8 @@ import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 import React from "react";
 import { AuthProvider } from "./contexts/AuthContext";
+import { BookingProvider } from "./contexts/BookingContext";
+import { JobsProvider } from "./contexts/JobsContext";
 
 const queryClient = new QueryClient();
 
@@ -29,29 +31,33 @@ const App = () => (
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/blogs" element={<Blogs />} />
-              <Route path="/blogs/:id" element={<BlogPost />} />
-              <Route path="/jobs" element={<Jobs />} />
-              <Route path="/jobs/:id" element={<JobDetails />} />
-              <Route path="/study-material" element={<StudyMaterial />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/post-job" element={<PostJob />} />
-              <Route path="/book-slot" element={<BookSlot />} />
-              <Route path="/admin" element={<AdminPanel />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Toaster />
-            <Sonner />
-          </TooltipProvider>
-        </QueryClientProvider>
+        <BookingProvider>
+          <JobsProvider>
+            <QueryClientProvider client={queryClient}>
+              <TooltipProvider>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/blogs" element={<Blogs />} />
+                  <Route path="/blogs/:id" element={<BlogPost />} />
+                  <Route path="/jobs" element={<Jobs />} />
+                  <Route path="/jobs/:id" element={<JobDetails />} />
+                  <Route path="/study-material" element={<StudyMaterial />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/post-job" element={<PostJob />} />
+                  <Route path="/book-slot" element={<BookSlot />} />
+                  <Route path="/admin" element={<AdminPanel />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+                <Toaster />
+                <Sonner />
+              </TooltipProvider>
+            </QueryClientProvider>
+          </JobsProvider>
+        </BookingProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

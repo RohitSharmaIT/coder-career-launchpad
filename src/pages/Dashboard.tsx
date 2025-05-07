@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -9,31 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Calendar, Clock, MapPin, Calendar as CalendarIcon, CheckCircle, User, FileText, Briefcase } from "lucide-react";
 import { format } from "date-fns";
 import { useAuth } from '@/contexts/AuthContext';
-
-// Mock data for booked services
-const bookedServices = [
-  {
-    id: 1,
-    service: "Resume Building",
-    date: new Date("2024-05-15T10:00:00"),
-    status: "scheduled",
-    notes: "Focus on highlighting my Java and Spring Boot experience"
-  },
-  {
-    id: 2,
-    service: "Mock Interview",
-    date: new Date("2024-05-20T14:00:00"),
-    status: "scheduled",
-    notes: "Practice for Google technical interview"
-  },
-  {
-    id: 3,
-    service: "Resume Building",
-    date: new Date("2024-04-10T11:00:00"),
-    status: "completed",
-    notes: "Resume was delivered and I got positive feedback"
-  }
-];
+import { useBooking } from '@/contexts/BookingContext';
 
 // Mock data for job applications
 const jobApplications = [
@@ -62,6 +37,7 @@ const jobApplications = [
 
 const Dashboard = () => {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const { bookedServices } = useBooking();
   const [activeTab, setActiveTab] = useState("overview");
   
   if (isLoading) {
