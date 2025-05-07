@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface NavigationButtonsProps {
   currentStep: number;
@@ -20,6 +21,8 @@ const NavigationButtons = ({
   isLastStep,
   isNextDisabled = false
 }: NavigationButtonsProps) => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className={`flex ${currentStep > 1 ? 'justify-between' : 'justify-end'} mt-8`}>
       {currentStep > 1 && (
@@ -27,6 +30,7 @@ const NavigationButtons = ({
           type="button"
           variant="outline"
           onClick={handleBackStep}
+          className="px-3"
         >
           Back
         </Button>
@@ -39,8 +43,8 @@ const NavigationButtons = ({
           onClick={handleNextStep}
           disabled={isNextDisabled}
         >
-          Continue
-          <ArrowRight className="ml-2 h-4 w-4" />
+          {isMobile ? "Next" : "Continue"}
+          <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
       ) : (
         <Button
@@ -49,7 +53,7 @@ const NavigationButtons = ({
           onClick={handleNextStep}
           disabled={isLoading || isNextDisabled}
         >
-          {isLoading ? "Processing..." : "Confirm & Pay"}
+          {isLoading ? "Processing..." : isMobile ? "Pay" : "Confirm & Pay"}
         </Button>
       )}
     </div>
