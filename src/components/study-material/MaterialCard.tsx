@@ -21,12 +21,27 @@ export interface StudyMaterial {
 interface MaterialCardProps {
   material: StudyMaterial;
   onDownload: (id: number, isPremium: boolean) => void;
+  onSpecialCardClick?: (material: StudyMaterial) => void;
 }
 
-const MaterialCard = ({ material, onDownload }: MaterialCardProps) => {
+const MaterialCard = ({ material, onDownload, onSpecialCardClick }: MaterialCardProps) => {
+  // Check if this is the special "Complete DSA Interview Preparation" card (id: 1)
+  const isSpecialCard = material.id === 1 && material.title === "Complete DSA Interview Preparation";
+  
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (isSpecialCard && onSpecialCardClick) {
+      e.preventDefault();
+      onSpecialCardClick(material);
+    }
+  };
+
   return (
     <Card key={material.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-      <Link to={`/study-material/${material.id}`} className="block">
+      <Link 
+        to={`/study-material/${material.id}`} 
+        className="block"
+        onClick={handleCardClick}
+      >
         <div className="h-48 overflow-hidden relative">
           <img 
             src={material.thumbnail} 

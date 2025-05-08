@@ -4,9 +4,10 @@ import MaterialCard, { StudyMaterial } from './MaterialCard';
 interface MaterialsGridProps {
   materials: StudyMaterial[];
   onDownload: (id: number, isPremium: boolean) => void;
+  onSpecialCardClick?: (material: StudyMaterial) => void;
 }
 
-const MaterialsGrid = ({ materials, onDownload }: MaterialsGridProps) => {
+const MaterialsGrid = ({ materials, onDownload, onSpecialCardClick }: MaterialsGridProps) => {
   if (materials.length === 0) {
     return (
       <div className="text-center py-10 bg-gray-50 rounded-lg">
@@ -24,7 +25,8 @@ const MaterialsGrid = ({ materials, onDownload }: MaterialsGridProps) => {
         <MaterialCard 
           key={material.id} 
           material={material} 
-          onDownload={onDownload} 
+          onDownload={onDownload}
+          onSpecialCardClick={onSpecialCardClick}
         />
       ))}
     </div>
