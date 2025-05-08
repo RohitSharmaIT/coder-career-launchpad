@@ -5,6 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import ServiceFields from './ServiceFields';
+
+interface ServiceOption {
+  id: string;
+  title: string;
+  price: string;
+  description: string;
+}
 
 interface PersonalInformationProps {
   name: string;
@@ -18,7 +26,7 @@ interface PersonalInformationProps {
   notes: string;
   setNotes: (notes: string) => void;
   service: string;
-  getDynamicFields: () => JSX.Element | null;
+  services?: ServiceOption[];
   setIsValid?: (isValid: boolean) => void;
 }
 
@@ -29,7 +37,7 @@ const PersonalInformation = ({
   resumeLink, setResumeLink,
   notes, setNotes,
   service,
-  getDynamicFields,
+  services,
   setIsValid
 }: PersonalInformationProps) => {
   const [errors, setErrors] = useState<{
@@ -79,6 +87,19 @@ const PersonalInformation = ({
     }
     
     return isValid;
+  };
+
+  // Get dynamic fields based on the selected service
+  const getDynamicFields = () => {
+    if (!service) return null;
+    
+    return (
+      <ServiceFields 
+        service={service}
+        resumeLink={resumeLink}
+        setResumeLink={setResumeLink}
+      />
+    );
   };
 
   // Validate when any field changes

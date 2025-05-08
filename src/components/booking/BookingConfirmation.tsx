@@ -3,7 +3,6 @@ import React from 'react';
 import { format } from "date-fns";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from 'react-router-dom';
 
 interface ServiceOption {
   id: string;
@@ -18,6 +17,7 @@ interface BookingConfirmationProps {
   date: Date | undefined;
   time: string;
   email: string;
+  onComplete?: () => void;
 }
 
 const BookingConfirmation = ({
@@ -25,10 +25,9 @@ const BookingConfirmation = ({
   services,
   date,
   time,
-  email
+  email,
+  onComplete
 }: BookingConfirmationProps) => {
-  const navigate = useNavigate();
-  
   return (
     <div className="text-center space-y-6">
       <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
@@ -65,7 +64,7 @@ const BookingConfirmation = ({
       <div className="pt-4">
         <Button
           className="bg-brand-red hover:bg-red-600 text-white"
-          onClick={() => navigate("/dashboard")}
+          onClick={onComplete}
         >
           Go to Dashboard
         </Button>

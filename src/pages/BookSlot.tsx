@@ -207,21 +207,25 @@ const BookSlot = () => {
               {/* Step 4: Payment Summary */}
               {currentStep === 4 && (
                 <PaymentSummary
-                  service={services.find(s => s.id === service)}
+                  service={service}
+                  services={services}
                   date={date}
                   time={time}
                   name={name}
                   email={email}
                   phone={phone}
+                  notes={notes}
                   isTermsAccepted={isTermsAccepted}
                   onTermsAcceptedChange={setIsTermsAccepted}
+                  setIsValid={setIsDateTimeValid}
                 />
               )}
               
               {/* Step 5: Confirmation */}
               {currentStep === 5 && (
                 <BookingConfirmation
-                  service={services.find(s => s.id === service)?.title || ''}
+                  service={service}
+                  services={services}
                   date={date}
                   time={time}
                   email={email}

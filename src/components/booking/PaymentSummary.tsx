@@ -20,11 +20,9 @@ interface PaymentSummaryProps {
   name: string;
   email: string;
   phone: string;
-  notes: string;
-  isLoading: boolean;
-  onSubmit: () => void;
+  notes?: string;
   isTermsAccepted: boolean;
-  setIsTermsAccepted: (value: boolean) => void;
+  onTermsAcceptedChange: (value: boolean) => void;
   setIsValid?: (isValid: boolean) => void;
 }
 
@@ -37,10 +35,8 @@ const PaymentSummary = ({
   email,
   phone,
   notes,
-  isLoading,
-  onSubmit,
   isTermsAccepted,
-  setIsTermsAccepted,
+  onTermsAcceptedChange,
   setIsValid
 }: PaymentSummaryProps) => {
   const [error, setError] = useState<string | null>(null);
@@ -164,7 +160,7 @@ const PaymentSummary = ({
           type="checkbox"
           className={`h-4 w-4 mt-1 text-brand-red focus:ring-brand-red ${!isTermsAccepted && error ? 'border-red-500' : ''}`}
           checked={isTermsAccepted}
-          onChange={(e) => setIsTermsAccepted(e.target.checked)}
+          onChange={(e) => onTermsAcceptedChange(e.target.checked)}
           required
         />
         <label htmlFor="terms" className="text-sm">
@@ -185,17 +181,6 @@ const PaymentSummary = ({
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
-      
-      <div className="pt-4">
-        <Button
-          type="button"
-          className="bg-brand-red hover:bg-red-600 text-white w-full"
-          onClick={onSubmit}
-          disabled={isLoading || !isTermsAccepted}
-        >
-          {isLoading ? "Processing..." : "Confirm & Pay"}
-        </Button>
-      </div>
     </div>
   );
 };

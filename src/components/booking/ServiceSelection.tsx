@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 
 interface ServiceOption {
@@ -13,9 +13,17 @@ interface ServiceSelectionProps {
   services: ServiceOption[];
   selectedService: string;
   onServiceSelect: (serviceId: string) => void;
+  setIsValid?: (isValid: boolean) => void;
 }
 
-const ServiceSelection = ({ services, selectedService, onServiceSelect }: ServiceSelectionProps) => {
+const ServiceSelection = ({ services, selectedService, onServiceSelect, setIsValid }: ServiceSelectionProps) => {
+  // Set validity whenever the selection changes
+  useEffect(() => {
+    if (setIsValid) {
+      setIsValid(!!selectedService);
+    }
+  }, [selectedService, setIsValid]);
+
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold mb-4">Select a Service</h2>
