@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,8 +9,9 @@ import PremiumCTA from "@/components/study-material/PremiumCTA";
 import { categories, allMaterials } from "@/components/study-material/materialData";
 import { StudyMaterial as StudyMaterialType } from "@/components/study-material/MaterialCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronDown, ChevronRight, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronRight, BookOpen, Download } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
 
 // Define the topic cards for the Complete DSA Interview Preparation
 const dsaTopics = [
