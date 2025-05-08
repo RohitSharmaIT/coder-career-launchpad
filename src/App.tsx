@@ -13,6 +13,7 @@ import Jobs from "./pages/Jobs";
 import JobDetails from "./pages/JobDetails";
 import StudyMaterial from "./pages/StudyMaterial";
 import StudyMaterialDetails from "./pages/StudyMaterialDetails";
+import DsaTopicsPage from "./pages/DsaTopicsPage";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -46,6 +47,7 @@ const App = () => (
                   <Route path="/jobs/:id" element={<JobDetails />} />
                   <Route path="/study-material" element={<StudyMaterial />} />
                   <Route path="/study-material/:id" element={<StudyMaterialDetails />} />
+                  <Route path="/study-material/dsa-topics" element={<DsaTopicsPage />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />

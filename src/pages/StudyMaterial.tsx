@@ -1,7 +1,9 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
 import StudyHero from "@/components/study-material/StudyHero";
 import CategorySidebar from "@/components/study-material/CategorySidebar";
 import MaterialsGrid from "@/components/study-material/MaterialsGrid";
@@ -57,6 +59,7 @@ const StudyMaterial = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedSpecialMaterial, setSelectedSpecialMaterial] = useState<StudyMaterialType | null>(null);
+  const navigate = useNavigate();
 
   // Filter materials based on search term and active category
   const filteredMaterials = allMaterials.filter(material => {
@@ -127,6 +130,11 @@ const StudyMaterial = () => {
     }, 100);
   };
 
+  const handleDsaTopicHeaderClick = () => {
+    // Navigate to a dedicated DSA topics page
+    navigate('/study-material/dsa-topics');
+  };
+
   return (
     <>
       <Navbar />
@@ -162,11 +170,18 @@ const StudyMaterial = () => {
                         <CardTitle className="text-2xl font-bold">
                           {selectedSpecialMaterial.title} - Topics
                         </CardTitle>
+                        <Button 
+                          variant="outline" 
+                          onClick={handleDsaTopicHeaderClick}
+                          className="text-brand-red hover:bg-brand-red hover:text-white"
+                        >
+                          View All Topics
+                        </Button>
                       </div>
                     </CardHeader>
                     <CardContent className="pt-6">
                       <div className="space-y-4">
-                        {dsaTopics.map((topic) => (
+                        {dsaTopics.slice(0, 3).map((topic) => (
                           <Collapsible key={topic.id} className="border rounded-lg">
                             <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left">
                               <div className="flex gap-3 items-center">
@@ -199,6 +214,15 @@ const StudyMaterial = () => {
                             </CollapsibleContent>
                           </Collapsible>
                         ))}
+                      </div>
+                      <div className="mt-4 text-center">
+                        <Button 
+                          onClick={handleDsaTopicHeaderClick}
+                          variant="outline"
+                          className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white"
+                        >
+                          See All Topics
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
