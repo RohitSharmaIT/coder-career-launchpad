@@ -13,8 +13,9 @@ import NavigationButtons from "@/components/booking/NavigationButtons";
 import { useBookingForm } from "@/hooks/useBookingForm";
 import { useBooking } from '@/contexts/BookingContext';
 import { toast } from "sonner";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-const BookSlot = () => {
+const BookingContent = () => {
   const navigate = useNavigate();
   const { addBooking } = useBooking();
   const {
@@ -251,6 +252,15 @@ const BookSlot = () => {
       
       <Footer />
     </>
+  );
+};
+
+// Wrap the BookingContent in a ProtectedRoute to require login
+const BookSlot = () => {
+  return (
+    <ProtectedRoute>
+      <BookingContent />
+    </ProtectedRoute>
   );
 };
 
