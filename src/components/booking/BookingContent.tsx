@@ -113,6 +113,9 @@ const BookingContent = () => {
         const selectedService = services.find(s => s.id === service);
         
         if (selectedService) {
+          // Create booking ID
+          const bookingId = `AWC${Math.floor(10000 + Math.random() * 90000)}`;
+          
           addBooking({
             id: Math.floor(Math.random() * 1000),
             service: selectedService.title,
@@ -120,15 +123,16 @@ const BookingContent = () => {
             status: "confirmed",
             notes: notes || `New ${selectedService.title} appointment`
           });
+          
+          // Send confirmation email
+          await sendConfirmationEmail(selectedService.title, bookingId);
         }
-        
-        // Send confirmation email (this would typically be done on the server)
-        sendConfirmationEmails();
         
         // Move to confirmation step
         setCurrentStep(currentStep + 1);
         showToast("Booking confirmed! Details have been sent to your email.", 'success');
       } catch (error) {
+        console.error("Error during booking confirmation:", error);
         showToast("Booking failed. Please try again.", 'error');
       } finally {
         setIsLoading(false);
@@ -153,28 +157,64 @@ const BookingContent = () => {
     }
   };
   
-  // Send confirmation emails (in a real app, this would be done server-side)
-  const sendConfirmationEmails = () => {
+  // Send confirmation email using EmailJS or your preferred email service
+  const sendConfirmationEmail = async (serviceName: string, bookingId: string) => {
     console.log("Sending confirmation email to:", email);
-    console.log("Sending admin notification to admin@example.com");
     
-    // This is where you would typically make an API call to your backend
-    // to send the confirmation emails. Since we don't have a backend setup,
-    // we're just logging this for demonstration purposes.
+    // Format the date for email
+    const formattedDate = date ? format(date, "MMMM dd, yyyy") : "N/A";
     
-    const emailData = {
-      userEmail: email,
-      adminEmail: "admin@example.com",
-      bookingDetails: {
-        name,
-        service: services.find(s => s.id === service)?.title,
-        date: date?.toDateString(),
-        time,
-        notes
-      }
+    // Email template parameters
+    const emailParams = {
+      to_email: email,
+      from_email: "bhai565665@gmail.com",
+      to_name: name,
+      service_name: serviceName,
+      booking_date: formattedDate,
+      booking_time: time,
+      booking_id: bookingId
     };
     
-    console.log("Email data:", emailData);
+    try {
+      // In a real implementation, you would call your email service here
+      // For demonstration purposes, we're logging the email content
+      console.log("Email would be sent with these parameters:", emailParams);
+      console.log(`
+Subject: Slot Booking Confirmation
+
+To: ${email}
+From: bhai565665@gmail.com
+
+Dear ${name},
+
+Thank you for booking your slot with us.
+
+This is a confirmation that your slot has been successfully booked. If you do not see the confirmation in your inbox, please check your spam or promotions folder.
+
+If you have any questions or face issues, feel free to reach out to us directly.
+
+Booking Details:
+
+Slot Time: ${time}
+Date: ${formattedDate}
+Service: ${serviceName}
+Booking ID: ${bookingId}
+
+We look forward to connecting with you.
+
+Best regards,
+Apne Wale Coders Team
+📧 bhai565665@gmail.com
+      `);
+      
+      // Log admin notification
+      console.log("Admin notification email would be sent to: bhai565665@gmail.com");
+      
+      return true;
+    } catch (error) {
+      console.error("Failed to send confirmation email:", error);
+      return false;
+    }
   };
   
   // Handle booking completion
@@ -297,6 +337,13 @@ const BookingContent = () => {
       <Footer />
     </>
   );
+};
+
+// Helper function to format date
+const format = (date: Date, formatString: string) => {
+  // Simple format function for MMMM dd, yyyy
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
 };
 
 export default BookingContent;
