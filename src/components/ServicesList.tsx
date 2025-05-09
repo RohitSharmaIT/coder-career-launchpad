@@ -18,7 +18,7 @@ const ServicesList = () => {
       shortDescription: "Get your resume crafted by industry experts to highlight your strengths and stand out to recruiters.",
       longDescription: "Our resume building service transforms your professional experience into a compelling document that gets you noticed by recruiters. We focus on highlighting your relevant skills, achievements, and experience, while optimizing for ATS systems. Each resume is crafted by industry experts who understand what recruiters look for in your specific field.",
       icon: <FileText className="w-10 h-10" />,
-      price: "₹999",
+      price: "₹10",
       imageSrc: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
       imageAlt: "Person working on resume",
       buttons: {
@@ -40,7 +40,7 @@ const ServicesList = () => {
       shortDescription: "Custom website development tailored to your professional needs with a focus on UI/UX.",
       longDescription: "Our web design and development service creates beautiful, functional websites that showcase your professional brand. Whether you need a portfolio site, a blog, or a business website, our team of designers and developers will create a custom solution that meets your specific needs and goals.",
       icon: <Code className="w-10 h-10" />,
-      price: "₹4999",
+      price: "₹10",
       imageSrc: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
       imageAlt: "Web development workspace",
       buttons: {
@@ -63,7 +63,7 @@ const ServicesList = () => {
       shortDescription: "Practice with industry experts in realistic interview scenarios with detailed feedback.",
       longDescription: "Our mock interview service prepares you for real-world interviews by simulating the actual experience. You'll practice with industry experts who will challenge you with common and difficult questions, provide constructive feedback, and help you refine your responses. We cover technical, behavioral, and situational interviews.",
       icon: <MessageSquare className="w-10 h-10" />,
-      price: "₹1499",
+      price: "₹10",
       imageSrc: "/lovable-uploads/cff881fb-3608-47ae-86a8-aec53fd7fa66.png",
       imageAlt: "Mock interview session",
       buttons: {
@@ -85,7 +85,7 @@ const ServicesList = () => {
       shortDescription: "Get personalized career advice based on your goals, strengths, and interests.",
       longDescription: "Our career guidance service provides you with personalized advice from experienced professionals who understand the tech industry landscape. Whether you're just starting out, looking to advance, or considering a career change, we'll help you navigate your options and make informed decisions.",
       icon: <Compass className="w-10 h-10" />,
-      price: "₹899",
+      price: "₹10",
       imageSrc: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
       imageAlt: "Career guidance session",
       buttons: {

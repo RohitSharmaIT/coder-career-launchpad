@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
-import { CreditCard, AlertCircle } from "lucide-react";
+import { CreditCard, AlertCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -40,6 +40,9 @@ const PaymentSummary = ({
   setIsValid
 }: PaymentSummaryProps) => {
   const [error, setError] = useState<string | null>(null);
+  
+  // Razorpay payment link
+  const razorpayLink = "https://razorpay.me/@apnewalecoders";
   
   useEffect(() => {
     if (setIsValid) {
@@ -132,6 +135,18 @@ const PaymentSummary = ({
               alt="Razorpay" 
               className="h-6" 
             />
+          </div>
+          
+          <div className="mt-4">
+            <a 
+              href={razorpayLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+            >
+              Pay ₹10 via Razorpay <ExternalLink className="ml-2 h-4 w-4" />
+            </a>
+            <p className="text-sm text-gray-500 mt-2">You'll be redirected to Razorpay's secure payment page.</p>
           </div>
         </div>
         

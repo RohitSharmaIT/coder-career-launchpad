@@ -96,14 +96,12 @@ const BookingContent = () => {
       return;
     }
     
-    // Process payment in step 4
+    // For payment step, we now rely on Razorpay external link
+    // so we just need to simulate success for the booking record
     if (currentStep === 4) {
       setIsLoading(true);
       
       try {
-        // Simulate payment processing
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
         // Add the booking to the dashboard
         const selectedService = services.find(s => s.id === service);
         
@@ -112,16 +110,16 @@ const BookingContent = () => {
             id: Math.floor(Math.random() * 1000),
             service: selectedService.title,
             date: date ? new Date(`${date.toDateString()} ${time}`) : new Date(),
-            status: "scheduled",
+            status: "payment pending",
             notes: notes || `New ${selectedService.title} appointment`
           });
         }
         
         // Move to confirmation step
         setCurrentStep(currentStep + 1);
-        showToast("Payment successful!", 'success');
+        showToast("Booking successful! Please complete payment via Razorpay.", 'success');
       } catch (error) {
-        showToast("Payment failed. Please try again.", 'error');
+        showToast("Booking failed. Please try again.", 'error');
       } finally {
         setIsLoading(false);
       }

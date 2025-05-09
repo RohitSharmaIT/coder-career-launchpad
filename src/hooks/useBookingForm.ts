@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from "@/contexts/AuthContext";
@@ -45,48 +44,48 @@ export const useBookingForm = () => {
     "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"
   ];
   
-  // Service options
+  // Service options with updated price of ₹10 for all services
   const services: ServiceOption[] = [
     {
       id: "resume",
       title: "Resume Building",
-      price: "₹999",
+      price: "₹10",
       description: "Get your resume crafted by industry experts to highlight your strengths"
     },
     {
       id: "webdev",
       title: "Web Design & Development",
-      price: "₹4999",
+      price: "₹10",
       description: "Custom website development tailored to your professional needs"
     },
     {
       id: "interview",
       title: "Mock Interview",
-      price: "₹1499",
+      price: "₹10",
       description: "Practice with industry experts in realistic interview scenarios"
     },
     {
       id: "assessment",
       title: "Company Assessment Preparation",
-      price: "₹1299",
+      price: "₹10",
       description: "Prepare for specific company assessments and tests"
     },
     {
       id: "guidance",
       title: "Career Guidance",
-      price: "₹899",
+      price: "₹10",
       description: "Get personalized advice on career paths and skill development"
     },
     {
       id: "strategy",
       title: "Career Strategy & Projects",
-      price: "₹2499",
+      price: "₹10",
       description: "Develop a comprehensive career strategy with portfolio projects"
     },
     {
       id: "projects",
       title: "Take-home Projects",
-      price: "₹1999",
+      price: "₹10",
       description: "Guidance and review for take-home coding challenges"
     }
   ];
