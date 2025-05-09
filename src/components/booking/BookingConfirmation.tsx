@@ -37,7 +37,7 @@ const BookingConfirmation = ({
       <h2 className="text-2xl font-bold">Booking Confirmed!</h2>
       
       <p className="text-gray-600 max-w-md mx-auto">
-        Thank you for booking with Apne Wale Coders. We've sent a confirmation email to {email} with all the details.
+        Thank you for booking with Apne Wale Coders. Your payment has been verified and we've sent a confirmation email to {email} with all the details.
       </p>
       
       <div className="bg-gray-50 p-6 rounded-lg max-w-md mx-auto text-left">
@@ -57,6 +57,11 @@ const BookingConfirmation = ({
           <div className="flex justify-between">
             <span className="text-gray-600">Booking ID:</span>
             <span className="font-medium">AWC{Math.floor(10000 + Math.random() * 90000)}</span>
+          </div>
+          
+          <div className="flex justify-between">
+            <span className="text-gray-600">Payment Status:</span>
+            <span className="font-medium text-green-600">Paid</span>
           </div>
         </div>
       </div>

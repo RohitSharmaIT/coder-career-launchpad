@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from "@/contexts/AuthContext";
@@ -28,6 +29,9 @@ export const useBookingForm = () => {
   const [notes, setNotes] = useState('');
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState('');
+  
+  // Payment state
+  const [paymentVerified, setPaymentVerified] = useState(false);
   
   // Validation state
   const [isServiceValid, setIsServiceValid] = useState(!!serviceParam);
@@ -126,6 +130,10 @@ export const useBookingForm = () => {
     isLoading,
     setIsLoading,
     serviceParam,
+    
+    // Payment state
+    paymentVerified,
+    setPaymentVerified,
     
     // Validation state
     isServiceValid,

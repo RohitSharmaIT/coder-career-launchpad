@@ -42,6 +42,10 @@ const BookingContent = () => {
     isLoading,
     setIsLoading,
     
+    // Payment state
+    paymentVerified,
+    setPaymentVerified,
+    
     // Validation state
     isServiceValid,
     setIsServiceValid,
@@ -95,9 +99,13 @@ const BookingContent = () => {
       return;
     }
     
-    // For payment step, we now rely on Razorpay external link
-    // so we just need to simulate success for the booking record
+    // For payment step, check if payment is verified
     if (currentStep === 4) {
+      if (!paymentVerified) {
+        showToast("Please complete payment verification to continue", 'error');
+        return;
+      }
+      
       setIsLoading(true);
       
       try {
@@ -109,14 +117,17 @@ const BookingContent = () => {
             id: Math.floor(Math.random() * 1000),
             service: selectedService.title,
             date: date ? new Date(`${date.toDateString()} ${time}`) : new Date(),
-            status: "payment pending",
+            status: "confirmed",
             notes: notes || `New ${selectedService.title} appointment`
           });
         }
         
+        // Send confirmation email (this would typically be done on the server)
+        sendConfirmationEmails();
+        
         // Move to confirmation step
         setCurrentStep(currentStep + 1);
-        showToast("Booking successful! Please complete payment via Razorpay.", 'success');
+        showToast("Booking confirmed! Details have been sent to your email.", 'success');
       } catch (error) {
         showToast("Booking failed. Please try again.", 'error');
       } finally {
@@ -129,6 +140,41 @@ const BookingContent = () => {
     if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
     }
+  };
+  
+  // Handle payment verification
+  const handlePaymentVerification = (verified: boolean) => {
+    if (verified) {
+      setPaymentVerified(true);
+      showToast("Payment verified successfully", 'success');
+    } else {
+      setPaymentVerified(false);
+      showToast("Payment verification failed", 'error');
+    }
+  };
+  
+  // Send confirmation emails (in a real app, this would be done server-side)
+  const sendConfirmationEmails = () => {
+    console.log("Sending confirmation email to:", email);
+    console.log("Sending admin notification to admin@example.com");
+    
+    // This is where you would typically make an API call to your backend
+    // to send the confirmation emails. Since we don't have a backend setup,
+    // we're just logging this for demonstration purposes.
+    
+    const emailData = {
+      userEmail: email,
+      adminEmail: "admin@example.com",
+      bookingDetails: {
+        name,
+        service: services.find(s => s.id === service)?.title,
+        date: date?.toDateString(),
+        time,
+        notes
+      }
+    };
+    
+    console.log("Email data:", emailData);
   };
   
   // Handle booking completion
@@ -144,7 +190,7 @@ const BookingContent = () => {
     (currentStep === 1 && !isServiceValid) ||
     (currentStep === 2 && !isPersonalInfoValid) ||
     (currentStep === 3 && !isDateTimeValid) ||
-    (currentStep === 4 && !isTermsAccepted);
+    (currentStep === 4 && (!isTermsAccepted || !paymentVerified));
   
   return (
     <>
@@ -216,6 +262,7 @@ const BookingContent = () => {
                   isTermsAccepted={isTermsAccepted}
                   onTermsAcceptedChange={setIsTermsAccepted}
                   setIsValid={setIsDateTimeValid}
+                  onPaymentVerification={handlePaymentVerification}
                 />
               )}
               

@@ -24,6 +24,7 @@ interface PaymentSummaryProps {
   isTermsAccepted: boolean;
   onTermsAcceptedChange: (value: boolean) => void;
   setIsValid?: (isValid: boolean) => void;
+  onPaymentVerification: (verified: boolean) => void;
 }
 
 const PaymentSummary = ({
@@ -37,9 +38,11 @@ const PaymentSummary = ({
   notes,
   isTermsAccepted,
   onTermsAcceptedChange,
-  setIsValid
+  setIsValid,
+  onPaymentVerification
 }: PaymentSummaryProps) => {
   const [error, setError] = useState<string | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState<'pending' | 'verifying' | 'verified' | 'failed'>('pending');
   
   // Razorpay payment link
   const razorpayLink = "https://razorpay.me/@apnewalecoders";
@@ -59,6 +62,30 @@ const PaymentSummary = ({
   const getServicePrice = () => {
     const selectedService = services.find(s => s.id === service);
     return selectedService ? selectedService.price : "₹0";
+  };
+
+  // This function would typically be called after returning from Razorpay
+  // In a real implementation, this would verify payment with the backend
+  const verifyPayment = () => {
+    setPaymentStatus('verifying');
+    
+    // Simulate API call to verify payment
+    setTimeout(() => {
+      // For demo purposes, we're just assuming success here
+      // In a real implementation, this would check Razorpay webhook or API
+      const verified = window.confirm(
+        "This is a simulation. In a real implementation, the system would verify your payment with Razorpay.\n\n" +
+        "Press OK to simulate a successful payment, or Cancel for a failed payment."
+      );
+      
+      if (verified) {
+        setPaymentStatus('verified');
+        onPaymentVerification(true);
+      } else {
+        setPaymentStatus('failed');
+        onPaymentVerification(false);
+      }
+    }, 1500);
   };
 
   return (
@@ -138,15 +165,59 @@ const PaymentSummary = ({
           </div>
           
           <div className="mt-4">
-            <a 
-              href={razorpayLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-            >
-              Pay ₹10 via Razorpay <ExternalLink className="ml-2 h-4 w-4" />
-            </a>
-            <p className="text-sm text-gray-500 mt-2">You'll be redirected to Razorpay's secure payment page.</p>
+            {paymentStatus === 'pending' && (
+              <div className="space-y-2">
+                <a 
+                  href={razorpayLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                >
+                  Pay ₹10 via Razorpay <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+                <Button
+                  type="button"
+                  className="w-full mt-2"
+                  variant="outline"
+                  onClick={verifyPayment}
+                >
+                  I've completed payment
+                </Button>
+                <p className="text-sm text-gray-500 mt-2">
+                  After paying through Razorpay, click the button above to verify your payment.
+                </p>
+              </div>
+            )}
+
+            {paymentStatus === 'verifying' && (
+              <div className="text-center py-2">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+                <p className="text-sm text-gray-600 mt-2">Verifying your payment...</p>
+              </div>
+            )}
+
+            {paymentStatus === 'verified' && (
+              <Alert className="bg-green-50 border-green-200 text-green-800">
+                <div className="flex items-center">
+                  <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <div>
+                    <p className="font-medium">Payment Verified</p>
+                    <p className="text-sm">Your payment has been successfully verified.</p>
+                  </div>
+                </div>
+              </Alert>
+            )}
+
+            {paymentStatus === 'failed' && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4 mr-2" />
+                <AlertDescription>
+                  Payment verification failed. Please try again or contact support.
+                </AlertDescription>
+              </Alert>
+            )}
           </div>
         </div>
         
