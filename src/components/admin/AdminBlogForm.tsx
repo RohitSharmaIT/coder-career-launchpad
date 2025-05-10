@@ -1,0 +1,167 @@
+
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
+
+const AdminBlogForm = () => {
+  const navigate = useNavigate();
+  
+  // Blog form state
+  const [blogTitle, setBlogTitle] = useState('');
+  const [blogImage, setBlogImage] = useState<File | null>(null);
+  const [blogImagePreview, setBlogImagePreview] = useState('');
+  const [blogContent, setBlogContent] = useState('');
+  const [blogCategory, setBlogCategory] = useState('');
+  
+  // Form submission state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setBlogImage(file);
+      setBlogImagePreview(URL.createObjectURL(file));
+    }
+  };
+  
+  const handleBlogSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Validate form
+    if (!blogTitle || !blogContent || !blogCategory) {
+      toast.error("Please fill in all required fields");
+      setIsSubmitting(false);
+      return;
+    }
+    
+    if (!blogImage) {
+      toast.error("Please upload a blog image");
+      setIsSubmitting(false);
+      return;
+    }
+    
+    // In a real app with backend, this would be an API call
+    console.log('POST to /api/admin/post-blog', {
+      title: blogTitle,
+      content: blogContent,
+      category: blogCategory,
+      image: blogImage.name // In real app, this would be the uploaded file
+    });
+    
+    // Simulate API call
+    setTimeout(() => {
+      toast.success("Blog post published successfully");
+      // Reset form
+      setBlogTitle('');
+      setBlogImage(null);
+      setBlogImagePreview('');
+      setBlogContent('');
+      setBlogCategory('');
+      setIsSubmitting(false);
+      
+      // Navigate to blogs page
+      navigate('/blogs');
+    }, 1500);
+  };
+  
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-6">Write a New Blog Post</h2>
+      
+      <form onSubmit={handleBlogSubmit}>
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="blogTitle" className="required">Blog Title</Label>
+            <Input
+              id="blogTitle"
+              placeholder="Enter an attention-grabbing title"
+              value={blogTitle}
+              onChange={(e) => setBlogTitle(e.target.value)}
+              required
+            />
+          </div>
+          
+          <div>
+            <Label htmlFor="blogCategory" className="required">Category</Label>
+            <select
+              id="blogCategory"
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              value={blogCategory}
+              onChange={(e) => setBlogCategory(e.target.value)}
+              required
+            >
+              <option value="">Select a category</option>
+              <option value="interviews">Interview Tips</option>
+              <option value="coding">Coding & Development</option>
+              <option value="career">Career Advice</option>
+              <option value="resume">Resume Building</option>
+              <option value="industry">Industry Insights</option>
+              <option value="company">Company Specific</option>
+            </select>
+          </div>
+          
+          <div>
+            <Label htmlFor="blogImage" className="required">Featured Image</Label>
+            <div className="mt-1 flex items-center">
+              <label className="block w-full">
+                <span className="sr-only">Choose file</span>
+                <input
+                  id="blogImage"
+                  type="file"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-brand-red file:text-white hover:file:bg-red-600"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  required
+                />
+              </label>
+            </div>
+            
+            {blogImagePreview && (
+              <div className="mt-2">
+                <img 
+                  src={blogImagePreview} 
+                  alt="Blog preview" 
+                  className="h-40 object-cover rounded-md"
+                />
+              </div>
+            )}
+          </div>
+          
+          <div>
+            <Label htmlFor="blogContent" className="required">Blog Content</Label>
+            <Textarea
+              id="blogContent"
+              placeholder="Write your blog post content here..."
+              rows={12}
+              value={blogContent}
+              onChange={(e) => setBlogContent(e.target.value)}
+              required
+            />
+          </div>
+          
+          <Button
+            type="submit"
+            className="w-full bg-brand-red hover:bg-red-600 text-white"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <span className="flex items-center justify-center">
+                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+                Publishing Blog...
+              </span>
+            ) : (
+              "Publish Blog Post"
+            )}
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default AdminBlogForm;
