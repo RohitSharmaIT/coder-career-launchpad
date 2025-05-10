@@ -1,16 +1,20 @@
 
 import React from 'react';
-import { User, FileText, CalendarIcon, Briefcase } from "lucide-react";
+import { User, FileText, CalendarIcon, Briefcase, BookIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from 'react-router-dom';
 
 interface DashboardSidebarProps {
-  user: { name?: string; email?: string } | null;
+  user: { name?: string; email?: string; role?: string } | null;
   activeTab: string;
   setActiveTab: (tab: string) => void;
   logout: () => void;
 }
 
 const DashboardSidebar = ({ user, activeTab, setActiveTab, logout }: DashboardSidebarProps) => {
+  const navigate = useNavigate();
+  const isAdmin = user?.role === 'admin';
+
   return (
     <div className="md:col-span-1">
       <div className="bg-white p-6 rounded-lg shadow-md">
@@ -20,6 +24,11 @@ const DashboardSidebar = ({ user, activeTab, setActiveTab, logout }: DashboardSi
           </div>
           <h2 className="font-bold text-xl">{user?.name || 'User'}</h2>
           <p className="text-gray-600 text-sm">{user?.email || 'user@example.com'}</p>
+          {isAdmin && (
+            <span className="inline-block bg-brand-red text-white text-xs px-2 py-1 rounded mt-2">
+              Admin
+            </span>
+          )}
         </div>
         
         <div className="space-y-2">
@@ -50,9 +59,31 @@ const DashboardSidebar = ({ user, activeTab, setActiveTab, logout }: DashboardSi
             Job Applications
           </Button>
           
+          {isAdmin && (
+            <>
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => navigate('/post-job')}
+              >
+                <Briefcase className="mr-2 h-4 w-4" />
+                Post a Job
+              </Button>
+              
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => navigate('/admin')}
+              >
+                <BookIcon className="mr-2 h-4 w-4" />
+                Write a Blog
+              </Button>
+            </>
+          )}
+          
           <Button
             variant="outline"
-            className="w-full justify-start"
+            className="w-full justify-start mt-4"
             onClick={logout}
           >
             Log Out

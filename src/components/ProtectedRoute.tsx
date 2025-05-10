@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
@@ -14,6 +14,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requireAdmin = false
 }) => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
+  const location = useLocation();
 
   if (isLoading) {
     return (
@@ -25,12 +26,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (!isAuthenticated) {
     toast.error("Please log in to access this page");
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (requireAdmin && !isAdmin()) {
     toast.error("You do not have permission to access this page");
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;

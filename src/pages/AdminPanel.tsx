@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { useJobs } from '@/contexts/JobsContext';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated, isAdmin } = useAuth();
+  const { user } = useAuth();
   const { addJob } = useJobs();
   
   // Job form state
@@ -34,12 +34,6 @@ const AdminPanel = () => {
   
   // Form submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // If not admin, redirect to home
-  if (!isAuthenticated || !isAdmin()) {
-    toast.error("Only Apne Wale Coders team has access to this page");
-    return <Navigate to="/" />;
-  }
   
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -79,6 +73,17 @@ const AdminPanel = () => {
       skills: skills
     });
     
+    // In a real app with backend, this would be an API call
+    console.log('POST to /api/admin/post-job', {
+      title: jobTitle,
+      company,
+      location,
+      jobType,
+      salary,
+      description: jobDescription,
+      requirements: skills
+    });
+    
     // Simulate API call
     setTimeout(() => {
       toast.success("Job posted successfully");
@@ -114,6 +119,14 @@ const AdminPanel = () => {
       return;
     }
     
+    // In a real app with backend, this would be an API call
+    console.log('POST to /api/admin/post-blog', {
+      title: blogTitle,
+      content: blogContent,
+      category: blogCategory,
+      image: blogImage.name // In real app, this would be the uploaded file
+    });
+    
     // Simulate API call
     setTimeout(() => {
       toast.success("Blog post published successfully");
@@ -124,6 +137,9 @@ const AdminPanel = () => {
       setBlogContent('');
       setBlogCategory('');
       setIsSubmitting(false);
+      
+      // Navigate to blogs page
+      navigate('/blogs');
     }, 1500);
   };
   

@@ -25,6 +25,7 @@ import React from "react";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BookingProvider } from "./contexts/BookingContext";
 import { JobsProvider } from "./contexts/JobsContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -48,12 +49,33 @@ const App = () => (
                   <Route path="/study-material" element={<StudyMaterial />} />
                   <Route path="/study-material/:id" element={<StudyMaterialDetails />} />
                   <Route path="/study-material/dsa-topics" element={<DsaTopicsPage />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route 
+                    path="/dashboard" 
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
-                  <Route path="/post-job" element={<PostJob />} />
+                  <Route 
+                    path="/post-job" 
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <PostJob />
+                      </ProtectedRoute>
+                    } 
+                  />
                   <Route path="/book-slot" element={<BookSlot />} />
-                  <Route path="/admin" element={<AdminPanel />} />
+                  <Route 
+                    path="/admin" 
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <AdminPanel />
+                      </ProtectedRoute>
+                    } 
+                  />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 <Toaster />
