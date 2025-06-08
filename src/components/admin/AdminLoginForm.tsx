@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +28,7 @@ const AdminLoginForm = ({ onLoginSuccess, isLoading, setIsLoading }: AdminLoginF
     // Simulate API call
     setTimeout(() => {
       // Check credentials (in a real app, this would be done on the server)
-      if (username === 'apnewalecoders' && password === 'Rohit@2025') {
+      if (username === 'apnewalecoders@gmail.com' && password === 'Rohit@2025') {
         toast.success("Admin login successful");
         onLoginSuccess();
       } else {
