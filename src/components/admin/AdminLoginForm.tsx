@@ -29,7 +29,7 @@ const AdminLoginForm = ({ onLoginSuccess, isLoading, setIsLoading }: AdminLoginF
     // Simulate API call
     setTimeout(() => {
       // Check credentials (in a real app, this would be done on the server)
-      if (username === 'apnewalecoders' && password === 'apne') {
+      if (username === 'apnewalecoders' && password === 'Rohit@2025') {
         toast.success("Admin login successful");
         onLoginSuccess();
       } else {
