@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -22,6 +21,9 @@ const StudyMaterialCategory = () => {
     const categoryMap: { [key: string]: string } = {
       'interview': 'Interview Preparation',
       'dsa': 'Data Structures & Algorithms',
+      'web-development': 'Web Development',
+      'ai-ml': 'AI & ML',
+      'ai-tools': 'AI Tools',
       'tcs': 'TCS Specific',
       'wipro': 'Wipro Specific',
       'infosys': 'Infosys Specific',

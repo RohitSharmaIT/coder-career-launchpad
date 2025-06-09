@@ -1,5 +1,4 @@
-
-import { Book, FileText, Code } from "lucide-react";
+import { Book, FileText, Code, Globe, Brain, Zap } from "lucide-react";
 import { StudyMaterial } from "./MaterialCard";
 import { LucideIcon } from "lucide-react";
 
@@ -15,6 +14,9 @@ export const categories: CategoryItem[] = [
   { id: 'all', name: 'All', icon: Book },
   { id: 'interview', name: 'Interview Preparation', icon: FileText },
   { id: 'dsa', name: 'Data Structures & Algorithms', icon: Code },
+  { id: 'web-development', name: 'Web Development', icon: Globe },
+  { id: 'ai-ml', name: 'AI & ML', icon: Brain },
+  { id: 'ai-tools', name: 'AI Tools', icon: Zap },
   { id: 'tcs', name: 'TCS Specific', icon: FileText },
   { id: 'wipro', name: 'Wipro Specific', icon: FileText },
   { id: 'infosys', name: 'Infosys Specific', icon: FileText },
@@ -131,5 +133,41 @@ export const allMaterials: StudyMaterial[] = [
     isPremium: false,
     downloadCount: 720,
     date: "April 18, 2024"
+  },
+  {
+    id: 10,
+    title: "React Development Complete Guide",
+    description: "Master React.js with hooks, context, and modern development practices.",
+    thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=800&q=80",
+    category: "web-development",
+    type: "PDF",
+    size: "8.1 MB",
+    isPremium: true,
+    downloadCount: 920,
+    date: "May 10, 2024"
+  },
+  {
+    id: 11,
+    title: "Machine Learning Fundamentals",
+    description: "Essential concepts and algorithms in machine learning with Python examples.",
+    thumbnail: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=800&q=80",
+    category: "ai-ml",
+    type: "PDF",
+    size: "12.5 MB",
+    isPremium: true,
+    downloadCount: 680,
+    date: "May 12, 2024"
+  },
+  {
+    id: 12,
+    title: "ChatGPT for Developers",
+    description: "Comprehensive guide to using AI tools effectively in software development.",
+    thumbnail: "https://images.unsplash.com/photo-1676299081847-824916de030a?auto=format&fit=crop&w=800&q=80",
+    category: "ai-tools",
+    type: "PDF",
+    size: "5.7 MB",
+    isPremium: false,
+    downloadCount: 1150,
+    date: "May 15, 2024"
   }
 ];

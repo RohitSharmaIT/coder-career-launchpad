@@ -1,17 +1,15 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import StudyHero from "@/components/study-material/StudyHero";
-import CategorySidebar from "@/components/study-material/CategorySidebar";
 import MaterialsGrid from "@/components/study-material/MaterialsGrid";
 import PremiumCTA from "@/components/study-material/PremiumCTA";
 import { categories, allMaterials } from "@/components/study-material/materialData";
 import { StudyMaterial as StudyMaterialType } from "@/components/study-material/MaterialCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronDown, ChevronRight, BookOpen, Download } from "lucide-react";
+import { ChevronDown, ChevronRight, BookOpen, Download, Plus } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 
@@ -57,18 +55,14 @@ const dsaTopics = [
 
 const StudyMaterial = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
   const [selectedSpecialMaterial, setSelectedSpecialMaterial] = useState<StudyMaterialType | null>(null);
   const navigate = useNavigate();
 
-  // Filter materials based on search term and active category
+  // Show all materials by default (no category filtering)
   const filteredMaterials = allMaterials.filter(material => {
     const matchesSearchTerm = material.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                              material.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesCategory = activeCategory === 'All' || material.category === activeCategory.toLowerCase();
-    
-    return matchesSearchTerm && matchesCategory;
+    return matchesSearchTerm;
   });
 
   const handleDownload = (id: number, isPremium: boolean) => {
@@ -135,6 +129,10 @@ const StudyMaterial = () => {
     navigate('/study-material/dsa-topics');
   };
 
+  const handleCategoriesClick = () => {
+    navigate('/study-material/categories');
+  };
+
   return (
     <>
       <Navbar />
@@ -145,91 +143,92 @@ const StudyMaterial = () => {
       {/* Main Content */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-10">
-            {/* Categories Sidebar */}
-            <CategorySidebar 
-              activeCategory={activeCategory} 
-              setActiveCategory={setActiveCategory} 
-              categories={categories} 
-            />
-            
-            {/* Materials Grid */}
-            <div className="lg:w-3/4">
-              <MaterialsGrid 
-                materials={filteredMaterials} 
-                onDownload={handleDownload} 
-                onSpecialCardClick={handleSpecialCardClick}
-              />
-
-              {/* DSA Topics Section - Only visible when special card is clicked */}
-              {selectedSpecialMaterial && selectedSpecialMaterial.id === 1 && (
-                <div id="dsa-topics-section" className="mt-16 pt-8 border-t">
-                  <Card>
-                    <CardHeader className="bg-gray-50">
-                      <div className="flex justify-between items-center">
-                        <CardTitle className="text-2xl font-bold">
-                          {selectedSpecialMaterial.title} - Topics
-                        </CardTitle>
-                        <Button 
-                          variant="outline" 
-                          onClick={handleDsaTopicHeaderClick}
-                          className="text-brand-red hover:bg-brand-red hover:text-white"
-                        >
-                          View All Topics
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-6">
-                      <div className="space-y-4">
-                        {dsaTopics.slice(0, 3).map((topic) => (
-                          <Collapsible key={topic.id} className="border rounded-lg">
-                            <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left">
-                              <div className="flex gap-3 items-center">
-                                <BookOpen size={20} className="text-brand-red" />
-                                <div>
-                                  <h3 className="font-medium">{topic.title}</h3>
-                                  <p className="text-sm text-gray-500">Difficulty: {topic.difficulty}</p>
-                                </div>
-                              </div>
-                              <div className="text-gray-400">
-                                {/* Toggle icon */}
-                                <ChevronDown className="h-5 w-5 collapsible-closed:hidden" />
-                                <ChevronRight className="h-5 w-5 collapsible-open:hidden" />
-                              </div>
-                            </CollapsibleTrigger>
-                            <CollapsibleContent>
-                              <div className="p-4 pt-0 border-t">
-                                <p className="text-gray-700 mb-4">{topic.description}</p>
-                                <div className="flex justify-end">
-                                  <Button 
-                                    onClick={() => handleDownload(selectedSpecialMaterial.id, false)}
-                                    variant="outline" 
-                                    className="text-sm border-brand-red text-brand-red hover:bg-brand-red hover:text-white"
-                                  >
-                                    <Download size={16} className="mr-2" />
-                                    Download Topic
-                                  </Button>
-                                </div>
-                              </div>
-                            </CollapsibleContent>
-                          </Collapsible>
-                        ))}
-                      </div>
-                      <div className="mt-4 text-center">
-                        <Button 
-                          onClick={handleDsaTopicHeaderClick}
-                          variant="outline"
-                          className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white"
-                        >
-                          See All Topics
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              )}
-            </div>
+          {/* Categories Button */}
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold">All Study Materials</h2>
+            <Button
+              onClick={handleCategoriesClick}
+              className="bg-brand-red hover:bg-red-600 text-white"
+            >
+              <Plus size={18} className="mr-2" />
+              Browse Categories
+            </Button>
           </div>
+
+          {/* Materials Grid */}
+          <MaterialsGrid 
+            materials={filteredMaterials} 
+            onDownload={handleDownload} 
+            onSpecialCardClick={handleSpecialCardClick}
+          />
+
+          {/* DSA Topics Section - Only visible when special card is clicked */}
+          {selectedSpecialMaterial && selectedSpecialMaterial.id === 1 && (
+            <div id="dsa-topics-section" className="mt-16 pt-8 border-t">
+              <Card>
+                <CardHeader className="bg-gray-50">
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="text-2xl font-bold">
+                      {selectedSpecialMaterial.title} - Topics
+                    </CardTitle>
+                    <Button 
+                      variant="outline" 
+                      onClick={handleDsaTopicHeaderClick}
+                      className="text-brand-red hover:bg-brand-red hover:text-white"
+                    >
+                      View All Topics
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <div className="space-y-4">
+                    {dsaTopics.slice(0, 3).map((topic) => (
+                      <Collapsible key={topic.id} className="border rounded-lg">
+                        <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left">
+                          <div className="flex gap-3 items-center">
+                            <BookOpen size={20} className="text-brand-red" />
+                            <div>
+                              <h3 className="font-medium">{topic.title}</h3>
+                              <p className="text-sm text-gray-500">Difficulty: {topic.difficulty}</p>
+                            </div>
+                          </div>
+                          <div className="text-gray-400">
+                            {/* Toggle icon */}
+                            <ChevronDown className="h-5 w-5 collapsible-closed:hidden" />
+                            <ChevronRight className="h-5 w-5 collapsible-open:hidden" />
+                          </div>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <div className="p-4 pt-0 border-t">
+                            <p className="text-gray-700 mb-4">{topic.description}</p>
+                            <div className="flex justify-end">
+                              <Button 
+                                onClick={() => handleDownload(selectedSpecialMaterial.id, false)}
+                                variant="outline" 
+                                className="text-sm border-brand-red text-brand-red hover:bg-brand-red hover:text-white"
+                              >
+                                <Download size={16} className="mr-2" />
+                                Download Topic
+                              </Button>
+                            </div>
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    ))}
+                  </div>
+                  <div className="mt-4 text-center">
+                    <Button 
+                      onClick={handleDsaTopicHeaderClick}
+                      variant="outline"
+                      className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white"
+                    >
+                      See All Topics
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </section>
       

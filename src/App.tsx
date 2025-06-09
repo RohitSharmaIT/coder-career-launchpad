@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +13,7 @@ import JobDetails from "./pages/JobDetails";
 import StudyMaterial from "./pages/StudyMaterial";
 import StudyMaterialDetails from "./pages/StudyMaterialDetails";
 import StudyMaterialCategory from "./pages/StudyMaterialCategory";
+import StudyMaterialCategories from "./pages/StudyMaterialCategories";
 import DsaTopicsPage from "./pages/DsaTopicsPage";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -50,6 +50,7 @@ const App = () => (
                     <Route path="/jobs" element={<Jobs />} />
                     <Route path="/jobs/:id" element={<JobDetails />} />
                     <Route path="/study-material" element={<StudyMaterial />} />
+                    <Route path="/study-material/categories" element={<StudyMaterialCategories />} />
                     <Route path="/study-material/category/:category" element={<StudyMaterialCategory />} />
                     <Route path="/study-material/:id" element={<StudyMaterialDetails />} />
                     <Route path="/study-material/dsa-topics" element={<DsaTopicsPage />} />
