@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -6,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useBlogs } from '@/contexts/BlogsContext';
 
 const AdminBlogForm = () => {
   const navigate = useNavigate();
+  const { addBlog } = useBlogs();
   
   // Blog form state
   const [blogTitle, setBlogTitle] = useState('');
@@ -45,12 +46,18 @@ const AdminBlogForm = () => {
       return;
     }
     
-    // In a real app with backend, this would be an API call
-    console.log('POST to /api/admin/post-blog', {
+    // Generate excerpt from content (first 150 characters)
+    const excerpt = blogContent.length > 150 
+      ? blogContent.substring(0, 150) + "..."
+      : blogContent;
+    
+    // Add blog to the context
+    addBlog({
       title: blogTitle,
       content: blogContent,
       category: blogCategory,
-      image: blogImage.name // In real app, this would be the uploaded file
+      excerpt: excerpt,
+      thumbnail: blogImagePreview // In real app, this would be uploaded to server
     });
     
     // Simulate API call

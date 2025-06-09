@@ -7,12 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
+import { useBlogs } from '@/contexts/BlogsContext';
 
 const Blogs = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const { blogs } = useBlogs();
 
-  // Sample blog categories
+  // Sample blog categories - mapping from admin form categories to display categories
   const categories = [
     'All',
     'Interview',
@@ -24,81 +26,25 @@ const Blogs = () => {
     'Job Search'
   ];
 
-  // Sample blog data
-  const allBlogs = [
-    {
-      id: 1,
-      title: "Top 10 Interview Questions for Frontend Developers",
-      excerpt: "Prepare for your next frontend interview with these commonly asked questions and expert answers.",
-      thumbnail: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=80",
-      category: "Interview",
-      date: "May 10, 2024"
-    },
-    {
-      id: 2,
-      title: "How to Optimize Your Resume for ATS Systems",
-      excerpt: "Learn how to structure your resume to pass through Applicant Tracking Systems and reach human recruiters.",
-      thumbnail: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=800&q=80",
-      category: "Resume",
-      date: "May 5, 2024"
-    },
-    {
-      id: 3,
-      title: "Learning Data Structures: A Complete Guide",
-      excerpt: "Master the fundamentals of data structures to ace your coding interviews and become a better programmer.",
-      thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-      category: "Learning",
-      date: "April 28, 2024"
-    },
-    {
-      id: 4,
-      title: "5 Tips for Remote Job Success",
-      excerpt: "Navigate the challenges of remote work with these practical tips for productivity and work-life balance.",
-      thumbnail: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80",
-      category: "Career",
-      date: "April 20, 2024"
-    },
-    {
-      id: 5,
-      title: "Introduction to React Hooks",
-      excerpt: "Learn how React Hooks work and how they can simplify your functional components.",
-      thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
-      category: "Programming",
-      date: "April 15, 2024"
-    },
-    {
-      id: 6,
-      title: "Mastering System Design Interviews",
-      excerpt: "Strategies and frameworks to approach system design questions with confidence.",
-      thumbnail: "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=800&q=80",
-      category: "Interview",
-      date: "April 10, 2024"
-    },
-    {
-      id: 7,
-      title: "The Future of AI in Tech Jobs",
-      excerpt: "How artificial intelligence is changing the tech landscape and what skills you need to stay relevant.",
-      thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80",
-      category: "Technology",
-      date: "April 5, 2024"
-    },
-    {
-      id: 8,
-      title: "Networking Tips for Introverted Developers",
-      excerpt: "Building professional relationships doesn't have to be painful. Learn how to network effectively as an introvert.",
-      thumbnail: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-      category: "Career",
-      date: "March 30, 2024"
-    },
-    {
-      id: 9,
-      title: "How to Prepare for Technical Coding Challenges",
-      excerpt: "Strategies and resources to help you excel in take-home coding assignments and challenges.",
-      thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
-      category: "Job Search",
-      date: "March 25, 2024"
-    }
-  ];
+  // Category mapping from admin form values to display values
+  const categoryMapping: Record<string, string> = {
+    'interviews': 'Interview',
+    'coding': 'Programming', 
+    'career': 'Career',
+    'resume': 'Resume',
+    'industry': 'Technology',
+    'company': 'Job Search'
+  };
+
+  // Convert blogs to the format expected by the page
+  const allBlogs = blogs.map(blog => ({
+    id: blog.id,
+    title: blog.title,
+    excerpt: blog.excerpt,
+    thumbnail: blog.thumbnail,
+    category: categoryMapping[blog.category] || blog.category,
+    date: blog.date
+  }));
 
   // Filter blogs based on search term and active category
   const filteredBlogs = allBlogs.filter(blog => {
