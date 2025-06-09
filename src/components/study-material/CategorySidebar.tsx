@@ -4,6 +4,7 @@ import { CategoryItem } from "./materialData";
 import { Book } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CategorySidebarProps {
   activeCategory: string;
@@ -13,6 +14,7 @@ interface CategorySidebarProps {
 
 const CategorySidebar = ({ activeCategory, setActiveCategory, categories }: CategorySidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
+  const navigate = useNavigate();
 
   // Group categories by type
   const companyCategories = categories.filter(cat => 
@@ -22,6 +24,15 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories }: Cate
   const topicCategories = categories.filter(cat => 
     ["interview", "dsa"].includes(cat.id)
   );
+
+  const handleCategoryClick = (categoryId: string, categoryName: string) => {
+    if (categoryId === 'all') {
+      setActiveCategory('All');
+    } else {
+      // Navigate to the category page
+      navigate(`/study-material/category/${categoryId}`);
+    }
+  };
 
   return (
     <div className="lg:w-1/4">
@@ -38,7 +49,7 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories }: Cate
                 ? "bg-brand-red hover:bg-red-600" 
                 : "border-gray-200 text-gray-700 hover:bg-gray-100"
             }`}
-            onClick={() => setActiveCategory('All')}
+            onClick={() => handleCategoryClick('all', 'All')}
           >
             <Book size={18} className="mr-2" />
             All Materials
@@ -61,13 +72,9 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories }: Cate
                 return (
                   <Button
                     key={category.id}
-                    variant={activeCategory === category.name ? "default" : "outline"}
-                    className={`w-full justify-start text-left mb-2 ${
-                      activeCategory === category.name 
-                        ? "bg-brand-red hover:bg-red-600" 
-                        : "border-gray-200 text-gray-700 hover:bg-gray-100"
-                    }`}
-                    onClick={() => setActiveCategory(category.name)}
+                    variant="outline"
+                    className="w-full justify-start text-left mb-2 border-gray-200 text-gray-700 hover:bg-gray-100"
+                    onClick={() => handleCategoryClick(category.id, category.name)}
                   >
                     <IconComponent size={18} className="mr-2" />
                     {category.name}
@@ -94,13 +101,9 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories }: Cate
                 return (
                   <Button
                     key={category.id}
-                    variant={activeCategory === category.name ? "default" : "outline"}
-                    className={`w-full justify-start text-left mb-2 ${
-                      activeCategory === category.name 
-                        ? "bg-brand-red hover:bg-red-600" 
-                        : "border-gray-200 text-gray-700 hover:bg-gray-100"
-                    }`}
-                    onClick={() => setActiveCategory(category.name)}
+                    variant="outline"
+                    className="w-full justify-start text-left mb-2 border-gray-200 text-gray-700 hover:bg-gray-100"
+                    onClick={() => handleCategoryClick(category.id, category.name)}
                   >
                     <IconComponent size={18} className="mr-2" />
                     {category.name}
