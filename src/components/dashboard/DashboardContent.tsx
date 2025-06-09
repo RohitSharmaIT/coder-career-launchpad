@@ -50,13 +50,13 @@ const DashboardContent = ({
   return (
     <div className="md:col-span-3 space-y-8">
       <StatsCards 
-        upcomingServices={upcomingServices}
-        pastServices={pastServices}
-        jobApplications={jobApplications}
+        upcomingServicesCount={upcomingServices.length}
+        pastServicesCount={pastServices.length}
+        jobApplicationsCount={jobApplications.length}
       />
       <RecentActivity 
         upcomingServices={upcomingServices}
-        jobApplications={jobApplications}
+        setActiveTab={setActiveTab}
       />
     </div>
   );
