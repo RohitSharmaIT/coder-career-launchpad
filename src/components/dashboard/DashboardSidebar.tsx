@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { User, FileText, CalendarIcon, Briefcase, BookIcon } from "lucide-react";
+import { User, FileText, CalendarIcon, Briefcase, BookIcon, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 
@@ -39,6 +39,15 @@ const DashboardSidebar = ({ user, activeTab, setActiveTab, logout }: DashboardSi
           >
             <FileText className="mr-2 h-4 w-4" />
             Overview
+          </Button>
+          
+          <Button
+            variant="outline"
+            className={`w-full justify-start ${activeTab === "profile" ? "border-brand-red text-brand-red" : ""}`}
+            onClick={() => setActiveTab("profile")}
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            Profile Edit
           </Button>
           
           <Button

@@ -6,6 +6,8 @@ interface User {
   name: string;
   email: string;
   role: 'user' | 'admin';
+  bio?: string;
+  profilePicture?: string;
 }
 
 interface AuthContextType {
@@ -16,6 +18,7 @@ interface AuthContextType {
   signup: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAdmin: () => boolean;
+  updateProfile: (data: Partial<User> & { password?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -92,6 +95,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateProfile = async (data: Partial<User> & { password?: string }): Promise<void> => {
+    if (!user) return;
+    
+    setIsLoading(true);
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const updatedUser: User = {
+        ...user,
+        ...data
+      };
+      
+      // Remove password from user object (it shouldn't be stored)
+      delete (data as any).password;
+      
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -110,7 +136,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         signup,
         logout,
-        isAdmin
+        isAdmin,
+        updateProfile
       }}
     >
       {children}
