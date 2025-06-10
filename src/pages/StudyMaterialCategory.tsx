@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import MaterialsGrid from "@/components/study-material/MaterialsGrid";
 import PremiumCTA from "@/components/study-material/PremiumCTA";
 import { allMaterials } from "@/components/study-material/materialData";
+import { useStudyMaterials } from "@/contexts/StudyMaterialsContext";
 import { StudyMaterial } from "@/components/study-material/MaterialCard";
 import { toast } from "sonner";
 
@@ -15,6 +16,10 @@ const StudyMaterialCategory = () => {
   const { category } = useParams<{ category: string }>();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const { studyMaterials } = useStudyMaterials();
+
+  // Combine static materials with dynamic ones from context
+  const combinedMaterials = [...studyMaterials, ...allMaterials];
 
   // Get category display name
   const getCategoryDisplayName = (cat: string) => {
@@ -36,7 +41,7 @@ const StudyMaterialCategory = () => {
   const categoryDisplayName = getCategoryDisplayName(category || '');
 
   // Filter materials based on category and search term
-  const filteredMaterials = allMaterials.filter(material => {
+  const filteredMaterials = combinedMaterials.filter(material => {
     const matchesCategory = category === 'all' || material.category === category?.toLowerCase();
     const matchesSearchTerm = material.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                              material.description.toLowerCase().includes(searchTerm.toLowerCase());

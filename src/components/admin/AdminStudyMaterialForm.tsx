@@ -7,22 +7,28 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Upload, Plus, X } from "lucide-react";
+import { Upload, Plus, X, Image } from "lucide-react";
+import { useStudyMaterials } from "@/contexts/StudyMaterialsContext";
 
 const AdminStudyMaterialForm = () => {
+  const { addStudyMaterial } = useStudyMaterials();
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     content: '',
     category: '',
-    tags: '',
     author: '',
-    thumbnail: '',
-    pdfFile: null as File | null
+    isPremium: false,
+    type: 'PDF',
+    size: '1MB'
   });
 
   const [tagsList, setTagsList] = useState<string[]>([]);
   const [currentTag, setCurrentTag] = useState('');
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string>('');
 
   const categories = [
     { value: 'interview', label: 'Interview Preparation' },
@@ -37,14 +43,35 @@ const AdminStudyMaterialForm = () => {
     { value: 'accenture', label: 'Accenture Specific' }
   ];
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePdfFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData(prev => ({ ...prev, pdfFile: file }));
+      setPdfFile(file);
+      // Update file size based on actual file
+      const sizeInMB = (file.size / (1024 * 1024)).toFixed(1);
+      setFormData(prev => ({ 
+        ...prev, 
+        size: `${sizeInMB}MB`,
+        type: file.type.includes('pdf') ? 'PDF' : 'Document'
+      }));
+    }
+  };
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnailFile(file);
+      
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setThumbnailPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -67,11 +94,22 @@ const AdminStudyMaterialForm = () => {
       return;
     }
 
-    // Here you would typically send the data to your backend
-    console.log('Study Material Data:', {
-      ...formData,
+    // Create thumbnail URL from uploaded file or use default
+    const thumbnailUrl = thumbnailPreview || "/placeholder.svg";
+
+    // Add the study material to context
+    addStudyMaterial({
+      title: formData.title,
+      description: formData.description,
+      content: formData.content,
+      category: formData.category,
       tags: tagsList,
-      publishedDate: new Date().toISOString()
+      author: formData.author || 'Anonymous',
+      thumbnail: thumbnailUrl,
+      type: formData.type,
+      size: formData.size,
+      isPremium: formData.isPremium,
+      pdfFile: pdfFile
     });
 
     toast.success("Study material published successfully!");
@@ -82,12 +120,15 @@ const AdminStudyMaterialForm = () => {
       description: '',
       content: '',
       category: '',
-      tags: '',
       author: '',
-      thumbnail: '',
-      pdfFile: null
+      isPremium: false,
+      type: 'PDF',
+      size: '1MB'
     });
     setTagsList([]);
+    setPdfFile(null);
+    setThumbnailFile(null);
+    setThumbnailPreview('');
   };
 
   return (
@@ -142,6 +183,32 @@ const AdminStudyMaterialForm = () => {
             </Select>
           </div>
 
+          {/* Upload Thumbnail */}
+          <div>
+            <Label htmlFor="thumbnail">Upload Thumbnail Image (Optional)</Label>
+            <div className="mt-2">
+              <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+                <div className="flex flex-col items-center space-y-2">
+                  {thumbnailPreview ? (
+                    <img src={thumbnailPreview} alt="Thumbnail preview" className="h-20 w-20 object-cover rounded" />
+                  ) : (
+                    <Image className="h-8 w-8 text-gray-400" />
+                  )}
+                  <span className="text-sm text-gray-500">
+                    {thumbnailFile ? thumbnailFile.name : "Click to upload thumbnail image"}
+                  </span>
+                </div>
+                <input
+                  id="thumbnail"
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleThumbnailChange}
+                />
+              </label>
+            </div>
+          </div>
+
           {/* Upload PDF */}
           <div>
             <Label htmlFor="pdf">Upload PDF / File (Optional)</Label>
@@ -150,7 +217,7 @@ const AdminStudyMaterialForm = () => {
                 <div className="flex flex-col items-center space-y-2">
                   <Upload className="h-8 w-8 text-gray-400" />
                   <span className="text-sm text-gray-500">
-                    {formData.pdfFile ? formData.pdfFile.name : "Click to upload PDF or other files"}
+                    {pdfFile ? pdfFile.name : "Click to upload PDF or other files"}
                   </span>
                 </div>
                 <input
@@ -158,7 +225,7 @@ const AdminStudyMaterialForm = () => {
                   type="file"
                   className="hidden"
                   accept=".pdf,.doc,.docx,.ppt,.pptx"
-                  onChange={handleFileChange}
+                  onChange={handlePdfFileChange}
                 />
               </label>
             </div>
@@ -222,15 +289,16 @@ const AdminStudyMaterialForm = () => {
             />
           </div>
 
-          {/* Thumbnail */}
-          <div>
-            <Label htmlFor="thumbnail">Thumbnail Image URL (Optional)</Label>
-            <Input
-              id="thumbnail"
-              value={formData.thumbnail}
-              onChange={(e) => handleInputChange('thumbnail', e.target.value)}
-              placeholder="Enter thumbnail image URL"
+          {/* Premium Toggle */}
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="isPremium"
+              checked={formData.isPremium}
+              onChange={(e) => handleInputChange('isPremium', e.target.checked)}
+              className="rounded"
             />
+            <Label htmlFor="isPremium">Mark as Premium Content</Label>
           </div>
 
           {/* Submit Button */}

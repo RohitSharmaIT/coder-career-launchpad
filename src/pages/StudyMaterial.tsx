@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -8,6 +9,7 @@ import MaterialsGrid from "@/components/study-material/MaterialsGrid";
 import PremiumCTA from "@/components/study-material/PremiumCTA";
 import { categories, allMaterials } from "@/components/study-material/materialData";
 import { StudyMaterial as StudyMaterialType } from "@/components/study-material/MaterialCard";
+import { useStudyMaterials } from "@/contexts/StudyMaterialsContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronDown, ChevronRight, BookOpen, Download, Plus } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -57,9 +59,13 @@ const StudyMaterial = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpecialMaterial, setSelectedSpecialMaterial] = useState<StudyMaterialType | null>(null);
   const navigate = useNavigate();
+  const { studyMaterials } = useStudyMaterials();
+
+  // Combine static materials with dynamic ones from context
+  const combinedMaterials = [...studyMaterials, ...allMaterials];
 
   // Show all materials by default (no category filtering)
-  const filteredMaterials = allMaterials.filter(material => {
+  const filteredMaterials = combinedMaterials.filter(material => {
     const matchesSearchTerm = material.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                              material.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearchTerm;
