@@ -17,7 +17,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <>
+    <div className="pt-20">
       <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="text-center max-w-md">
@@ -34,7 +34,7 @@ const NotFound = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

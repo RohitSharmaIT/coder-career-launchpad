@@ -34,19 +34,19 @@ const PostJob = () => {
   // If checking authentication status, show loading
   if (isLoading) {
     return (
-      <>
+      <div className="pt-20">
         <Navbar />
         <div className="py-20 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-red mx-auto"></div>
           <p className="mt-4 text-lg">Loading...</p>
         </div>
         <Footer />
-      </>
+      </div>
     );
   }
   
   return (
-    <>
+    <div className="pt-20">
       <Navbar />
       
       <section className="py-16 bg-gray-50">
@@ -72,7 +72,7 @@ const PostJob = () => {
       </section>
       
       <Footer />
-    </>
+    </div>
   );
 };
 

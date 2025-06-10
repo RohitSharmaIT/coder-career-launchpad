@@ -50,7 +50,7 @@ const StudyMaterial = () => {
   };
 
   return (
-    <>
+    <div className="pt-20">
       <Navbar />
       
       {/* Hero Section with Search */}
@@ -75,7 +75,7 @@ const StudyMaterial = () => {
       <PremiumCTA />
       
       <Footer />
-    </>
+    </div>
   );
 };
 

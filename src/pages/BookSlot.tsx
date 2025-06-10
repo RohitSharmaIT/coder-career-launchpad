@@ -6,9 +6,11 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 // Wrap the BookingContent in a ProtectedRoute to require login
 const BookSlot = () => {
   return (
-    <ProtectedRoute>
-      <BookingContent />
-    </ProtectedRoute>
+    <div className="pt-20">
+      <ProtectedRoute>
+        <BookingContent />
+      </ProtectedRoute>
+    </div>
   );
 };
 

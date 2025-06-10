@@ -9,7 +9,7 @@ import AdminPanelHeader from "@/components/admin/AdminPanelHeader";
 
 const AdminPanel = () => {
   return (
-    <>
+    <div className="pt-20">
       <Navbar />
       
       <div className="py-10 bg-gray-50">
@@ -39,7 +39,7 @@ const AdminPanel = () => {
       </div>
       
       <Footer />
-    </>
+    </div>
   );
 };
 

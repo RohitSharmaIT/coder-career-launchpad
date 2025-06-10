@@ -72,7 +72,7 @@ const Jobs = () => {
   };
 
   return (
-    <>
+    <div className="pt-20">
       <Navbar />
       
       {/* Hero Section with Search */}
@@ -106,7 +106,7 @@ const Jobs = () => {
       </section>
       
       <Footer />
-    </>
+    </div>
   );
 };
 

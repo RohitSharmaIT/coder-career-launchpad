@@ -8,15 +8,15 @@ import ServicesCTA from "@/components/ServicesCTA";
 
 const Services = () => {
   return (
-    <>
+    <div className="pt-20">
       <Navbar />
-      <div className="pt-16 bg-white">
+      <div className="bg-white">
         <ServicesList />
         <ServicesFAQ />
         <ServicesCTA />
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

@@ -59,7 +59,7 @@ const Dashboard = () => {
   );
   
   return (
-    <>
+    <div className="pt-20">
       <Navbar />
       
       <div className="bg-gray-50 py-10">
@@ -91,7 +91,7 @@ const Dashboard = () => {
       </div>
       
       <Footer />
-    </>
+    </div>
   );
 };
 
