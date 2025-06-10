@@ -57,7 +57,7 @@ const Blogs = () => {
   });
 
   return (
-    <>
+    <div className="pt-20">
       <Navbar />
       
       {/* Hero Section */}
@@ -165,7 +165,7 @@ const Blogs = () => {
       </section>
       
       <Footer />
-    </>
+    </div>
   );
 };
 
