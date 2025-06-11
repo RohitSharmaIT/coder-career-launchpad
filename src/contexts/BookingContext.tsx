@@ -26,19 +26,19 @@ export const useBooking = () => {
 };
 
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
-  // Mock data for booked services - keep the same initial data as in Dashboard
+  // Mock data for booked services - updated with future dates for testing
   const [bookedServices, setBookedServices] = useState<BookedService[]>([
     {
       id: 1,
       service: "Resume Building",
-      date: new Date("2024-05-15T10:00:00"),
+      date: new Date("2024-12-15T10:00:00"),
       status: "scheduled",
       notes: "Focus on highlighting my Java and Spring Boot experience"
     },
     {
       id: 2,
       service: "Mock Interview",
-      date: new Date("2024-05-20T14:00:00"),
+      date: new Date("2024-12-20T14:00:00"),
       status: "scheduled",
       notes: "Practice for Google technical interview"
     },
@@ -53,6 +53,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 
   const addBooking = (booking: BookedService) => {
     console.log("Adding new booking to context:", booking);
+    console.log("Booking date:", booking.date, "Is future date:", new Date(booking.date) > new Date());
     setBookedServices(prevServices => [booking, ...prevServices]);
   };
 

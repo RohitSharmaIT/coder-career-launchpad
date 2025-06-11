@@ -60,18 +60,29 @@ const Dashboard = () => {
     return <Navigate to="/login" />;
   }
   
-  // Filter services based on current date and time
+  // Filter services based on current date and time - improved logic
   const now = new Date();
   
-  const upcomingServices = bookedServices.filter(
-    service => service.status === "scheduled" && new Date(service.date) > now
-  );
+  const upcomingServices = bookedServices.filter(service => {
+    const serviceDate = new Date(service.date);
+    return service.status === "scheduled" && serviceDate > now;
+  });
   
-  const pastServices = bookedServices.filter(
-    service => service.status === "completed" || new Date(service.date) < now
-  );
+  const pastServices = bookedServices.filter(service => {
+    const serviceDate = new Date(service.date);
+    return service.status === "completed" || serviceDate <= now;
+  });
   
   console.log("Dashboard - Total booked services:", bookedServices.length);
+  console.log("Dashboard - All services with dates:", bookedServices.map(s => ({
+    id: s.id,
+    service: s.service,
+    date: s.date,
+    dateString: new Date(s.date).toISOString(),
+    status: s.status,
+    isUpcoming: new Date(s.date) > now && s.status === "scheduled"
+  })));
+  console.log("Dashboard - Current time:", now.toISOString());
   console.log("Dashboard - Upcoming services:", upcomingServices.length);
   console.log("Dashboard - Past services:", pastServices.length);
   
