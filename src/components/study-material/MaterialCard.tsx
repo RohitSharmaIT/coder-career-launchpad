@@ -29,9 +29,10 @@ const MaterialCard = ({ material, onDownload, onSpecialCardClick }: MaterialCard
   const isSpecialCard = material.id === 1 && material.title === "Complete DSA Interview Preparation";
   
   const handleCardClick = (e: React.MouseEvent) => {
-    if (isSpecialCard && onSpecialCardClick) {
+    if (isSpecialCard) {
       e.preventDefault();
-      onSpecialCardClick(material);
+      // Open DSA topics page in new tab
+      window.open('/study-material/dsa-topics', '_blank');
     }
   };
 

@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { CategoryItem } from "./materialData";
-import { Book } from "lucide-react";
+import { Book, Plus } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +10,10 @@ interface CategorySidebarProps {
   activeCategory: string;
   setActiveCategory: (category: string) => void;
   categories: CategoryItem[];
+  simplified?: boolean; // New prop to show simplified version
 }
 
-const CategorySidebar = ({ activeCategory, setActiveCategory, categories }: CategorySidebarProps) => {
+const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simplified = false }: CategorySidebarProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -33,6 +34,29 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories }: Cate
       navigate(`/study-material/category/${categoryId}`);
     }
   };
+
+  const handleBrowseCategoriesClick = () => {
+    navigate('/study-material/categories');
+  };
+
+  // If simplified mode, show only "Browse Categories" button
+  if (simplified) {
+    return (
+      <div className="lg:w-1/4">
+        <div className="bg-gray-50 p-6 rounded-lg sticky top-24">
+          <h2 className="text-xl font-bold mb-6">Categories</h2>
+          
+          <Button
+            onClick={handleBrowseCategoriesClick}
+            className="w-full bg-brand-red hover:bg-red-600 text-white"
+          >
+            <Plus size={18} className="mr-2" />
+            Browse Categories
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="lg:w-1/4">

@@ -142,12 +142,13 @@ const DsaTopicsPage = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-10">
-            {/* Categories Sidebar */}
+            {/* Categories Sidebar - Simplified */}
             <div className="lg:w-1/4">
               <CategorySidebar 
                 activeCategory={activeCategory} 
                 setActiveCategory={setActiveCategory} 
                 categories={categories} 
+                simplified={true}
               />
             </div>
             
