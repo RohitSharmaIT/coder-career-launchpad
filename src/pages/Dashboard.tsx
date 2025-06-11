@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useBooking } from '@/contexts/BookingContext';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardContent from '@/components/dashboard/DashboardContent';
+import { toast } from "sonner";
 
 // Mock data for job applications
 const jobApplications = [
@@ -38,6 +39,15 @@ const Dashboard = () => {
   const { bookedServices } = useBooking();
   const [activeTab, setActiveTab] = useState("overview");
   
+  // Check for booking success message on mount
+  useEffect(() => {
+    const bookingSuccess = sessionStorage.getItem('bookingSuccess');
+    if (bookingSuccess) {
+      toast.success("Booking confirmed! Your new appointment appears below.");
+      sessionStorage.removeItem('bookingSuccess');
+    }
+  }, []);
+  
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -50,13 +60,20 @@ const Dashboard = () => {
     return <Navigate to="/login" />;
   }
   
+  // Filter services based on current date and time
+  const now = new Date();
+  
   const upcomingServices = bookedServices.filter(
-    service => service.status === "scheduled" && new Date(service.date) > new Date()
+    service => service.status === "scheduled" && new Date(service.date) > now
   );
   
   const pastServices = bookedServices.filter(
-    service => service.status === "completed" || new Date(service.date) < new Date()
+    service => service.status === "completed" || new Date(service.date) < now
   );
+  
+  console.log("Dashboard - Total booked services:", bookedServices.length);
+  console.log("Dashboard - Upcoming services:", upcomingServices.length);
+  console.log("Dashboard - Past services:", pastServices.length);
   
   return (
     <div className="pt-20">

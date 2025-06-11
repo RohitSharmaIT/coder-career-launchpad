@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface BookedService {
@@ -11,6 +12,7 @@ export interface BookedService {
 interface BookingContextType {
   bookedServices: BookedService[];
   addBooking: (booking: BookedService) => void;
+  updateBookingStatus: (id: number, status: string) => void;
 }
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
@@ -50,11 +52,20 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   ]);
 
   const addBooking = (booking: BookedService) => {
-    setBookedServices([booking, ...bookedServices]);
+    console.log("Adding new booking to context:", booking);
+    setBookedServices(prevServices => [booking, ...prevServices]);
+  };
+
+  const updateBookingStatus = (id: number, status: string) => {
+    setBookedServices(prevServices => 
+      prevServices.map(service => 
+        service.id === id ? { ...service, status } : service
+      )
+    );
   };
 
   return (
-    <BookingContext.Provider value={{ bookedServices, addBooking }}>
+    <BookingContext.Provider value={{ bookedServices, addBooking, updateBookingStatus }}>
       {children}
     </BookingContext.Provider>
   );

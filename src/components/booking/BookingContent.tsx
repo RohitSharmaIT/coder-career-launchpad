@@ -112,20 +112,42 @@ const BookingContent = () => {
         // Add the booking to the dashboard
         const selectedService = services.find(s => s.id === service);
         
-        if (selectedService) {
+        if (selectedService && date) {
           // Create booking ID
           const bookingId = `AWC${Math.floor(10000 + Math.random() * 90000)}`;
           
-          addBooking({
-            id: Math.floor(Math.random() * 1000),
+          // Create the booking date with proper time
+          const [timeValue, period] = time.split(' ');
+          const [hours, minutes] = timeValue.split(':');
+          let hour24 = parseInt(hours);
+          
+          if (period === 'PM' && hour24 !== 12) {
+            hour24 += 12;
+          } else if (period === 'AM' && hour24 === 12) {
+            hour24 = 0;
+          }
+          
+          const bookingDate = new Date(date);
+          bookingDate.setHours(hour24, parseInt(minutes), 0, 0);
+          
+          const newBooking = {
+            id: Date.now(), // Use timestamp as unique ID
             service: selectedService.title,
-            date: date ? new Date(`${date.toDateString()} ${time}`) : new Date(),
-            status: "confirmed",
-            notes: notes || `New ${selectedService.title} appointment`
-          });
+            date: bookingDate,
+            status: "scheduled",
+            notes: notes || `New ${selectedService.title} appointment - ${bookingId}`
+          };
+          
+          console.log("Creating new booking:", newBooking);
+          
+          // Add booking to context
+          addBooking(newBooking);
           
           // Send confirmation email
-          await sendConfirmationEmail(selectedService.title, bookingId);
+          await sendConfirmationEmail(selectedService.title, bookingId, bookingDate);
+          
+          // Store booking ID for confirmation display
+          sessionStorage.setItem('lastBookingId', bookingId);
         }
         
         // Move to confirmation step
@@ -158,21 +180,33 @@ const BookingContent = () => {
   };
   
   // Send confirmation email using EmailJS or your preferred email service
-  const sendConfirmationEmail = async (serviceName: string, bookingId: string) => {
-    console.log("Sending confirmation email to:", email);
+  const sendConfirmationEmail = async (serviceName: string, bookingId: string, bookingDate: Date) => {
+    const userEmail = email || user?.email || '';
+    console.log("Sending confirmation email to:", userEmail);
     
     // Format the date for email
-    const formattedDate = date ? format(date, "MMMM dd, yyyy") : "N/A";
+    const formattedDate = bookingDate.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    
+    const formattedTime = bookingDate.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
     
     // Email template parameters
     const emailParams = {
-      to_email: email,
+      to_email: userEmail,
       from_email: "bhai565665@gmail.com",
-      to_name: name,
+      to_name: name || user?.name || 'Valued Customer',
       service_name: serviceName,
       booking_date: formattedDate,
-      booking_time: time,
-      booking_id: bookingId
+      booking_time: formattedTime,
+      booking_id: bookingId,
+      notes: notes || 'No additional notes'
     };
     
     try {
@@ -180,35 +214,45 @@ const BookingContent = () => {
       // For demonstration purposes, we're logging the email content
       console.log("Email would be sent with these parameters:", emailParams);
       console.log(`
-Subject: Slot Booking Confirmation
+Subject: Booking Confirmation - ${serviceName}
 
-To: ${email}
+To: ${userEmail}
 From: bhai565665@gmail.com
 
-Dear ${name},
+Dear ${emailParams.to_name},
 
-Thank you for booking your slot with us.
+Thank you for booking your slot with Apne Wale Coders!
 
-This is a confirmation that your slot has been successfully booked. If you do not see the confirmation in your inbox, please check your spam or promotions folder.
+Your booking has been successfully confirmed. Please save this email for your records.
 
-If you have any questions or face issues, feel free to reach out to us directly.
-
-Booking Details:
-
-Slot Time: ${time}
-Date: ${formattedDate}
+BOOKING DETAILS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Service: ${serviceName}
+Date: ${formattedDate}
+Time: ${formattedTime}
 Booking ID: ${bookingId}
+${notes ? `Notes: ${notes}` : ''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-We look forward to connecting with you.
+WHAT'S NEXT?
+• You will receive a calendar invite shortly
+• Our team will contact you 24 hours before your appointment
+• Please join the session 5 minutes early
+• Have any relevant documents ready (resume, portfolio, etc.)
+
+If you need to reschedule or cancel, please contact us at least 24 hours in advance.
+
+Questions? Feel free to reach out to us at bhai565665@gmail.com
 
 Best regards,
 Apne Wale Coders Team
 📧 bhai565665@gmail.com
+🌐 www.apnewalecoders.com
       `);
       
       // Log admin notification
-      console.log("Admin notification email would be sent to: bhai565665@gmail.com");
+      console.log("Admin notification would be sent to: bhai565665@gmail.com");
+      console.log(`New booking received: ${serviceName} on ${formattedDate} at ${formattedTime} for ${emailParams.to_name}`);
       
       return true;
     } catch (error) {
@@ -219,7 +263,14 @@ Apne Wale Coders Team
   
   // Handle booking completion
   const handleComplete = () => {
+    // Clear any stored form data
+    sessionStorage.removeItem('lastBookingId');
+    
+    // Navigate to dashboard with a success message
     navigate('/dashboard');
+    setTimeout(() => {
+      showToast("Booking confirmed! Check your upcoming services.", 'success');
+    }, 500);
   };
   
   // Determine if current step is last step
@@ -337,13 +388,6 @@ Apne Wale Coders Team
       <Footer />
     </>
   );
-};
-
-// Helper function to format date
-const format = (date: Date, formatString: string) => {
-  // Simple format function for MMMM dd, yyyy
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
 };
 
 export default BookingContent;
