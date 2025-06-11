@@ -16,6 +16,7 @@ export const useAdminJobForm = () => {
   const [salary, setSalary] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [requirements, setRequirements] = useState('');
+  const [jobCategory, setJobCategory] = useState('');
   
   // Form submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +29,7 @@ export const useAdminJobForm = () => {
     setSalary('');
     setJobDescription('');
     setRequirements('');
+    setJobCategory('');
   };
   
   const handleJobSubmit = (e: React.FormEvent) => {
@@ -35,7 +37,7 @@ export const useAdminJobForm = () => {
     setIsSubmitting(true);
     
     // Validate form
-    if (!jobTitle || !company || !location || !jobDescription || !requirements) {
+    if (!jobTitle || !company || !location || !jobDescription || !requirements || !jobCategory) {
       toast.error("Please fill in all required fields");
       setIsSubmitting(false);
       return;
@@ -68,7 +70,8 @@ export const useAdminJobForm = () => {
       jobType,
       salary,
       description: jobDescription,
-      requirements: skills
+      requirements: skills,
+      category: jobCategory
     });
     
     // Simulate API call
@@ -98,6 +101,8 @@ export const useAdminJobForm = () => {
     setJobDescription,
     requirements,
     setRequirements,
+    jobCategory,
+    setJobCategory,
     isSubmitting,
     // Form actions
     handleJobSubmit,

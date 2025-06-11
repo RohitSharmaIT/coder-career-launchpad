@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -6,10 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useBlogs } from '@/contexts/BlogsContext';
+import { useCategories } from '@/contexts/CategoriesContext';
+import CategorySelect from './CategorySelect';
 
 const AdminBlogForm = () => {
   const navigate = useNavigate();
   const { addBlog } = useBlogs();
+  const { blogCategories, addBlogCategory } = useCategories();
   
   // Blog form state
   const [blogTitle, setBlogTitle] = useState('');
@@ -93,24 +97,15 @@ const AdminBlogForm = () => {
             />
           </div>
           
-          <div>
-            <Label htmlFor="blogCategory" className="required">Category</Label>
-            <select
-              id="blogCategory"
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-              value={blogCategory}
-              onChange={(e) => setBlogCategory(e.target.value)}
-              required
-            >
-              <option value="">Select a category</option>
-              <option value="interviews">Interview Tips</option>
-              <option value="coding">Coding & Development</option>
-              <option value="career">Career Advice</option>
-              <option value="resume">Resume Building</option>
-              <option value="industry">Industry Insights</option>
-              <option value="company">Company Specific</option>
-            </select>
-          </div>
+          <CategorySelect
+            label="Category"
+            value={blogCategory}
+            onValueChange={setBlogCategory}
+            categories={blogCategories}
+            onAddCategory={addBlogCategory}
+            placeholder="Select a category"
+            required
+          />
           
           <div>
             <Label htmlFor="blogImage" className="required">Featured Image</Label>

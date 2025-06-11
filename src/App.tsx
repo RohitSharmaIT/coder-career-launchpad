@@ -1,102 +1,67 @@
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Toaster } from 'sonner';
+import { TooltipProvider } from "@/components/ui/tooltip"
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import Blogs from "./pages/Blogs";
-import BlogPost from "./pages/BlogPost";
-import Jobs from "./pages/Jobs";
-import JobDetails from "./pages/JobDetails";
-import StudyMaterial from "./pages/StudyMaterial";
-import StudyMaterialDetails from "./pages/StudyMaterialDetails";
-import StudyMaterialCategory from "./pages/StudyMaterialCategory";
-import StudyMaterialCategories from "./pages/StudyMaterialCategories";
-import DsaTopicsPage from "./pages/DsaTopicsPage";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import PostJob from "./pages/PostJob";
-import BookSlot from "./pages/BookSlot";
-import AdminPanel from "./pages/AdminPanel";
-import NotFound from "./pages/NotFound";
-import React from "react";
-import { AuthProvider } from "./contexts/AuthContext";
-import { BookingProvider } from "./contexts/BookingContext";
-import { JobsProvider } from "./contexts/JobsContext";
-import { BlogsProvider } from "./contexts/BlogsContext";
-import { StudyMaterialsProvider } from "./contexts/StudyMaterialsContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import Home from './pages/Home';
+import Jobs from './pages/Jobs';
+import JobDetails from './pages/JobDetails';
+import Blogs from './pages/Blogs';
+import BlogDetails from './pages/BlogDetails';
+import StudyMaterial from './pages/StudyMaterial';
+import DsaTopicsPage from './pages/DsaTopicsPage';
+import StudyMaterialCategories from './pages/StudyMaterialCategories';
+import BookAConsultation from './pages/BookAConsultation';
+import PostJob from './pages/PostJob';
+import AdminPanel from './pages/AdminPanel';
+import NotFound from './pages/NotFound';
+
+import { AuthProvider } from './contexts/AuthContext';
+import { JobsProvider } from './contexts/JobsContext';
+import { BlogsProvider } from './contexts/BlogsContext';
+import { StudyMaterialsProvider } from './contexts/StudyMaterialsContext';
+import { BookingProvider } from './contexts/BookingContext';
+import { CategoriesProvider } from "@/contexts/CategoriesContext";
 
 const queryClient = new QueryClient();
 
-// The entire app must be wrapped in BrowserRouter for routing to work
-const App = () => (
-  <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <BookingProvider>
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
           <JobsProvider>
             <BlogsProvider>
               <StudyMaterialsProvider>
-                <QueryClientProvider client={queryClient}>
-                  <TooltipProvider>
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/about" element={<About />} />
-                      <Route path="/services" element={<Services />} />
-                      <Route path="/blogs" element={<Blogs />} />
-                      <Route path="/blogs/:id" element={<BlogPost />} />
-                      <Route path="/jobs" element={<Jobs />} />
-                      <Route path="/jobs/:id" element={<JobDetails />} />
-                      <Route path="/study-material" element={<StudyMaterial />} />
-                      <Route path="/study-material/categories" element={<StudyMaterialCategories />} />
-                      <Route path="/study-material/category/:category" element={<StudyMaterialCategory />} />
-                      <Route path="/study-material/:id" element={<StudyMaterialDetails />} />
-                      <Route path="/study-material/dsa-topics" element={<DsaTopicsPage />} />
-                      <Route 
-                        path="/dashboard" 
-                        element={
-                          <ProtectedRoute>
-                            <Dashboard />
-                          </ProtectedRoute>
-                        } 
-                      />
-                      <Route path="/login" element={<Login />} />
-                      <Route path="/signup" element={<Signup />} />
-                      <Route 
-                        path="/post-job" 
-                        element={
-                          <ProtectedRoute requireAdmin={true}>
-                            <PostJob />
-                          </ProtectedRoute>
-                        } 
-                      />
-                      <Route path="/book-slot" element={<BookSlot />} />
-                      <Route 
-                        path="/admin" 
-                        element={
-                          <ProtectedRoute requireAdmin={true}>
-                            <AdminPanel />
-                          </ProtectedRoute>
-                        } 
-                      />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
+                <BookingProvider>
+                  <CategoriesProvider>
                     <Toaster />
-                    <Sonner />
-                  </TooltipProvider>
-                </QueryClientProvider>
+                    <TooltipProvider>
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/jobs" element={<Jobs />} />
+                        <Route path="/jobs/:id" element={<JobDetails />} />
+                        <Route path="/blogs" element={<Blogs />} />
+                        <Route path="/blogs/:id" element={<BlogDetails />} />
+                        <Route path="/study-material" element={<StudyMaterial />} />
+                        <Route path="/study-material/dsa-topics" element={<DsaTopicsPage />} />
+                        <Route path="/study-material/categories" element={<StudyMaterialCategories />} />
+                        <Route path="/book-a-consultation" element={<BookAConsultation />} />
+                        <Route path="/post-job" element={<PostJob />} />
+                        <Route path="/admin-panel" element={<AdminPanel />} />
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </TooltipProvider>
+                  </CategoriesProvider>
+                </BookingProvider>
               </StudyMaterialsProvider>
             </BlogsProvider>
           </JobsProvider>
-        </BookingProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+}
 
 export default App;

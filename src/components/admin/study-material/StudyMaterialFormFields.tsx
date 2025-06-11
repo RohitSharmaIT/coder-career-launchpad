@@ -3,7 +3,8 @@ import React from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useCategories } from '@/contexts/CategoriesContext';
+import CategorySelect from '../CategorySelect';
 
 interface FormData {
   title: string;
@@ -21,20 +22,9 @@ interface StudyMaterialFormFieldsProps {
   onInputChange: (field: string, value: string | boolean) => void;
 }
 
-const categories = [
-  { value: 'interview', label: 'Interview Preparation' },
-  { value: 'dsa', label: 'Data Structures & Algorithms' },
-  { value: 'web-development', label: 'Web Development' },
-  { value: 'ai-ml', label: 'AI & ML' },
-  { value: 'ai-tools', label: 'AI Tools' },
-  { value: 'tcs', label: 'TCS Specific' },
-  { value: 'wipro', label: 'Wipro Specific' },
-  { value: 'infosys', label: 'Infosys Specific' },
-  { value: 'cognizant', label: 'Cognizant Specific' },
-  { value: 'accenture', label: 'Accenture Specific' }
-];
-
 const StudyMaterialFormFields = ({ formData, onInputChange }: StudyMaterialFormFieldsProps) => {
+  const { studyMaterialCategories, addStudyMaterialCategory } = useCategories();
+
   return (
     <>
       {/* Title */}
@@ -63,24 +53,15 @@ const StudyMaterialFormFields = ({ formData, onInputChange }: StudyMaterialFormF
       </div>
 
       {/* Category */}
-      <div>
-        <Label htmlFor="category">Category *</Label>
-        <Select
-          value={formData.category}
-          onValueChange={(value) => onInputChange('category', value)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((category) => (
-              <SelectItem key={category.value} value={category.value}>
-                {category.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <CategorySelect
+        label="Category"
+        value={formData.category}
+        onValueChange={(value) => onInputChange('category', value)}
+        categories={studyMaterialCategories}
+        onAddCategory={addStudyMaterialCategory}
+        placeholder="Select a category"
+        required
+      />
 
       {/* Content */}
       <div>

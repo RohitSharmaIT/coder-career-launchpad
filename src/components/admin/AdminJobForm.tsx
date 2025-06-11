@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button";
 import JobFormFields from './JobFormFields';
 import { useAdminJobForm } from '@/hooks/useAdminJobForm';
+import { useCategories } from '@/contexts/CategoriesContext';
+import CategorySelect from './CategorySelect';
 
 const AdminJobForm = () => {
   const {
@@ -19,31 +21,47 @@ const AdminJobForm = () => {
     setJobDescription,
     requirements,
     setRequirements,
+    jobCategory,
+    setJobCategory,
     isSubmitting,
     handleJobSubmit
   } = useAdminJobForm();
+
+  const { jobCategories, addJobCategory } = useCategories();
   
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-6">Post a New Job</h2>
       
       <form onSubmit={handleJobSubmit}>
-        <JobFormFields
-          jobTitle={jobTitle}
-          setJobTitle={setJobTitle}
-          company={company}
-          setCompany={setCompany}
-          location={location}
-          setLocation={setLocation}
-          jobType={jobType}
-          setJobType={setJobType}
-          salary={salary}
-          setSalary={setSalary}
-          jobDescription={jobDescription}
-          setJobDescription={setJobDescription}
-          requirements={requirements}
-          setRequirements={setRequirements}
-        />
+        <div className="space-y-4">
+          <JobFormFields
+            jobTitle={jobTitle}
+            setJobTitle={setJobTitle}
+            company={company}
+            setCompany={setCompany}
+            location={location}
+            setLocation={setLocation}
+            jobType={jobType}
+            setJobType={setJobType}
+            salary={salary}
+            setSalary={setSalary}
+            jobDescription={jobDescription}
+            setJobDescription={setJobDescription}
+            requirements={requirements}
+            setRequirements={setRequirements}
+          />
+
+          <CategorySelect
+            label="Job Category"
+            value={jobCategory}
+            onValueChange={setJobCategory}
+            categories={jobCategories}
+            onAddCategory={addJobCategory}
+            placeholder="Select job category"
+            required
+          />
+        </div>
         
         <Button
           type="submit"
