@@ -121,23 +121,12 @@ const StudyMaterialDetails = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-10">
-            {/* Categories Sidebar - Simplified */}
-            <div className="lg:w-1/4">
-              <div className="mb-6">
-                <Link to="/study-material">
-                  <Button variant="outline" className="mb-6">
-                    <ArrowLeft className="mr-2" size={16} />
-                    Back to Study Materials
-                  </Button>
-                </Link>
-              </div>
-              <CategorySidebar 
-                activeCategory={activeCategory} 
-                setActiveCategory={setActiveCategory} 
-                categories={categories} 
-                simplified={true}
-              />
-            </div>
+            {/* Categories Sidebar - Full Categories */}
+            <CategorySidebar 
+              activeCategory={activeCategory} 
+              setActiveCategory={setActiveCategory} 
+              categories={categories} 
+            />
             
             {/* Material Details */}
             <div className="lg:w-1/2">
