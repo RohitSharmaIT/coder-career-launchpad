@@ -65,7 +65,6 @@ const StudyMaterialDetails = () => {
       return;
     }
     
-    // Create a dummy PDF download (you would replace this with a real download in production)
     const dummyPdfContent = "data:application/pdf;base64,JVBERi0xLjcKJeLjz9MKMSAwIG9iago8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFI+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlL1BhZ2VzL0tpZHNbMyAwIFJdL0NvdW50IDE+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDIgMCBSL01lZGlhQm94WzAgMCA1OTUgODQyXS9Db250ZW50cyA0IDAgUj4+CmVuZG9iago0IDAgb2JqCjw8L0ZpbHRlci9GbGF0ZURlY29kZS9MZW5ndGggNTU+PnN0cmVhbQp4nDPQM1Qo5ypUMABCM0MjICWlYKRnZGAMpIxNTECUiYEmGhkbkaeJUC1dABYVBnYKZW5+DkEuAD5MBPEKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDA2NCAwMDAwMCBuIAowMDAwMDAwMTE3IDAwMDAwIG4gCjAwMDAwMDAxOTYgMDAwMDAgbiAKdHJhaWxlcgo8PC9TaXplIDUvUm9vdCAxIDAgUj4+CnN0YXJ0eHJlZgozMTkKJSVFT0YK";
     
     const link = document.createElement('a');
@@ -112,26 +111,39 @@ const StudyMaterialDetails = () => {
             <ChevronRight size={16} className="mx-2" />
             <Link to="/study-material" className="hover:text-brand-red">Study Material</Link>
             <ChevronRight size={16} className="mx-2" />
-            <span className="text-gray-900">{material.title}</span>
+            <span className="text-gray-900 truncate">{material.title}</span>
           </div>
         </div>
       </div>
       
       {/* Main Content */}
-      <section className="py-16 bg-white">
+      <section className="py-8 lg:py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-10">
-            {/* Categories Sidebar - Full Categories */}
-            <CategorySidebar 
-              activeCategory={activeCategory} 
-              setActiveCategory={setActiveCategory} 
-              categories={categories} 
-            />
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+            {/* Categories Sidebar - Hidden on mobile, show as simplified on lg+ screens */}
+            <div className="hidden lg:block">
+              <CategorySidebar 
+                activeCategory={activeCategory} 
+                setActiveCategory={setActiveCategory} 
+                categories={categories}
+                simplified={true}
+              />
+            </div>
+            
+            {/* Mobile Categories Button - Only show on mobile */}
+            <div className="lg:hidden mb-6">
+              <CategorySidebar 
+                activeCategory={activeCategory} 
+                setActiveCategory={setActiveCategory} 
+                categories={categories}
+                simplified={true}
+              />
+            </div>
             
             {/* Material Details */}
-            <div className="lg:w-1/2">
+            <div className="flex-1 lg:max-w-2xl">
               <div className="bg-white rounded-lg">
-                <div className="h-64 relative overflow-hidden rounded-lg mb-6">
+                <div className="h-48 sm:h-64 relative overflow-hidden rounded-lg mb-6">
                   <img 
                     src={material.thumbnail} 
                     alt={material.title} 
@@ -148,13 +160,13 @@ const StudyMaterialDetails = () => {
                   <Badge variant="outline">{material.size}</Badge>
                 </div>
                 
-                <h1 className="text-3xl font-bold mb-4">{material.title}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">{material.title}</h1>
                 
-                <div className="text-gray-500 mb-6">
+                <div className="text-gray-500 mb-6 text-sm">
                   <p>Published on {material.date} • {material.downloadCount} downloads</p>
                 </div>
                 
-                <div className="prose max-w-none mb-10">
+                <div className="prose max-w-none mb-8 text-sm sm:text-base">
                   <p className="mb-4">{material.description}</p>
                   <p className="mb-4">
                     This comprehensive study material is designed to help you master the concepts and skills required for 
@@ -171,7 +183,7 @@ const StudyMaterialDetails = () => {
                 
                 <Button 
                   onClick={() => handleDownload(material.id, material.isPremium)}
-                  className="bg-brand-red hover:bg-red-700 text-white w-full md:w-auto"
+                  className="bg-brand-red hover:bg-red-700 text-white w-full sm:w-auto"
                 >
                   <Download size={16} className="mr-2" />
                   Download Material
@@ -181,40 +193,40 @@ const StudyMaterialDetails = () => {
             
             {/* Related Materials Sidebar */}
             <div className="lg:w-1/4">
-              <div className="bg-gray-50 p-6 rounded-lg sticky top-24">
-                <h3 className="text-xl font-bold mb-6">Related Materials</h3>
+              <div className="bg-gray-50 p-4 sm:p-6 rounded-lg sticky top-24">
+                <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Related Materials</h3>
                 
                 {relatedMaterials.length > 0 ? (
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     {relatedMaterials.map(related => (
                       <Link 
                         key={related.id} 
                         to={`/study-material/${related.id}`}
-                        className="block bg-white rounded-lg p-4 hover:shadow-md transition-shadow"
+                        className="block bg-white rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow"
                       >
                         <div className="flex gap-3 items-start">
-                          <div className="h-12 w-12 rounded overflow-hidden shrink-0">
+                          <div className="h-10 w-10 sm:h-12 sm:w-12 rounded overflow-hidden shrink-0">
                             <img 
                               src={related.thumbnail} 
                               alt={related.title} 
                               className="h-full w-full object-cover"
                             />
                           </div>
-                          <div>
-                            <h4 className="font-medium text-gray-900 line-clamp-1">{related.title}</h4>
-                            <p className="text-xs text-gray-500">{related.date} • {related.type}</p>
+                          <div className="min-w-0 flex-1">
+                            <h4 className="font-medium text-gray-900 line-clamp-2 text-sm sm:text-base leading-tight">{related.title}</h4>
+                            <p className="text-xs text-gray-500 mt-1">{related.date} • {related.type}</p>
                           </div>
                         </div>
                       </Link>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500">No related materials found.</p>
+                  <p className="text-gray-500 text-sm">No related materials found.</p>
                 )}
                 
-                <Separator className="my-6" />
+                <Separator className="my-4 sm:my-6" />
                 
-                <h3 className="text-xl font-bold mb-4">Quick Links</h3>
+                <h3 className="text-lg sm:text-xl font-bold mb-4">Quick Links</h3>
                 <div className="space-y-2">
                   {categories.slice(0, 5).map((category) => {
                     const IconComponent = category.icon;
@@ -222,10 +234,10 @@ const StudyMaterialDetails = () => {
                       <Link 
                         key={category.id} 
                         to={`/study-material?category=${category.name}`}
-                        className="flex items-center py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100"
+                        className="flex items-center py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100 text-sm"
                       >
-                        <IconComponent size={16} className="mr-2" />
-                        <span>{category.name}</span>
+                        <IconComponent size={16} className="mr-2 shrink-0" />
+                        <span className="truncate">{category.name}</span>
                       </Link>
                     );
                   })}

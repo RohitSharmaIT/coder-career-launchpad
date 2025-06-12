@@ -10,7 +10,7 @@ interface CategorySidebarProps {
   activeCategory: string;
   setActiveCategory: (category: string) => void;
   categories: CategoryItem[];
-  simplified?: boolean; // New prop to show simplified version
+  simplified?: boolean;
 }
 
 const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simplified = false }: CategorySidebarProps) => {
@@ -30,7 +30,6 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
     if (categoryId === 'all') {
       setActiveCategory('All');
     } else {
-      // Navigate to the category page
       navigate(`/study-material/category/${categoryId}`);
     }
   };
@@ -42,13 +41,13 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
   // If simplified mode, show only "Browse Categories" button
   if (simplified) {
     return (
-      <div className="lg:w-1/4">
-        <div className="bg-gray-50 p-6 rounded-lg sticky top-24">
-          <h2 className="text-xl font-bold mb-6">Categories</h2>
+      <div className="w-full lg:w-1/4">
+        <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
+          <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Categories</h2>
           
           <Button
             onClick={handleBrowseCategoriesClick}
-            className="w-full bg-brand-red hover:bg-red-600 text-white"
+            className="w-full bg-brand-red hover:bg-red-600 text-white text-sm sm:text-base"
           >
             <Plus size={18} className="mr-2" />
             Browse Categories
@@ -59,24 +58,24 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
   }
 
   return (
-    <div className="lg:w-1/4">
-      <div className="bg-gray-50 p-6 rounded-lg sticky top-24">
-        <h2 className="text-xl font-bold mb-6">Categories</h2>
+    <div className="w-full lg:w-1/4">
+      <div className="bg-gray-50 p-4 sm:p-6 rounded-lg sticky top-24">
+        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Categories</h2>
         
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {/* All category */}
           <Button
             key="all"
             variant={activeCategory === 'All' ? "default" : "outline"}
-            className={`w-full justify-start text-left mb-2 ${
+            className={`w-full justify-start text-left text-sm sm:text-base ${
               activeCategory === 'All' 
                 ? "bg-brand-red hover:bg-red-600" 
                 : "border-gray-200 text-gray-700 hover:bg-gray-100"
             }`}
             onClick={() => handleCategoryClick('all', 'All')}
           >
-            <Book size={18} className="mr-2" />
-            All Materials
+            <Book size={16} className="mr-2 shrink-0" />
+            <span className="truncate">All Materials</span>
           </Button>
 
           {/* Topic-based categories */}
@@ -84,10 +83,10 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
             <CollapsibleTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-between text-left border-gray-200 mb-2"
+                className="w-full justify-between text-left border-gray-200 text-sm sm:text-base"
               >
-                Topic-based Materials
-                <span className="ml-2">{isOpen ? '−' : '+'}</span>
+                <span className="truncate">Topic-based Materials</span>
+                <span className="ml-2 shrink-0">{isOpen ? '−' : '+'}</span>
               </Button>
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-2 mt-2">
@@ -97,11 +96,11 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
                   <Button
                     key={category.id}
                     variant="outline"
-                    className="w-full justify-start text-left mb-2 border-gray-200 text-gray-700 hover:bg-gray-100"
+                    className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm"
                     onClick={() => handleCategoryClick(category.id, category.name)}
                   >
-                    <IconComponent size={18} className="mr-2" />
-                    {category.name}
+                    <IconComponent size={16} className="mr-2 shrink-0" />
+                    <span className="truncate">{category.name}</span>
                   </Button>
                 );
               })}
@@ -113,10 +112,10 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
             <CollapsibleTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-between text-left border-gray-200 mb-2"
+                className="w-full justify-between text-left border-gray-200 text-sm sm:text-base"
               >
-                Company-specific Materials
-                <span className="ml-2">−</span>
+                <span className="truncate">Company-specific Materials</span>
+                <span className="ml-2 shrink-0">−</span>
               </Button>
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-2 mt-2">
@@ -126,11 +125,11 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
                   <Button
                     key={category.id}
                     variant="outline"
-                    className="w-full justify-start text-left mb-2 border-gray-200 text-gray-700 hover:bg-gray-100"
+                    className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm"
                     onClick={() => handleCategoryClick(category.id, category.name)}
                   >
-                    <IconComponent size={18} className="mr-2" />
-                    {category.name}
+                    <IconComponent size={16} className="mr-2 shrink-0" />
+                    <span className="truncate">{category.name}</span>
                   </Button>
                 );
               })}

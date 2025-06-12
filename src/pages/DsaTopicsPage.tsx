@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -75,7 +76,6 @@ const dsaTopics = [
   }
 ];
 
-// Additional resources for the right sidebar
 const additionalResources = [
   { 
     id: 1, 
@@ -130,7 +130,7 @@ const DsaTopicsPage = () => {
       {/* Breadcrumbs */}
       <div className="bg-gray-50 py-4">
         <div className="container mx-auto px-4">
-          <Link to="/study-material" className="flex items-center text-brand-red hover:underline">
+          <Link to="/study-material" className="flex items-center text-brand-red hover:underline text-sm sm:text-base">
             <ChevronLeft size={16} className="mr-1" />
             Back to Study Materials
           </Link>
@@ -138,22 +138,35 @@ const DsaTopicsPage = () => {
       </div>
       
       {/* Main Content */}
-      <section className="py-16 bg-white">
+      <section className="py-8 lg:py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-10">
-            {/* Categories Sidebar - Full Categories */}
-            <CategorySidebar 
-              activeCategory={activeCategory} 
-              setActiveCategory={setActiveCategory} 
-              categories={categories} 
-            />
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+            {/* Categories Sidebar - Hidden on mobile, show as simplified on lg+ screens */}
+            <div className="hidden lg:block">
+              <CategorySidebar 
+                activeCategory={activeCategory} 
+                setActiveCategory={setActiveCategory} 
+                categories={categories}
+                simplified={true}
+              />
+            </div>
+            
+            {/* Mobile Categories Button - Only show on mobile */}
+            <div className="lg:hidden mb-6">
+              <CategorySidebar 
+                activeCategory={activeCategory} 
+                setActiveCategory={setActiveCategory} 
+                categories={categories}
+                simplified={true}
+              />
+            </div>
             
             {/* Topics Content */}
-            <div className="lg:w-2/4">
+            <div className="flex-1 lg:max-w-2xl">
               <Card>
                 <CardHeader className="bg-gray-50">
-                  <CardTitle className="text-2xl font-bold">Complete DSA Interview Preparation - Topics</CardTitle>
-                  <p className="text-gray-600 mt-2">
+                  <CardTitle className="text-xl sm:text-2xl font-bold">Complete DSA Interview Preparation - Topics</CardTitle>
+                  <p className="text-gray-600 mt-2 text-sm sm:text-base">
                     Master all essential topics for Data Structures and Algorithms interviews
                   </p>
                 </CardHeader>
@@ -164,18 +177,18 @@ const DsaTopicsPage = () => {
                         <AccordionTrigger className="py-4 hover:no-underline">
                           <div className="flex gap-3 items-center">
                             <BookOpen size={20} className="text-brand-red shrink-0" />
-                            <div className="text-left">
-                              <h3 className="font-medium text-lg">{topic.title}</h3>
+                            <div className="text-left min-w-0">
+                              <h3 className="font-medium text-base sm:text-lg">{topic.title}</h3>
                               <p className="text-sm text-gray-500">Difficulty: {topic.difficulty}</p>
                             </div>
                           </div>
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className="p-2 pt-0">
-                            <p className="text-gray-700 mb-4">{topic.description}</p>
+                            <p className="text-gray-700 mb-4 text-sm sm:text-base">{topic.description}</p>
                             <div className="mt-4 bg-gray-50 p-4 rounded-md">
-                              <h4 className="font-medium mb-2">What you'll learn:</h4>
-                              <ul className="list-disc pl-5 space-y-1">
+                              <h4 className="font-medium mb-2 text-sm sm:text-base">What you'll learn:</h4>
+                              <ul className="list-disc pl-5 space-y-1 text-sm">
                                 <li>Key techniques and algorithms</li>
                                 <li>Common interview questions</li>
                                 <li>Time and space complexity analysis</li>
@@ -203,30 +216,30 @@ const DsaTopicsPage = () => {
             
             {/* Right Sidebar */}
             <div className="lg:w-1/4">
-              <div className="bg-gray-50 p-6 rounded-lg sticky top-24">
-                <h3 className="text-xl font-bold mb-6">Additional Resources</h3>
-                <div className="space-y-4">
+              <div className="bg-gray-50 p-4 sm:p-6 rounded-lg sticky top-24">
+                <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Additional Resources</h3>
+                <div className="space-y-3 sm:space-y-4">
                   {additionalResources.map(resource => (
-                    <div key={resource.id} className="bg-white rounded-lg p-4 hover:shadow-md transition-shadow">
-                      <h4 className="font-medium text-gray-900">{resource.title}</h4>
-                      <p className="text-sm text-gray-500 mt-1">{resource.description}</p>
+                    <div key={resource.id} className="bg-white rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow">
+                      <h4 className="font-medium text-gray-900 text-sm sm:text-base">{resource.title}</h4>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">{resource.description}</p>
                       <a 
                         href={resource.link} 
-                        className="text-brand-red text-sm font-medium mt-2 inline-block hover:underline"
+                        className="text-brand-red text-xs sm:text-sm font-medium mt-2 inline-block hover:underline"
                       >
                         Learn more
                       </a>
                     </div>
                   ))}
                 </div>
-                <div className="mt-8">
-                  <h3 className="text-lg font-bold mb-4">Ready to master DSA?</h3>
-                  <p className="text-sm text-gray-600 mb-4">
+                <div className="mt-6 sm:mt-8">
+                  <h3 className="text-base sm:text-lg font-bold mb-4">Ready to master DSA?</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 mb-4">
                     Download our complete DSA preparation guide and ace your next technical interview.
                   </p>
                   <Button 
                     onClick={() => handleDownload(100, true)}
-                    className="w-full bg-brand-red hover:bg-red-700"
+                    className="w-full bg-brand-red hover:bg-red-700 text-sm"
                   >
                     <Download size={16} className="mr-2" />
                     Download Complete Guide
