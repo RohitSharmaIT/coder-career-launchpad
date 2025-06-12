@@ -1,18 +1,19 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { TooltipProvider } from "@/components/ui/tooltip"
 
-import Home from './pages/Home';
+import Index from './pages/Index';
 import Jobs from './pages/Jobs';
 import JobDetails from './pages/JobDetails';
 import Blogs from './pages/Blogs';
-import BlogDetails from './pages/BlogDetails';
+import BlogPost from './pages/BlogPost';
 import StudyMaterial from './pages/StudyMaterial';
 import DsaTopicsPage from './pages/DsaTopicsPage';
 import StudyMaterialCategories from './pages/StudyMaterialCategories';
-import BookAConsultation from './pages/BookAConsultation';
+import BookSlot from './pages/BookSlot';
 import PostJob from './pages/PostJob';
 import AdminPanel from './pages/AdminPanel';
 import NotFound from './pages/NotFound';
@@ -39,15 +40,15 @@ function App() {
                     <Toaster />
                     <TooltipProvider>
                       <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={<Index />} />
                         <Route path="/jobs" element={<Jobs />} />
                         <Route path="/jobs/:id" element={<JobDetails />} />
                         <Route path="/blogs" element={<Blogs />} />
-                        <Route path="/blogs/:id" element={<BlogDetails />} />
+                        <Route path="/blogs/:id" element={<BlogPost />} />
                         <Route path="/study-material" element={<StudyMaterial />} />
                         <Route path="/study-material/dsa-topics" element={<DsaTopicsPage />} />
                         <Route path="/study-material/categories" element={<StudyMaterialCategories />} />
-                        <Route path="/book-a-consultation" element={<BookAConsultation />} />
+                        <Route path="/book-a-consultation" element={<BookSlot />} />
                         <Route path="/post-job" element={<PostJob />} />
                         <Route path="/admin-panel" element={<AdminPanel />} />
                         <Route path="*" element={<NotFound />} />
