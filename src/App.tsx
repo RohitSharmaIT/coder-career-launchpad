@@ -20,6 +20,7 @@ import AdminPanel from './pages/AdminPanel';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Services from './pages/Services';
+import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 
 import { AuthProvider } from './contexts/AuthContext';
@@ -46,6 +47,7 @@ function App() {
                       <Routes>
                         <Route path="/" element={<Index />} />
                         <Route path="/about" element={<About />} />
+                        <Route path="/about-us" element={<About />} />
                         <Route path="/services" element={<Services />} />
                         <Route path="/jobs" element={<Jobs />} />
                         <Route path="/jobs/:id" element={<JobDetails />} />
@@ -58,6 +60,7 @@ function App() {
                         <Route path="/book-a-consultation" element={<BookSlot />} />
                         <Route path="/book-slot" element={<BookSlot />} />
                         <Route path="/post-job" element={<PostJob />} />
+                        <Route path="/login" element={<Login />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/admin-panel" element={<AdminPanel />} />
                         <Route path="/admin" element={<AdminPanel />} />
