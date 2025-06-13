@@ -1,72 +1,46 @@
 
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { toast } from "sonner";
+import { useState } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { toast } from "sonner";
+import { studyMaterials } from "@/components/study-material/materialData";
+import { categories } from "@/components/study-material/materialData";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Download, ChevronRight, ArrowLeft } from "lucide-react";
-import { categories, allMaterials } from "@/components/study-material/materialData";
-import CategorySidebar from '@/components/study-material/CategorySidebar';
-import PremiumCTA from '@/components/study-material/PremiumCTA';
-import { Separator } from '@/components/ui/separator';
+import { Download, ChevronLeft, Plus, ChevronDown, ChevronUp } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const StudyMaterialDetails = () => {
-  const { id } = useParams<{ id: string }>();
-  const [material, setMaterial] = useState(allMaterials.find(m => m.id === Number(id)));
-  const [relatedMaterials, setRelatedMaterials] = useState(allMaterials.filter(
-    m => m.category === material?.category && m.id !== material?.id
-  ).slice(0, 3));
-  const [activeCategory, setActiveCategory] = useState(material?.category || 'All');
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [showCategories, setShowCategories] = useState(false);
+  
+  const material = studyMaterials.find(m => m.id === parseInt(id || '0'));
+  
+  if (!material) {
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Material Not Found</h1>
+            <Link to="/study-material" className="text-brand-red hover:underline">
+              Back to Study Materials
+            </Link>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
-  useEffect(() => {
-    setMaterial(allMaterials.find(m => m.id === Number(id)));
-  }, [id]);
-
-  useEffect(() => {
-    if (material) {
-      setActiveCategory(material.category);
-      setRelatedMaterials(allMaterials.filter(
-        m => m.category === material.category && m.id !== material.id
-      ).slice(0, 3));
-    }
-  }, [material]);
-
-  const handleDownload = (id: number, isPremium: boolean) => {
-    const isLoggedIn = false;
-    const hasPremiumAccess = false;
-    
-    if (!isLoggedIn) {
-      toast.error("Please log in to download study materials", {
-        action: {
-          label: "Login",
-          onClick: () => {
-            window.location.href = "/login";
-          }
-        }
-      });
-      return;
-    }
-    
-    if (isPremium && !hasPremiumAccess) {
-      toast.error("This is a premium resource", {
-        description: "Upgrade to access premium study materials",
-        action: {
-          label: "Upgrade",
-          onClick: () => {
-            console.log("Redirect to upgrade page");
-          }
-        }
-      });
-      return;
-    }
-    
+  const handleDownload = () => {
     const dummyPdfContent = "data:application/pdf;base64,JVBERi0xLjcKJeLjz9MKMSAwIG9iago8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFI+PgplbmRvYmoKMiAwIG9iago8PC9UeXBlL1BhZ2VzL0tpZHNbMyAwIFJdL0NvdW50IDE+PgplbmRvYmoKMyAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDIgMCBSL01lZGlhQm94WzAgMCA1OTUgODQyXS9Db250ZW50cyA0IDAgUj4+CmVuZG9iago0IDAgb2JqCjw8L0ZpbHRlci9GbGF0ZURlY29kZS9MZW5ndGggNTU+PnN0cmVhbQp4nDPQM1Qo5ypUMABCM0MjICWlYKRnZGAMpIxNTECUiYEmGhkbkaeJUC1dABYVBnYKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDA2NCAwMDAwMCBuIAowMDAwMDAwMTE3IDAwMDAwIG4gCjAwMDAwMDAxOTYgMDAwMDAgbiAKdHJhaWxlcgo8PC9TaXplIDUvUm9vdCAxIDAgUj4+CnN0YXJ0eHJlZgozMTkKJSVFT0YK";
     
     const link = document.createElement('a');
     link.href = dummyPdfContent;
-    link.download = `${material?.title.replace(/\s+/g, '_')}.pdf`;
+    link.download = `${material.title.replace(/\s+/g, '_')}.pdf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -76,40 +50,35 @@ const StudyMaterialDetails = () => {
     });
   };
 
-  if (!material) {
-    return (
-      <>
-        <Navbar />
-        <div className="container mx-auto px-4 py-8 sm:py-16">
-          <div className="text-center">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4">Material not found</h2>
-            <Link to="/study-material">
-              <Button className="text-sm sm:text-base">
-                <ArrowLeft className="mr-2" size={16} />
-                Back to Study Materials
-              </Button>
-            </Link>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
+  const handleCategoryClick = (categoryId: string) => {
+    if (categoryId === 'all') {
+      navigate('/study-material');
+    } else {
+      navigate(`/study-material/category/${categoryId}`);
+    }
+    setShowCategories(false);
+  };
+
+  // Group categories by type
+  const topicCategories = categories.filter(cat => 
+    ["interview", "dsa", "web-development", "ai-ml", "ai-tools"].includes(cat.id)
+  );
+  
+  const companyCategories = categories.filter(cat => 
+    ["tcs", "wipro", "infosys", "cognizant", "accenture"].includes(cat.id)
+  );
 
   return (
     <>
       <Navbar />
       
-      {/* Breadcrumb */}
-      <div className="bg-gray-50">
-        <div className="container mx-auto px-4 py-3 sm:py-4">
-          <div className="flex items-center text-xs sm:text-sm text-gray-600 overflow-x-auto">
-            <Link to="/" className="hover:text-brand-red whitespace-nowrap">Home</Link>
-            <ChevronRight size={14} className="mx-1 sm:mx-2 shrink-0" />
-            <Link to="/study-material" className="hover:text-brand-red whitespace-nowrap">Study Material</Link>
-            <ChevronRight size={14} className="mx-1 sm:mx-2 shrink-0" />
-            <span className="text-gray-900 truncate">{material.title}</span>
-          </div>
+      {/* Breadcrumbs */}
+      <div className="bg-gray-50 py-3 sm:py-4">
+        <div className="container mx-auto px-4">
+          <Link to="/study-material" className="flex items-center text-brand-red hover:underline text-xs sm:text-sm lg:text-base">
+            <ChevronLeft size={14} className="mr-1" />
+            Back to Study Materials
+          </Link>
         </div>
       </div>
       
@@ -117,136 +86,163 @@ const StudyMaterialDetails = () => {
       <section className="py-6 sm:py-8 lg:py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-10">
-            {/* Categories Sidebar - Hidden on mobile, show as simplified on lg+ screens */}
-            <div className="hidden lg:block">
-              <CategorySidebar 
-                activeCategory={activeCategory} 
-                setActiveCategory={setActiveCategory} 
-                categories={categories}
-                simplified={true}
-              />
-            </div>
-            
-            {/* Mobile Categories Button - Only show on mobile */}
-            <div className="lg:hidden mb-4 sm:mb-6">
-              <CategorySidebar 
-                activeCategory={activeCategory} 
-                setActiveCategory={setActiveCategory} 
-                categories={categories}
-                simplified={true}
-              />
-            </div>
-            
-            {/* Material Details */}
-            <div className="flex-1 lg:max-w-2xl">
-              <div className="bg-white rounded-lg">
-                <div className="h-32 sm:h-48 md:h-64 relative overflow-hidden rounded-lg mb-4 sm:mb-6">
-                  <img 
-                    src={material.thumbnail} 
-                    alt={material.title} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+            {/* Categories Section */}
+            <div className="w-full lg:w-1/4 order-1 lg:order-1">
+              <div className="bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg lg:sticky lg:top-24">
+                <h2 className="text-base sm:text-lg lg:text-xl font-bold mb-3 sm:mb-4 lg:mb-6">Categories</h2>
                 
-                <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
-                  <Badge className={`text-xs sm:text-sm ${material.isPremium ? "bg-yellow-500" : "bg-green-500"}`}>
-                    {material.isPremium ? "Premium" : "Free"}
-                  </Badge>
-                  <Badge variant="outline" className="text-xs sm:text-sm">{material.category}</Badge>
-                  <Badge variant="outline" className="text-xs sm:text-sm">{material.type}</Badge>
-                  <Badge variant="outline" className="text-xs sm:text-sm">{material.size}</Badge>
-                </div>
-                
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 leading-tight">{material.title}</h1>
-                
-                <div className="text-gray-500 mb-4 sm:mb-6 text-xs sm:text-sm">
-                  <p>Published on {material.date} • {material.downloadCount} downloads</p>
-                </div>
-                
-                <div className="prose max-w-none mb-6 sm:mb-8 text-sm sm:text-base">
-                  <p className="mb-3 sm:mb-4">{material.description}</p>
-                  <p className="mb-3 sm:mb-4">
-                    This comprehensive study material is designed to help you master the concepts and skills required for 
-                    successful career preparation in the technology sector. Whether you're preparing for a technical interview 
-                    or looking to deepen your understanding of core computer science topics, this resource will provide you with 
-                    the knowledge you need.
-                  </p>
-                  <p className="mb-3 sm:mb-4">
-                    The material includes practical examples, theoretical explanations, and practice questions that cover 
-                    all essential aspects of the subject. It's structured to gradually build your understanding from basic 
-                    concepts to more advanced topics.
-                  </p>
-                </div>
-                
-                <Button 
-                  onClick={() => handleDownload(material.id, material.isPremium)}
-                  className="bg-brand-red hover:bg-red-700 text-white w-full sm:w-auto text-sm sm:text-base py-2 sm:py-3"
-                >
-                  <Download size={16} className="mr-2" />
-                  Download Material
-                </Button>
+                <Collapsible open={showCategories} onOpenChange={setShowCategories}>
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      className="w-full bg-brand-red hover:bg-red-600 text-white text-xs sm:text-sm lg:text-base py-2 sm:py-3 justify-between"
+                    >
+                      <div className="flex items-center">
+                        <Plus size={16} className="mr-2" />
+                        Browse Categories
+                      </div>
+                      {showCategories ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    </Button>
+                  </CollapsibleTrigger>
+                  
+                  <CollapsibleContent className="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
+                    {/* All Materials */}
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-xs sm:text-sm py-2"
+                      onClick={() => handleCategoryClick('all')}
+                    >
+                      All Materials
+                    </Button>
+
+                    {/* Topic-based categories */}
+                    <div className="space-y-1 sm:space-y-2">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Topics</p>
+                      {topicCategories.map((category) => {
+                        const IconComponent = category.icon;
+                        return (
+                          <Button
+                            key={category.id}
+                            variant="outline"
+                            className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-xs sm:text-sm py-2"
+                            onClick={() => handleCategoryClick(category.id)}
+                          >
+                            <IconComponent size={14} className="mr-2 shrink-0" />
+                            <span className="truncate">{category.name}</span>
+                          </Button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Company-specific categories */}
+                    <div className="space-y-1 sm:space-y-2">
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Companies</p>
+                      {companyCategories.map((category) => {
+                        const IconComponent = category.icon;
+                        return (
+                          <Button
+                            key={category.id}
+                            variant="outline"
+                            className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-xs sm:text-sm py-2"
+                            onClick={() => handleCategoryClick(category.id)}
+                          >
+                            <IconComponent size={14} className="mr-2 shrink-0" />
+                            <span className="truncate">{category.name}</span>
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
               </div>
             </div>
             
-            {/* Related Materials Sidebar */}
-            <div className="lg:w-1/4">
-              <div className="bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg lg:sticky lg:top-24">
-                <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-3 sm:mb-4 lg:mb-6">Related Materials</h3>
-                
-                {relatedMaterials.length > 0 ? (
-                  <div className="space-y-2 sm:space-y-3 lg:space-y-4">
-                    {relatedMaterials.map(related => (
-                      <Link 
-                        key={related.id} 
-                        to={`/study-material/${related.id}`}
-                        className="block bg-white rounded-lg p-2 sm:p-3 lg:p-4 hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex gap-2 sm:gap-3 items-start">
-                          <div className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 rounded overflow-hidden shrink-0">
-                            <img 
-                              src={related.thumbnail} 
-                              alt={related.title} 
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <h4 className="font-medium text-gray-900 line-clamp-2 text-xs sm:text-sm lg:text-base leading-tight">{related.title}</h4>
-                            <p className="text-xs text-gray-500 mt-1">{related.date} • {related.type}</p>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
+            {/* Material Content */}
+            <div className="flex-1 order-2 lg:order-2 lg:max-w-2xl">
+              <Card>
+                <CardHeader className="bg-gray-50 p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-lg sm:text-xl lg:text-2xl font-bold break-words">{material.title}</CardTitle>
+                      <p className="text-gray-600 mt-2 text-xs sm:text-sm lg:text-base">{material.description}</p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 shrink-0">
+                      <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
+                        material.isPremium ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
+                      }`}>
+                        {material.isPremium ? 'Premium' : 'Free'}
+                      </span>
+                      <span className="px-2 sm:px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                        {material.category}
+                      </span>
+                    </div>
                   </div>
-                ) : (
-                  <p className="text-gray-500 text-xs sm:text-sm">No related materials found.</p>
-                )}
+                </CardHeader>
+                <CardContent className="pt-4 sm:pt-6 p-4 sm:p-6">
+                  <div className="prose prose-sm sm:prose lg:prose-lg max-w-none">
+                    <div className="whitespace-pre-wrap text-sm sm:text-base">{material.content}</div>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
+                    <Button 
+                      onClick={handleDownload}
+                      className="bg-brand-red hover:bg-red-600 text-white text-xs sm:text-sm flex-1 sm:flex-none"
+                    >
+                      <Download size={16} className="mr-2" />
+                      Download PDF
+                    </Button>
+                    <div className="text-xs sm:text-sm text-gray-500 flex items-center">
+                      <span>Downloads: {material.downloadCount}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Right Sidebar */}
+            <div className="lg:w-1/4 order-3 lg:order-3">
+              <div className="bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg lg:sticky lg:top-24">
+                <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-3 sm:mb-4 lg:mb-6">Material Info</h3>
+                <div className="space-y-2 sm:space-y-3 lg:space-y-4 text-xs sm:text-sm">
+                  <div>
+                    <span className="font-medium text-gray-900">Author:</span>
+                    <p className="text-gray-600">{material.author}</p>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-900">Type:</span>
+                    <p className="text-gray-600">{material.type}</p>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-900">Size:</span>
+                    <p className="text-gray-600">{material.size}</p>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-900">Tags:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {material.tags.map((tag, index) => (
+                        <span key={index} className="px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
                 
-                <Separator className="my-3 sm:my-4 lg:my-6" />
-                
-                <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-3 sm:mb-4">Quick Links</h3>
-                <div className="space-y-1 sm:space-y-2">
-                  {categories.slice(0, 5).map((category) => {
-                    const IconComponent = category.icon;
-                    return (
-                      <Link 
-                        key={category.id} 
-                        to={`/study-material?category=${category.name}`}
-                        className="flex items-center py-2 px-2 sm:px-3 rounded-md text-gray-700 hover:bg-gray-100 text-xs sm:text-sm"
-                      >
-                        <IconComponent size={14} className="mr-2 shrink-0" />
-                        <span className="truncate">{category.name}</span>
-                      </Link>
-                    );
-                  })}
+                <div className="mt-4 sm:mt-6 lg:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
+                  <h4 className="text-sm sm:text-base lg:text-lg font-bold mb-3 sm:mb-4">Explore More</h4>
+                  <p className="text-xs text-gray-600 mb-3 sm:mb-4">
+                    Check out our other study materials to boost your preparation.
+                  </p>
+                  <Link to="/study-material">
+                    <Button variant="outline" className="w-full text-xs sm:text-sm border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
+                      View All Materials
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      
-      {/* Subscribe Section */}
-      <PremiumCTA />
       
       <Footer />
     </>
