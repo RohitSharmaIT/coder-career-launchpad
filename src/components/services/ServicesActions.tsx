@@ -7,14 +7,14 @@ interface ServicesActionsProps {
   showLearnMore?: boolean;
   showBookSlot?: boolean;
   showPricing?: boolean;
-  bookLink?: string; // Added bookLink property as optional
+  bookLink?: string;
 }
 
 const ServicesActions = ({ 
   showLearnMore = true, 
   showBookSlot = true,
   showPricing = false,
-  bookLink = "/book-slot" // Default value if not provided
+  bookLink = "/book-a-consultation"
 }: ServicesActionsProps) => {
   return (
     <div className="mt-8 flex flex-wrap gap-4">

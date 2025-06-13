@@ -17,6 +17,9 @@ import StudyMaterialDetails from './pages/StudyMaterialDetails';
 import BookSlot from './pages/BookSlot';
 import PostJob from './pages/PostJob';
 import AdminPanel from './pages/AdminPanel';
+import Dashboard from './pages/Dashboard';
+import About from './pages/About';
+import Services from './pages/Services';
 import NotFound from './pages/NotFound';
 
 import { AuthProvider } from './contexts/AuthContext';
@@ -42,6 +45,8 @@ function App() {
                     <TooltipProvider>
                       <Routes>
                         <Route path="/" element={<Index />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/services" element={<Services />} />
                         <Route path="/jobs" element={<Jobs />} />
                         <Route path="/jobs/:id" element={<JobDetails />} />
                         <Route path="/blogs" element={<Blogs />} />
@@ -51,8 +56,11 @@ function App() {
                         <Route path="/study-material/dsa-topics" element={<DsaTopicsPage />} />
                         <Route path="/study-material/categories" element={<StudyMaterialCategories />} />
                         <Route path="/book-a-consultation" element={<BookSlot />} />
+                        <Route path="/book-slot" element={<BookSlot />} />
                         <Route path="/post-job" element={<PostJob />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/admin-panel" element={<AdminPanel />} />
+                        <Route path="/admin" element={<AdminPanel />} />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </TooltipProvider>
