@@ -42,14 +42,14 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
   if (simplified) {
     return (
       <div className="w-full lg:w-1/4">
-        <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
-          <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Categories</h2>
+        <div className="bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg">
+          <h2 className="text-base sm:text-lg lg:text-xl font-bold mb-3 sm:mb-4 lg:mb-6">Categories</h2>
           
           <Button
             onClick={handleBrowseCategoriesClick}
-            className="w-full bg-brand-red hover:bg-red-600 text-white text-sm sm:text-base"
+            className="w-full bg-brand-red hover:bg-red-600 text-white text-xs sm:text-sm lg:text-base py-2 sm:py-3"
           >
-            <Plus size={18} className="mr-2" />
+            <Plus size={16} className="mr-2" />
             Browse Categories
           </Button>
         </div>
@@ -59,22 +59,22 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
 
   return (
     <div className="w-full lg:w-1/4">
-      <div className="bg-gray-50 p-4 sm:p-6 rounded-lg sticky top-24">
-        <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Categories</h2>
+      <div className="bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg lg:sticky lg:top-24">
+        <h2 className="text-base sm:text-lg lg:text-xl font-bold mb-3 sm:mb-4 lg:mb-6">Categories</h2>
         
-        <div className="space-y-3 sm:space-y-4">
+        <div className="space-y-2 sm:space-y-3 lg:space-y-4">
           {/* All category */}
           <Button
             key="all"
             variant={activeCategory === 'All' ? "default" : "outline"}
-            className={`w-full justify-start text-left text-sm sm:text-base ${
+            className={`w-full justify-start text-left text-xs sm:text-sm lg:text-base py-2 sm:py-3 ${
               activeCategory === 'All' 
                 ? "bg-brand-red hover:bg-red-600" 
                 : "border-gray-200 text-gray-700 hover:bg-gray-100"
             }`}
             onClick={() => handleCategoryClick('all', 'All')}
           >
-            <Book size={16} className="mr-2 shrink-0" />
+            <Book size={14} className="mr-2 shrink-0 sm:size-4" />
             <span className="truncate">All Materials</span>
           </Button>
 
@@ -83,23 +83,23 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
             <CollapsibleTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-between text-left border-gray-200 text-sm sm:text-base"
+                className="w-full justify-between text-left border-gray-200 text-xs sm:text-sm lg:text-base py-2 sm:py-3"
               >
                 <span className="truncate">Topic-based Materials</span>
                 <span className="ml-2 shrink-0">{isOpen ? '−' : '+'}</span>
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-2 mt-2">
+            <CollapsibleContent className="space-y-1 sm:space-y-2 mt-2">
               {topicCategories.map((category) => {
                 const IconComponent = category.icon;
                 return (
                   <Button
                     key={category.id}
                     variant="outline"
-                    className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm"
+                    className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-xs sm:text-sm py-2"
                     onClick={() => handleCategoryClick(category.id, category.name)}
                   >
-                    <IconComponent size={16} className="mr-2 shrink-0" />
+                    <IconComponent size={14} className="mr-2 shrink-0" />
                     <span className="truncate">{category.name}</span>
                   </Button>
                 );
@@ -112,23 +112,23 @@ const CategorySidebar = ({ activeCategory, setActiveCategory, categories, simpli
             <CollapsibleTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-between text-left border-gray-200 text-sm sm:text-base"
+                className="w-full justify-between text-left border-gray-200 text-xs sm:text-sm lg:text-base py-2 sm:py-3"
               >
                 <span className="truncate">Company-specific Materials</span>
                 <span className="ml-2 shrink-0">−</span>
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-2 mt-2">
+            <CollapsibleContent className="space-y-1 sm:space-y-2 mt-2">
               {companyCategories.map((category) => {
                 const IconComponent = category.icon;
                 return (
                   <Button
                     key={category.id}
                     variant="outline"
-                    className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm"
+                    className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-xs sm:text-sm py-2"
                     onClick={() => handleCategoryClick(category.id, category.name)}
                   >
-                    <IconComponent size={16} className="mr-2 shrink-0" />
+                    <IconComponent size={14} className="mr-2 shrink-0" />
                     <span className="truncate">{category.name}</span>
                   </Button>
                 );
