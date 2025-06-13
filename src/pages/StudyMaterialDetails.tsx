@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
-import { studyMaterials } from "@/components/study-material/materialData";
+import { allMaterials } from "@/components/study-material/materialData";
 import { categories } from "@/components/study-material/materialData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,7 +15,7 @@ const StudyMaterialDetails = () => {
   const navigate = useNavigate();
   const [showCategories, setShowCategories] = useState(false);
   
-  const material = studyMaterials.find(m => m.id === parseInt(id || '0'));
+  const material = allMaterials.find(m => m.id === parseInt(id || '0'));
   
   if (!material) {
     return (
