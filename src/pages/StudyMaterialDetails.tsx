@@ -178,7 +178,7 @@ const StudyMaterialDetails = () => {
                 </CardHeader>
                 <CardContent className="pt-4 sm:pt-6 p-4 sm:p-6">
                   <div className="prose prose-sm sm:prose lg:prose-lg max-w-none">
-                    <div className="whitespace-pre-wrap text-sm sm:text-base">{material.content}</div>
+                    <div className="whitespace-pre-wrap text-sm sm:text-base">{material.content || material.description}</div>
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
@@ -204,7 +204,7 @@ const StudyMaterialDetails = () => {
                 <div className="space-y-2 sm:space-y-3 lg:space-y-4 text-xs sm:text-sm">
                   <div>
                     <span className="font-medium text-gray-900">Author:</span>
-                    <p className="text-gray-600">{material.author}</p>
+                    <p className="text-gray-600">{material.author || 'Unknown Author'}</p>
                   </div>
                   <div>
                     <span className="font-medium text-gray-900">Type:</span>
@@ -214,16 +214,18 @@ const StudyMaterialDetails = () => {
                     <span className="font-medium text-gray-900">Size:</span>
                     <p className="text-gray-600">{material.size}</p>
                   </div>
-                  <div>
-                    <span className="font-medium text-gray-900">Tags:</span>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {material.tags.map((tag, index) => (
-                        <span key={index} className="px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs">
-                          {tag}
-                        </span>
-                      ))}
+                  {material.tags && material.tags.length > 0 && (
+                    <div>
+                      <span className="font-medium text-gray-900">Tags:</span>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {material.tags.map((tag, index) => (
+                          <span key={index} className="px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 
                 <div className="mt-4 sm:mt-6 lg:mt-8 pt-4 sm:pt-6 border-t border-gray-200">

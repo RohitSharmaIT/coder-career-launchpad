@@ -1,3 +1,4 @@
+
 import { Book, FileText, Code, Globe, Brain, Zap } from "lucide-react";
 import { StudyMaterial } from "./MaterialCard";
 import { LucideIcon } from "lucide-react";
@@ -36,7 +37,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "4.2 MB",
     isPremium: false,
     downloadCount: 1250,
-    date: "May 5, 2024"
+    date: "May 5, 2024",
+    content: "This comprehensive guide covers all essential data structures and algorithms topics needed for technical interviews. It includes detailed explanations, code examples, and practice problems for arrays, linked lists, stacks, queues, trees, graphs, dynamic programming, and more.",
+    author: "Tech Interview Experts",
+    tags: ["DSA", "Interview", "Algorithms", "Data Structures", "Programming"]
   },
   {
     id: 2,
@@ -48,7 +52,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "2.8 MB",
     isPremium: false,
     downloadCount: 980,
-    date: "April 20, 2024"
+    date: "April 20, 2024",
+    content: "Complete collection of TCS NQT aptitude questions from previous years with step-by-step solutions. Covers quantitative aptitude, logical reasoning, and verbal ability sections.",
+    author: "TCS Preparation Team",
+    tags: ["TCS", "NQT", "Aptitude", "Quantitative", "Logical Reasoning"]
   },
   {
     id: 3,
@@ -60,7 +67,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "6.1 MB",
     isPremium: true,
     downloadCount: 740,
-    date: "May 1, 2024"
+    date: "May 1, 2024",
+    content: "Master system design interviews with this comprehensive guide. Learn how to design scalable systems, understand distributed system concepts, and practice with real-world examples like designing Twitter, Instagram, and WhatsApp.",
+    author: "System Design Experts",
+    tags: ["System Design", "Scalability", "Distributed Systems", "Architecture", "Interview"]
   },
   {
     id: 4,
@@ -72,7 +82,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "3.5 MB",
     isPremium: false,
     downloadCount: 820,
-    date: "April 15, 2024"
+    date: "April 15, 2024",
+    content: "Complete compilation of coding questions from Wipro ELITE recruitment with solutions in Java, Python, and C++. Includes array problems, string manipulation, and algorithmic challenges.",
+    author: "Wipro Prep Team",
+    tags: ["Wipro", "ELITE", "Coding", "Java", "Python", "C++"]
   },
   {
     id: 5,
@@ -84,7 +97,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "5.2 MB",
     isPremium: true,
     downloadCount: 520,
-    date: "May 8, 2024"
+    date: "May 8, 2024",
+    content: "Master graph algorithms with this advanced guide covering BFS, DFS, shortest path algorithms, minimum spanning trees, and complex graph problems with detailed implementations.",
+    author: "Algorithm Masters",
+    tags: ["Graphs", "BFS", "DFS", "Shortest Path", "MST", "Algorithms"]
   },
   {
     id: 6,
@@ -96,7 +112,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "1.8 MB",
     isPremium: false,
     downloadCount: 670,
-    date: "April 10, 2024"
+    date: "April 10, 2024",
+    content: "Comprehensive collection of Infosys Specialist Programmer interview questions covering technical coding problems, system design, and HR rounds with sample answers.",
+    author: "Infosys Interview Panel",
+    tags: ["Infosys", "SP", "Interview", "Technical", "HR", "Coding"]
   },
   {
     id: 7,
@@ -108,7 +127,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "7.3 MB",
     isPremium: true,
     downloadCount: 430,
-    date: "May 3, 2024"
+    date: "May 3, 2024",
+    content: "Complete guide to dynamic programming from basics to advanced. Covers memoization, tabulation, and classic DP problems like knapsack, LCS, and matrix chain multiplication.",
+    author: "DP Experts",
+    tags: ["Dynamic Programming", "Memoization", "Tabulation", "Optimization", "Algorithms"]
   },
   {
     id: 8,
@@ -120,7 +142,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "3.0 MB",
     isPremium: false,
     downloadCount: 590,
-    date: "April 25, 2024"
+    date: "April 25, 2024",
+    content: "Complete preparation guide for Cognizant GenC including aptitude questions, coding problems, and interview experiences from successful candidates.",
+    author: "Cognizant Prep Team",
+    tags: ["Cognizant", "GenC", "Aptitude", "Coding", "Interview", "Preparation"]
   },
   {
     id: 9,
@@ -132,7 +157,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "2.5 MB",
     isPremium: false,
     downloadCount: 720,
-    date: "April 18, 2024"
+    date: "April 18, 2024",
+    content: "Practice questions and coding problems from Accenture assessments with detailed solutions and tips for clearing the coding rounds successfully.",
+    author: "Accenture Coding Team",
+    tags: ["Accenture", "Coding", "Assessment", "Practice", "Solutions"]
   },
   {
     id: 10,
@@ -144,7 +172,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "8.1 MB",
     isPremium: true,
     downloadCount: 920,
-    date: "May 10, 2024"
+    date: "May 10, 2024",
+    content: "Complete React.js guide covering hooks, context API, state management, routing, and modern development practices with real-world projects and examples.",
+    author: "React Developers",
+    tags: ["React", "JavaScript", "Hooks", "Context", "Web Development", "Frontend"]
   },
   {
     id: 11,
@@ -156,7 +187,10 @@ export const allMaterials: StudyMaterial[] = [
     size: "12.5 MB",
     isPremium: true,
     downloadCount: 680,
-    date: "May 12, 2024"
+    date: "May 12, 2024",
+    content: "Comprehensive guide to machine learning fundamentals including supervised and unsupervised learning, neural networks, and practical implementation with Python.",
+    author: "ML Experts",
+    tags: ["Machine Learning", "Python", "Neural Networks", "AI", "Data Science"]
   },
   {
     id: 12,
@@ -168,6 +202,9 @@ export const allMaterials: StudyMaterial[] = [
     size: "5.7 MB",
     isPremium: false,
     downloadCount: 1150,
-    date: "May 15, 2024"
+    date: "May 15, 2024",
+    content: "Learn how to effectively use ChatGPT and other AI tools in software development. Includes prompt engineering, code generation, debugging, and productivity tips.",
+    author: "AI Tools Team",
+    tags: ["ChatGPT", "AI Tools", "Prompt Engineering", "Development", "Productivity"]
   }
 ];
