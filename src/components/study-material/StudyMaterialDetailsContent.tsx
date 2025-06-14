@@ -47,6 +47,43 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
     navigate('/upgrade-simple');
   };
 
+  // Helper function to render content with proper HTML formatting
+  const renderContent = (content: string, isPreview: boolean = false) => {
+    if (isPreview && material.isPremium && !isPremiumUser) {
+      // Show truncated version for premium content
+      const textContent = content.replace(/<[^>]*>/g, '');
+      const truncatedText = textContent.substring(0, 200) + '...';
+      return (
+        <div className="space-y-3">
+          <p>{truncatedText}</p>
+          <div className="bg-gradient-to-t from-white to-transparent h-20 flex items-end justify-center">
+            <div className="text-center p-4 bg-white rounded-lg shadow-sm border">
+              <Lock className="mx-auto mb-2 text-amber-600" size={24} />
+              <p className="text-sm text-gray-600 mb-3">
+                Upgrade to premium to access full content
+              </p>
+              <Button 
+                size="sm" 
+                className="bg-brand-red hover:bg-red-600"
+                onClick={handleUpgradeClick}
+              >
+                Upgrade Now
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    // Render full HTML content
+    return (
+      <div 
+        className="prose prose-sm sm:prose max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-strong:text-gray-900 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-white"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
+  };
+
   return (
     <div className="lg:w-1/2 order-2 lg:order-2">
       <div className="space-y-4 sm:space-y-6">
@@ -91,34 +128,11 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
         {/* Content Preview */}
         <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
           <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Content Preview</h3>
-          <div className="prose prose-sm sm:prose max-w-none">
-            {material.content ? (
-              material.isPremium && !isPremiumUser ? (
-                <div className="space-y-3">
-                  <p>{material.content.substring(0, 200)}...</p>
-                  <div className="bg-gradient-to-t from-white to-transparent h-20 flex items-end justify-center">
-                    <div className="text-center p-4 bg-white rounded-lg shadow-sm border">
-                      <Lock className="mx-auto mb-2 text-amber-600" size={24} />
-                      <p className="text-sm text-gray-600 mb-3">
-                        Upgrade to premium to access full content
-                      </p>
-                      <Button 
-                        size="sm" 
-                        className="bg-brand-red hover:bg-red-600"
-                        onClick={handleUpgradeClick}
-                      >
-                        Upgrade Now
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <p>{material.content}</p>
-              )
-            ) : (
-              <p className="text-gray-500 italic">No preview available</p>
-            )}
-          </div>
+          {material.content ? (
+            renderContent(material.content, true)
+          ) : (
+            <p className="text-gray-500 italic">No preview available</p>
+          )}
         </div>
 
         {/* Additional Info */}
