@@ -11,21 +11,6 @@ const PremiumFeatures = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header Section */}
-      <div className="text-left">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 flex items-center justify-center">
-            <span className="text-2xl">💎</span>
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Unlock All Premium Study Materials & Downloads
-          </h1>
-        </div>
-        <p className="text-gray-600 mb-8">
-          Get unlimited access to exclusive content and boost your career preparation
-        </p>
-      </div>
-
       {/* What's Included Section */}
       <div>
         <h2 className="text-xl font-bold text-gray-900 mb-6">What's Included:</h2>
