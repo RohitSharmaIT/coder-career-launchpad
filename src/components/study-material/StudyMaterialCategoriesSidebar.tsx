@@ -50,7 +50,7 @@ const StudyMaterialCategoriesSidebar = () => {
                   <ChevronDown size={16} className="ml-2" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-white">
+              <DropdownMenuContent align="end" className="w-56 bg-white z-50">
                 <DropdownMenuItem onClick={() => handleCategoryClick('all')}>
                   All Materials
                 </DropdownMenuItem>
@@ -157,13 +157,11 @@ const StudyMaterialCategoriesSidebar = () => {
           </Collapsible>
         </div>
 
-        {/* Desktop: Simple navigation notice - no repeated categories */}
-        <div className="hidden lg:block mt-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm text-blue-700">
-              <strong>Quick Navigation:</strong> Use the "Browse Categories" dropdown above to explore all available study materials organized by topics and companies.
-            </p>
-          </div>
+        {/* Desktop: Simple help text */}
+        <div className="hidden lg:block mt-4">
+          <p className="text-xs text-gray-500 text-center">
+            Use the dropdown above to browse all categories
+          </p>
         </div>
       </div>
     </div>
