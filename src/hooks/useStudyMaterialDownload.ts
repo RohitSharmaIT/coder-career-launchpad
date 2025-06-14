@@ -1,34 +1,33 @@
 
 import { toast } from "sonner";
 import { allMaterials } from "@/components/study-material/materialData";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const useStudyMaterialDownload = () => {
-  const handleDownload = (id: number, isPremium: boolean) => {
-    // Check if user is logged in (implement this based on your auth system)
-    const isLoggedIn = false;
-    const hasPremiumAccess = false;
-    
-    if (!isLoggedIn) {
+  const { isAuthenticated, isPremium } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDownload = (id: number, isPremiumContent: boolean) => {
+    if (!isAuthenticated) {
       toast.error("Please log in to download study materials", {
         action: {
           label: "Login",
           onClick: () => {
-            // Redirect to login page
-            window.location.href = "/login";
+            navigate("/login");
           }
         }
       });
       return;
     }
     
-    if (isPremium && !hasPremiumAccess) {
+    if (isPremiumContent && !isPremium()) {
       toast.error("This is a premium resource", {
-        description: "Upgrade to access premium study materials",
+        description: "Upgrade to Premium to access exclusive content",
         action: {
-          label: "Upgrade",
+          label: "Upgrade Now",
           onClick: () => {
-            // Redirect to upgrade page
-            console.log("Redirect to upgrade page");
+            navigate("/upgrade-premium");
           }
         }
       });

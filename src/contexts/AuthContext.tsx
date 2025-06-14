@@ -8,6 +8,8 @@ interface User {
   role: 'user' | 'admin';
   bio?: string;
   profilePicture?: string;
+  premium: boolean;
+  premiumExpiryDate?: string;
 }
 
 interface AuthContextType {
@@ -18,7 +20,9 @@ interface AuthContextType {
   signup: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAdmin: () => boolean;
+  isPremium: () => boolean;
   updateProfile: (data: Partial<User> & { password?: string }) => Promise<void>;
+  upgradeToPremium: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,7 +35,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Check if user is logged in from localStorage
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      // Check if premium has expired
+      if (parsedUser.premium && parsedUser.premiumExpiryDate) {
+        const expiryDate = new Date(parsedUser.premiumExpiryDate);
+        const now = new Date();
+        if (now > expiryDate) {
+          parsedUser.premium = false;
+          parsedUser.premiumExpiryDate = undefined;
+          localStorage.setItem('user', JSON.stringify(parsedUser));
+        }
+      }
+      setUser(parsedUser);
     }
     setIsLoading(false);
   }, []);
@@ -48,7 +63,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: '1',
           name: 'Apne Wale Coders',
           email: 'apnewalecoders@gmail.com',
-          role: 'admin'
+          role: 'admin',
+          premium: true
         };
         setUser(adminUser);
         localStorage.setItem('user', JSON.stringify(adminUser));
@@ -61,7 +77,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: '2',
           name: 'Demo User',
           email: 'user@example.com',
-          role: 'user'
+          role: 'user',
+          premium: false
         };
         setUser(regularUser);
         localStorage.setItem('user', JSON.stringify(regularUser));
@@ -84,7 +101,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: Date.now().toString(), // Generate a temporary ID
         name,
         email,
-        role: 'user'
+        role: 'user',
+        premium: false
       };
       
       setUser(newUser);
@@ -118,6 +136,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const upgradeToPremium = () => {
+    if (!user) return;
+    
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 30); // 30 days from now
+    
+    const updatedUser: User = {
+      ...user,
+      premium: true,
+      premiumExpiryDate: expiryDate.toISOString()
+    };
+    
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -125,6 +159,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   
   const isAdmin = () => {
     return user?.role === 'admin';
+  };
+
+  const isPremium = () => {
+    if (!user || !user.premium) return false;
+    
+    if (user.premiumExpiryDate) {
+      const expiryDate = new Date(user.premiumExpiryDate);
+      const now = new Date();
+      return now <= expiryDate;
+    }
+    
+    return user.premium;
   };
 
   return (
@@ -137,7 +183,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signup,
         logout,
         isAdmin,
-        updateProfile
+        isPremium,
+        updateProfile,
+        upgradeToPremium
       }}
     >
       {children}
