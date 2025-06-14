@@ -1,7 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check } from "lucide-react";
 
 interface PaymentCardProps {
@@ -14,38 +13,37 @@ const PaymentCard = ({ isProcessing, paymentStatus, onPayment }: PaymentCardProp
   return (
     <div className="flex justify-center">
       <Card className="w-full max-w-md border-2 border-yellow-300 shadow-lg">
-        <CardHeader className="text-center bg-gradient-to-r from-yellow-100 to-orange-100">
-          <div className="flex justify-center mb-2">
-            <Badge className="bg-yellow-500 text-white text-lg px-4 py-1">
-              Premium Plan
-            </Badge>
+        <CardHeader className="text-center bg-gradient-to-br from-yellow-50 to-yellow-100 pb-4">
+          <div className="inline-block bg-yellow-500 text-white text-sm font-medium px-3 py-1 rounded-full mb-3">
+            Limited Time Offer
           </div>
-          <CardTitle className="text-3xl font-bold">Premium Access</CardTitle>
-          <div className="text-4xl font-bold text-green-600 mt-4">
-            ₹199
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Premium Access</h2>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="text-4xl">💰</span>
+            <span className="text-4xl font-bold text-orange-600">₹199</span>
           </div>
           <p className="text-gray-600">One-time payment</p>
         </CardHeader>
         <CardContent className="p-6">
-          <div className="space-y-4 mb-6">
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5 text-green-500" />
-              <span>Instant access to all premium content</span>
+          <div className="space-y-3 mb-6">
+            <div className="flex items-center gap-3">
+              <Check className="w-4 h-4 text-green-500" />
+              <span className="text-sm text-gray-700">Instant access to all premium content</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5 text-green-500" />
-              <span>Valid for 30 days</span>
+            <div className="flex items-center gap-3">
+              <Check className="w-4 h-4 text-green-500" />
+              <span className="text-sm text-gray-700">Valid for 30 days</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-5 h-5 text-green-500" />
-              <span>No recurring charges</span>
+            <div className="flex items-center gap-3">
+              <Check className="w-4 h-4 text-green-500" />
+              <span className="text-sm text-gray-700">No recurring charges</span>
             </div>
           </div>
           
           <Button 
             onClick={onPayment}
             disabled={isProcessing}
-            className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white text-lg py-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white text-lg py-6 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             size="lg"
           >
             {isProcessing ? (
@@ -54,12 +52,12 @@ const PaymentCard = ({ isProcessing, paymentStatus, onPayment }: PaymentCardProp
                 {paymentStatus === 'processing' ? 'Processing Payment...' : 'Please wait...'}
               </div>
             ) : (
-              "Pay ₹199 - Upgrade to Premium"
+              "Pay ₹199 - Upgrade Now"
             )}
           </Button>
           
           <p className="text-xs text-gray-500 text-center mt-4">
-            Secure payment • One-time charge of ₹199
+            Secure payment via Razorpay • No hidden fees • Instant activation
           </p>
         </CardContent>
       </Card>

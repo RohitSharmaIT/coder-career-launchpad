@@ -54,10 +54,10 @@ const PremiumHeader = ({ isUserPremium, daysLeft, paymentStatus, onGoToDashboard
         </>
       ) : (
         <>
-          <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-2">
+          <h1 className="text-3xl font-bold mb-4 flex items-center justify-center gap-2">
             💎 Unlock All Premium Study Materials & Downloads
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Get unlimited access to exclusive content and boost your career preparation
           </p>
         </>
