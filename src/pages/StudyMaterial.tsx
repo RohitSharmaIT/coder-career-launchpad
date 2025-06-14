@@ -10,29 +10,24 @@ import PremiumCTA from "@/components/study-material/PremiumCTA";
 import { allMaterials } from "@/components/study-material/materialData";
 import { StudyMaterial as StudyMaterialType } from "@/components/study-material/MaterialCard";
 import { useStudyMaterials } from "@/contexts/StudyMaterialsContext";
-import { useCategories } from "@/contexts/CategoriesContext";
 import { useStudyMaterialDownload } from "@/hooks/useStudyMaterialDownload";
 
 const StudyMaterial = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState('all');
   const [selectedSpecialMaterial, setSelectedSpecialMaterial] = useState<StudyMaterialType | null>(null);
   const navigate = useNavigate();
   const { studyMaterials } = useStudyMaterials();
-  const { studyMaterialCategories } = useCategories();
   const { handleDownload } = useStudyMaterialDownload();
 
   // Combine static materials with dynamic ones from context
   const combinedMaterials = [...studyMaterials, ...allMaterials];
 
-  // Filter materials by search term and category
+  // Filter materials by search term only
   const filteredMaterials = combinedMaterials.filter(material => {
     const matchesSearchTerm = material.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                              material.description.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCategory = activeCategory === 'all' || material.category === activeCategory;
-    
-    return matchesSearchTerm && matchesCategory;
+    return matchesSearchTerm;
   });
 
   const handleSpecialCardClick = (material: StudyMaterialType) => {
@@ -55,39 +50,12 @@ const StudyMaterial = () => {
     navigate('/study-material/categories');
   };
 
-  // Create categories array including 'All' and dynamic categories
-  const categories = [
-    { value: 'all', label: 'All Categories' },
-    ...studyMaterialCategories
-  ];
-
   return (
     <div className="pt-20">
       <Navbar />
       
       {/* Hero Section with Search */}
       <StudyHero searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      
-      {/* Category Filter */}
-      <section className="py-8 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map((category) => (
-              <button
-                key={category.value}
-                onClick={() => setActiveCategory(category.value)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  activeCategory === category.value
-                    ? 'bg-brand-red text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
       
       {/* Main Content */}
       <StudyMaterialContent
