@@ -5,8 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { GraduationCap, Users, Award, Target, Eye, Clock, CheckCircle, Shield, Zap, Heart } from "lucide-react";
+import { useState } from "react";
+import FreeConsultationModal from "@/components/booking/FreeConsultationModal";
 
 const About = () => {
+  const [isConsultationModalOpen, setIsConsultationModalOpen] = useState(false);
+
   const timeline = [
     {
       year: "2020",
@@ -98,11 +102,13 @@ const About = () => {
                     Explore Services
                   </Button>
                 </Link>
-                <Link to="/book-slot">
-                  <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-8 py-3">
-                    Book Consultation
-                  </Button>
-                </Link>
+                <Button 
+                  variant="outline" 
+                  className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-8 py-3"
+                  onClick={() => setIsConsultationModalOpen(true)}
+                >
+                  Book Consultation
+                </Button>
               </div>
             </div>
             <div className="relative">
@@ -355,11 +361,12 @@ const About = () => {
               Join thousands of successful tech professionals who have accelerated their careers with our expert guidance.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/book-slot">
-                <Button className="bg-white text-brand-red hover:bg-gray-100 px-8 py-3 text-lg">
-                  Book Free Consultation
-                </Button>
-              </Link>
+              <Button 
+                className="bg-white text-brand-red hover:bg-gray-100 px-8 py-3 text-lg"
+                onClick={() => setIsConsultationModalOpen(true)}
+              >
+                Book Free Consultation
+              </Button>
               <Link to="/services">
                 <Button variant="outline" className="bg-brand-red/20 text-white hover:bg-brand-red/30 border border-white/30 px-8 py-3 text-lg">
                   View All Services
@@ -371,6 +378,12 @@ const About = () => {
       </section>
 
       <Footer />
+
+      {/* Free Consultation Modal */}
+      <FreeConsultationModal 
+        isOpen={isConsultationModalOpen}
+        onClose={() => setIsConsultationModalOpen(false)}
+      />
     </>
   );
 };
