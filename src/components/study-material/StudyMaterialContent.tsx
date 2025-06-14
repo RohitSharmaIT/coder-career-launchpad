@@ -1,6 +1,10 @@
 
 import MaterialsGrid from "./MaterialsGrid";
 import { StudyMaterial } from "./MaterialCard";
+import { Button } from "@/components/ui/button";
+import { Grid3X3 } from "lucide-react";
+import { useState } from "react";
+import CategoriesModal from "./CategoriesModal";
 
 interface StudyMaterialContentProps {
   filteredMaterials: StudyMaterial[];
@@ -17,14 +21,25 @@ const StudyMaterialContent = ({
   onPremiumClick,
   onCategoriesClick 
 }: StudyMaterialContentProps) => {
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
+
   return (
     <section className="py-8 bg-gray-50">
       <div className="container mx-auto px-4">
-        {/* Results count */}
-        <div className="mb-6">
+        {/* Header with results count and browse categories button */}
+        <div className="flex justify-between items-center mb-6">
           <p className="text-gray-600">
             Showing {filteredMaterials.length} study materials
           </p>
+          
+          <Button
+            onClick={() => setShowCategoriesModal(true)}
+            variant="outline"
+            className="bg-white hover:bg-gray-50 text-brand-red border-brand-red hover:border-red-600"
+          >
+            <Grid3X3 size={16} className="mr-2" />
+            Browse Categories
+          </Button>
         </div>
 
         {/* Materials Grid */}
@@ -35,6 +50,12 @@ const StudyMaterialContent = ({
           onPremiumClick={onPremiumClick}
         />
       </div>
+
+      {/* Categories Modal */}
+      <CategoriesModal
+        isOpen={showCategoriesModal}
+        onClose={() => setShowCategoriesModal(false)}
+      />
     </section>
   );
 };
