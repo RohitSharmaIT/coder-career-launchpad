@@ -55,7 +55,7 @@ const Counter = ({ target, label, suffix = '', duration = 2000 }: CounterProps) 
   return (
     <div 
       ref={counterRef} 
-      className="text-center p-6 group"
+      className="text-center group"
     >
       <div className="text-4xl md:text-5xl font-bold text-white mb-3 group-hover:scale-110 transition-transform duration-300">
         {count.toLocaleString()}{suffix}

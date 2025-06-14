@@ -24,13 +24,13 @@ const SubscribeBox = () => {
   };
 
   return (
-    <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-brand-red py-20 relative overflow-hidden">
+    <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-brand-red relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-white/5 bg-[radial-gradient(circle_at_25%_25%,_white_2px,_transparent_2px)] bg-[length:40px_40px]"></div>
       </div>
       
-      <div className="relative container mx-auto px-4">
+      <div className="relative container mx-auto">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6 animate-fade-in">
@@ -42,7 +42,7 @@ const SubscribeBox = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in" style={{animationDelay: '0.1s'}}>
             Join Our Growing Community
           </h2>
-          <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{animationDelay: '0.2s'}}>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in" style={{animationDelay: '0.2s'}}>
             Get exclusive access to the latest tech interview questions, career tips, job opportunities, and industry insights delivered straight to your inbox.
           </p>
           
