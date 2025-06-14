@@ -89,7 +89,7 @@ const StudyMaterialInfoSidebar = ({ material }: StudyMaterialInfoSidebarProps) =
                     variant="secondary" 
                     className="px-3 py-1 text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer transition-colors"
                   >
-                    #{tag}
+                    {tag}
                   </Badge>
                 ))}
               </div>
