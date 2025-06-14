@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -112,13 +111,11 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
           </div>
 
           {/* Tagline */}
-          {material.tagline && (
-            <div>
-              <p className="text-lg text-blue-600 font-medium">
-                {material.tagline}
-              </p>
-            </div>
-          )}
+          <div>
+            <p className="text-lg text-blue-600 font-medium">
+              Master the fundamentals and advance your knowledge with comprehensive study materials
+            </p>
+          </div>
 
           {/* Full Content */}
           <div className="bg-white p-6 rounded-lg border">
@@ -146,7 +143,7 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
     );
   }
 
-  // Regular preview view - simplified to remove duplicated content
+  // Regular preview view
   return (
     <div className="bg-white">
       <div className="space-y-6">
@@ -158,13 +155,11 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
         </div>
 
         {/* 2. Tagline */}
-        {material.tagline && (
-          <div>
-            <p className="text-lg text-blue-600 font-medium">
-              {material.tagline}
-            </p>
-          </div>
-        )}
+        <div>
+          <p className="text-lg text-blue-600 font-medium">
+            Master the fundamentals and advance your knowledge with comprehensive study materials
+          </p>
+        </div>
 
         {/* 3. Content Preview */}
         <div className="bg-gray-50 p-6 rounded-lg">
