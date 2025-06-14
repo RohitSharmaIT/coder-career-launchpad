@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Download, Calendar, User, FileText, Tag } from "lucide-react";
+import { Download, Calendar, User, FileText, Lock } from "lucide-react";
 import { useStudyMaterialDownload } from "@/hooks/useStudyMaterialDownload";
 
 interface StudyMaterial {
@@ -33,45 +33,81 @@ const StudyMaterialInfoSidebar = ({ material }: StudyMaterialInfoSidebarProps) =
 
   return (
     <div className="space-y-6">
-      {/* Material Info Section */}
+      {/* Material Details Section */}
       <div className="bg-gray-50 p-6 rounded-lg">
-        <h3 className="text-lg font-bold mb-6 text-gray-900">Material Info</h3>
+        <h3 className="text-lg font-bold mb-6 text-gray-900">Material Details</h3>
         
         <div className="space-y-4">
           {/* Author */}
           {material.author && (
-            <div>
-              <span className="text-sm font-medium text-gray-500">Author:</span>
-              <p className="text-sm text-gray-900">{material.author}</p>
+            <div className="flex items-center space-x-3">
+              <User className="w-5 h-5 text-gray-500" />
+              <div>
+                <p className="text-sm font-medium text-gray-500">Author</p>
+                <p className="text-base text-gray-900">{material.author}</p>
+              </div>
             </div>
           )}
 
-          {/* Type */}
-          <div>
-            <span className="text-sm font-medium text-gray-500">Type:</span>
-            <p className="text-sm text-gray-900">{material.type}</p>
+          {/* Date Posted */}
+          <div className="flex items-center space-x-3">
+            <Calendar className="w-5 h-5 text-gray-500" />
+            <div>
+              <p className="text-sm font-medium text-gray-500">Date Posted</p>
+              <p className="text-base text-gray-900">{material.date}</p>
+            </div>
           </div>
 
-          {/* Size */}
-          <div>
-            <span className="text-sm font-medium text-gray-500">Size:</span>
-            <p className="text-sm text-gray-900">{material.size}</p>
+          {/* File Size */}
+          <div className="flex items-center space-x-3">
+            <FileText className="w-5 h-5 text-gray-500" />
+            <div>
+              <p className="text-sm font-medium text-gray-500">File Size</p>
+              <p className="text-base text-gray-900">{material.size}</p>
+            </div>
           </div>
+
+          {/* Premium Badge */}
+          {material.isPremium && (
+            <div className="flex items-center space-x-3">
+              <Lock className="w-5 h-5 text-amber-500" />
+              <div>
+                <p className="text-sm font-medium text-gray-500">Access Level</p>
+                <p className="text-base text-amber-600 font-medium">Premium Content</p>
+              </div>
+            </div>
+          )}
 
           {/* Tags */}
           {material.tags && material.tags.length > 0 && (
             <div>
-              <span className="text-sm font-medium text-gray-500 mb-2 block">Tags:</span>
-              <div className="flex flex-wrap gap-1">
+              <p className="text-sm font-medium text-gray-500 mb-2">Tags</p>
+              <div className="flex flex-wrap gap-2">
                 {material.tags.map((tag, index) => (
-                  <Badge key={index} variant="secondary" className="text-xs bg-blue-100 text-blue-700">
-                    {tag}
+                  <Badge 
+                    key={index} 
+                    variant="secondary" 
+                    className="px-3 py-1 text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer transition-colors"
+                  >
+                    #{tag}
                   </Badge>
                 ))}
               </div>
             </div>
           )}
         </div>
+      </div>
+
+      {/* Quick Download Section */}
+      <div className="bg-gray-50 p-6 rounded-lg">
+        <h3 className="text-lg font-bold mb-4 text-gray-900">Quick Actions</h3>
+        <Button
+          onClick={handleDownloadClick}
+          className="w-full bg-brand-red hover:bg-red-600 text-white mb-4"
+        >
+          <Download size={16} className="mr-2" />
+          Download Now
+        </Button>
       </div>
 
       {/* Explore More Section */}

@@ -146,7 +146,7 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
     );
   }
 
-  // Regular preview view
+  // Regular preview view - simplified to remove duplicated content
   return (
     <div className="bg-white">
       <div className="space-y-6">
@@ -231,66 +231,6 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
                 <p className="text-base font-semibold text-gray-900">{material.downloadCount.toLocaleString()}</p>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* 6. Material Info */}
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Material Information</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {material.author && (
-              <div className="flex items-center space-x-3">
-                <User className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Author</p>
-                  <p className="text-base text-gray-900">{material.author}</p>
-                </div>
-              </div>
-            )}
-            
-            <div className="flex items-center space-x-3">
-              <Calendar className="w-5 h-5 text-gray-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">Date Posted</p>
-                <p className="text-base text-gray-900">{material.date}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <Download className="w-5 h-5 text-gray-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">File Size</p>
-                <p className="text-base text-gray-900">{material.size}</p>
-              </div>
-            </div>
-
-            {material.isPremium && (
-              <div className="flex items-center space-x-3">
-                <Lock className="w-5 h-5 text-amber-500" />
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Access Level</p>
-                  <p className="text-base text-amber-600 font-medium">Premium Content</p>
-                </div>
-              </div>
-            )}
-
-            {/* Tags in Material Info */}
-            {material.tags && material.tags.length > 0 && (
-              <div className="col-span-1 sm:col-span-2">
-                <p className="text-sm font-medium text-gray-500 mb-2">Tags</p>
-                <div className="flex flex-wrap gap-2">
-                  {material.tags.map((tag, index) => (
-                    <Badge 
-                      key={index} 
-                      variant="secondary" 
-                      className="px-3 py-1 text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer transition-colors"
-                    >
-                      #{tag}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
