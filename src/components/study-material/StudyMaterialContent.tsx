@@ -24,10 +24,10 @@ const StudyMaterialContent = ({
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
 
   return (
-    <section className="py-8 bg-gray-50">
+    <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
         {/* Header with results count and browse categories button */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-8">
           <p className="text-gray-600">
             Showing {filteredMaterials.length} study materials
           </p>

@@ -12,16 +12,16 @@ const Services = () => {
     <div className="min-h-screen">
       <Navbar />
       
-      {/* Hero Section */}
       <div className="pt-20">
+        {/* Hero Section */}
         <ServicesHero />
-      </div>
-      
-      {/* Main Content */}
-      <div className="bg-white">
-        <ServicesList />
-        <ServicesFAQ />
-        <ServicesCTA />
+        
+        {/* Main Content */}
+        <div className="bg-white">
+          <ServicesList />
+          <ServicesFAQ />
+          <ServicesCTA />
+        </div>
       </div>
       
       <Footer />

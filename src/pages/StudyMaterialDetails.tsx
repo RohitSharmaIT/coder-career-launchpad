@@ -20,10 +20,10 @@ const StudyMaterialDetails = () => {
   
   if (!material) {
     return (
-      <>
+      <div className="min-h-screen">
         <Navbar />
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
+        <div className="pt-20 flex items-center justify-center min-h-screen">
+          <div className="text-center px-4">
             <h1 className="text-2xl font-bold mb-4">Material Not Found</h1>
             <Link to="/study-material" className="text-brand-red hover:underline">
               Back to Study Materials
@@ -31,40 +31,42 @@ const StudyMaterialDetails = () => {
           </div>
         </div>
         <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="min-h-screen">
       <Navbar />
       
-      <StudyMaterialBreadcrumbs />
-      
-      {/* Main Content */}
-      <section className="py-6 sm:py-8 lg:py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            {/* Left Sidebar - Categories */}
-            <div className="lg:w-1/4">
-              <StudyMaterialCategoriesSidebar />
-            </div>
-            
-            {/* Main Content Area */}
-            <div className="lg:w-1/2">
-              <StudyMaterialDetailsContent material={material} />
-            </div>
-            
-            {/* Right Sidebar - Material Info */}
-            <div className="lg:w-1/4">
-              <StudyMaterialInfoSidebar material={material} />
+      <div className="pt-20">
+        <StudyMaterialBreadcrumbs />
+        
+        {/* Main Content */}
+        <section className="py-8 lg:py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+              {/* Left Sidebar - Categories */}
+              <div className="lg:w-1/4">
+                <StudyMaterialCategoriesSidebar />
+              </div>
+              
+              {/* Main Content Area */}
+              <div className="lg:w-1/2">
+                <StudyMaterialDetailsContent material={material} />
+              </div>
+              
+              {/* Right Sidebar - Material Info */}
+              <div className="lg:w-1/4">
+                <StudyMaterialInfoSidebar material={material} />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
       
       <Footer />
-    </>
+    </div>
   );
 };
 

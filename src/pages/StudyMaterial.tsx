@@ -59,37 +59,39 @@ const StudyMaterial = () => {
   };
 
   return (
-    <div className="pt-20">
+    <div className="min-h-screen">
       <Navbar />
       
-      {/* Hero Section with Search */}
-      <StudyHero searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      
-      {/* Main Content */}
-      <StudyMaterialContent
-        filteredMaterials={filteredMaterials}
-        onDownload={handleDownload}
-        onSpecialCardClick={handleSpecialCardClick}
-        onPremiumClick={handlePremiumClick}
-        onCategoriesClick={handleCategoriesClick}
-      />
+      <div className="pt-20">
+        {/* Hero Section with Search */}
+        <StudyHero searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        
+        {/* Main Content */}
+        <StudyMaterialContent
+          filteredMaterials={filteredMaterials}
+          onDownload={handleDownload}
+          onSpecialCardClick={handleSpecialCardClick}
+          onPremiumClick={handlePremiumClick}
+          onCategoriesClick={handleCategoriesClick}
+        />
 
-      {/* DSA Topics Section - Only visible when special card is clicked */}
-      <DsaTopicsSection
-        selectedSpecialMaterial={selectedSpecialMaterial}
-        onDownload={handleDownload}
-        onDsaTopicHeaderClick={handleDsaTopicHeaderClick}
-      />
-      
-      {/* Subscribe Section */}
-      <PremiumCTA />
-      
-      {/* Premium Access Modal */}
-      <PremiumAccessModal
-        isOpen={showPremiumModal}
-        onClose={() => setShowPremiumModal(false)}
-        materialTitle={selectedPremiumMaterial?.title}
-      />
+        {/* DSA Topics Section - Only visible when special card is clicked */}
+        <DsaTopicsSection
+          selectedSpecialMaterial={selectedSpecialMaterial}
+          onDownload={handleDownload}
+          onDsaTopicHeaderClick={handleDsaTopicHeaderClick}
+        />
+        
+        {/* Subscribe Section */}
+        <PremiumCTA />
+        
+        {/* Premium Access Modal */}
+        <PremiumAccessModal
+          isOpen={showPremiumModal}
+          onClose={() => setShowPremiumModal(false)}
+          materialTitle={selectedPremiumMaterial?.title}
+        />
+      </div>
       
       <Footer />
     </div>

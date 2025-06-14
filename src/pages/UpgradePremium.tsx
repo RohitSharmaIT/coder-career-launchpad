@@ -32,40 +32,42 @@ const UpgradePremium = () => {
   const daysLeft = getDaysLeft();
 
   return (
-    <div className="pt-20">
+    <div className="min-h-screen">
       <Navbar />
       
-      <section className="py-16 bg-white min-h-screen">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <PremiumHeader 
-              isUserPremium={isUserPremium}
-              daysLeft={daysLeft}
-              paymentStatus={paymentStatus}
-              onGoToDashboard={handleGoToDashboard}
-            />
+      <div className="pt-20">
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <PremiumHeader 
+                isUserPremium={isUserPremium}
+                daysLeft={daysLeft}
+                paymentStatus={paymentStatus}
+                onGoToDashboard={handleGoToDashboard}
+              />
 
-            {!isUserPremium && paymentStatus !== 'success' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mt-12">
-                <div className="lg:col-span-1">
-                  <PremiumFeatures />
+              {!isUserPremium && paymentStatus !== 'success' && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mt-12">
+                  <div className="lg:col-span-1">
+                    <PremiumFeatures />
+                  </div>
+                  <div className="lg:col-span-1 flex justify-center">
+                    <PaymentCard 
+                      isProcessing={isProcessing}
+                      paymentStatus={paymentStatus}
+                      onPayment={initializePayment}
+                    />
+                  </div>
                 </div>
-                <div className="lg:col-span-1 flex justify-center">
-                  <PaymentCard 
-                    isProcessing={isProcessing}
-                    paymentStatus={paymentStatus}
-                    onPayment={initializePayment}
-                  />
-                </div>
-              </div>
-            )}
+              )}
 
-            {isUserPremium && (
-              <PremiumBenefits />
-            )}
+              {isUserPremium && (
+                <PremiumBenefits />
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
       
       <Footer />
     </div>
