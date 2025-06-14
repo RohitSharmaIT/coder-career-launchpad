@@ -182,6 +182,7 @@ const FreeConsultationModal = ({ isOpen, onClose }: FreeConsultationModalProps) 
             isLoading={isLoading}
             isLastStep={currentStep === 3}
             isNextDisabled={isNextDisabled()}
+            isFreeConsultation={true}
           />
         </div>
       </DialogContent>

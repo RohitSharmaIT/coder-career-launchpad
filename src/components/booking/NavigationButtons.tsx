@@ -11,6 +11,7 @@ interface NavigationButtonsProps {
   isLoading: boolean;
   isLastStep: boolean;
   isNextDisabled?: boolean;
+  isFreeConsultation?: boolean;
 }
 
 const NavigationButtons = ({ 
@@ -19,7 +20,8 @@ const NavigationButtons = ({
   handleNextStep,
   isLoading,
   isLastStep,
-  isNextDisabled = false
+  isNextDisabled = false,
+  isFreeConsultation = false
 }: NavigationButtonsProps) => {
   const isMobile = useIsMobile();
   
@@ -53,7 +55,7 @@ const NavigationButtons = ({
           onClick={handleNextStep}
           disabled={isLoading || isNextDisabled}
         >
-          {isLoading ? "Processing..." : "Book a Free Consultation"}
+          {isLoading ? "Processing..." : (isFreeConsultation ? "Book a Free Consultation" : "Pay & Confirm")}
         </Button>
       )}
     </div>

@@ -383,6 +383,7 @@ Apne Wale Coders Team
                   isLoading={isLoading}
                   isLastStep={isLastStep}
                   isNextDisabled={isNextDisabled}
+                  isFreeConsultation={false}
                 />
               )}
             </div>
