@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -9,6 +8,7 @@ import BlogCard from "@/components/BlogCard";
 import Counter from "@/components/Counter";
 import SubscribeBox from "@/components/SubscribeBox";
 import TestimonialCard from "@/components/TestimonialCard";
+import { ArrowRight, Star, CheckCircle, Users, Award, Zap } from "lucide-react";
 
 // Sample data
 const services = [
@@ -124,60 +124,119 @@ const HomePage = () => {
     <>
       <Navbar />
       
-      {/* Hero Section */}
-      <section className="relative bg-gray-900 text-white">
-        <div 
-          className="absolute inset-0 z-0 bg-center bg-cover bg-no-repeat opacity-30"
-          style={{ 
-            backgroundImage: "url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80')" 
-          }}
-        ></div>
-        <div className="container mx-auto px-4 py-24 md:py-32 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
-              Level Up Your Career with <span className="text-brand-red">Apne Wale Coders</span>
+      {/* Enhanced Hero Section */}
+      <section className="relative min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-brand-red overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-white/5 bg-[radial-gradient(circle_at_25%_25%,_white_2px,_transparent_2px)] bg-[length:60px_60px]"></div>
+        </div>
+        
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-brand-red/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+        
+        <div className="relative container mx-auto px-4 pt-32 pb-20 min-h-screen flex items-center">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 mb-8 animate-fade-in">
+              <Star className="h-5 w-5 text-yellow-400 fill-current" />
+              <span className="text-white font-medium">India's Leading Career Platform</span>
+            </div>
+            
+            {/* Main Heading */}
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 animate-fade-in text-white leading-tight" style={{animationDelay: '0.2s'}}>
+              Level Up Your{' '}
+              <span className="bg-gradient-to-r from-yellow-400 via-red-400 to-pink-400 bg-clip-text text-transparent">
+                Tech Career
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-200">
+            
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto mb-6 leading-relaxed animate-fade-in" style={{animationDelay: '0.4s'}}>
               Empowering Careers, One Step at a Time
             </p>
-            <p className="text-lg md:text-xl mb-12 text-gray-300">
-              Expert guidance, mock interviews, and placement support to help
-              you succeed in your tech career journey.
+            
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in" style={{animationDelay: '0.6s'}}>
+              Expert guidance, mock interviews, and placement support to help you succeed in your tech career journey.
             </p>
-            <Link to="/book-slot">
-              <Button className="bg-brand-red hover:bg-red-600 text-white text-lg px-8 py-6">
-                Book a Slot
-              </Button>
-            </Link>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{animationDelay: '0.8s'}}>
+              <Link to="/book-slot">
+                <Button className="bg-brand-red hover:bg-red-600 text-white text-lg px-8 py-6 rounded-full font-semibold group shadow-2xl hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-105">
+                  Get Started Today
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link to="/services">
+                <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 text-lg px-8 py-6 rounded-full font-semibold transition-all duration-300 backdrop-blur-sm">
+                  Explore Services
+                </Button>
+              </Link>
+            </div>
+            
+            {/* Trust Indicators */}
+            <div className="grid grid-cols-3 gap-8 mt-20 pt-8 border-t border-white/20 animate-fade-in" style={{animationDelay: '1s'}}>
+              <div className="text-center group">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">5000+</div>
+                <div className="text-gray-300 text-sm">Happy Students</div>
+              </div>
+              <div className="text-center group">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">95%</div>
+                <div className="text-gray-300 text-sm">Success Rate</div>
+              </div>
+              <div className="text-center group">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">24/7</div>
+                <div className="text-gray-300 text-sm">Support</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Services</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              We offer a range of services designed to help you advance in your tech career.
+      {/* Enhanced Services Section */}
+      <section className="py-20 bg-gradient-to-br from-white via-gray-50 to-blue-50 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-5">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,_theme(colors.brand.red)_1px,_transparent_1px)] bg-[length:50px_50px]"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative">
+          <div className="text-center mb-16 animate-fade-in">
+            <div className="inline-flex items-center gap-2 bg-brand-red/10 text-brand-red rounded-full px-4 py-2 mb-4 font-medium text-sm">
+              <Zap className="h-4 w-4" />
+              PROFESSIONAL SERVICES
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              Transform Your Career Journey
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              We offer a comprehensive range of services designed to accelerate your professional growth and help you achieve your career aspirations.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map((service) => (
-              <ServiceCard
-                key={service.id}
-                icon={service.icon}
-                title={service.title}
-                description={service.description}
-                link={service.link}
-              />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {services.map((service, index) => (
+              <div key={service.id} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+                <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-2">
+                  <div className="text-brand-red mb-6 text-4xl group-hover:scale-110 transition-transform duration-300">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">{service.title}</h3>
+                  <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
+                  <Link to={service.link}>
+                    <Button className="w-full bg-brand-red hover:bg-red-600 text-white font-semibold py-3 rounded-xl transition-all duration-300 group-hover:shadow-lg">
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
           
-          <div className="text-center mt-12">
+          <div className="text-center animate-fade-in" style={{animationDelay: '0.6s'}}>
             <Link to="/services">
-              <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
+              <Button variant="outline" className="border-2 border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-lg">
                 View All Services
               </Button>
             </Link>
@@ -185,120 +244,160 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Strength in Numbers</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Our impact speaks for itself through the success of our community.
+      {/* Enhanced Stats Section */}
+      <section className="py-20 bg-gradient-to-r from-brand-red via-red-600 to-red-700 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute top-0 left-0 w-full h-full opacity-10">
+          <div className="absolute inset-0 bg-white/5 bg-[radial-gradient(circle_at_50%_50%,_white_1px,_transparent_1px)] bg-[length:40px_40px]"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative">
+          <div className="text-center mb-16 animate-fade-in">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Our Impact in Numbers
+            </h2>
+            <p className="text-xl text-red-100 max-w-3xl mx-auto leading-relaxed">
+              Building success stories across the tech industry with measurable results and lasting impact.
             </p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Counter target={5000} label="Subscribers" suffix="+" />
-            <Counter target={500000} label="Views" suffix="+" />
-            <Counter target={1200} label="Mock Interviews" suffix="+" />
-            <Counter target={1100} label="Learners Helped" suffix="+" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center animate-fade-in" style={{animationDelay: '0.1s'}}>
+              <Counter target={5000} label="Subscribers" suffix="+" />
+            </div>
+            <div className="text-center animate-fade-in" style={{animationDelay: '0.2s'}}>
+              <Counter target={500000} label="Views" suffix="+" />
+            </div>
+            <div className="text-center animate-fade-in" style={{animationDelay: '0.3s'}}>
+              <Counter target={1200} label="Mock Interviews" suffix="+" />
+            </div>
+            <div className="text-center animate-fade-in" style={{animationDelay: '0.4s'}}>
+              <Counter target={1100} label="Learners Helped" suffix="+" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Jobs Section */}
-      <section className="py-16 bg-white">
+      {/* Enhanced Featured Jobs Section */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Featured Jobs</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Explore the latest job opportunities curated for our community.
+          <div className="text-center mb-16 animate-fade-in">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-4 py-2 mb-4 font-medium text-sm">
+              <Users className="h-4 w-4" />
+              CAREER OPPORTUNITIES
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              Featured Job Openings
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Discover exciting career opportunities curated specifically for our community members.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {jobs.map((job) => (
-              <JobCard
-                key={job.id}
-                id={job.id}
-                title={job.title}
-                company={job.company}
-                location={job.location}
-                type={job.type}
-                postedDate={job.postedDate}
-              />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {jobs.map((job, index) => (
+              <div key={job.id} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+                <JobCard
+                  id={job.id}
+                  title={job.title}
+                  company={job.company}
+                  location={job.location}
+                  type={job.type}
+                  postedDate={job.postedDate}
+                />
+              </div>
             ))}
           </div>
           
-          <div className="text-center mt-12">
+          <div className="text-center animate-fade-in" style={{animationDelay: '0.4s'}}>
             <Link to="/jobs">
-              <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
-                View All Jobs
+              <Button variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-lg">
+                Browse All Jobs
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Recent Blogs Section */}
-      <section className="py-16 bg-gray-50">
+      {/* Enhanced Recent Blogs Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Recent Blogs</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Stay updated with the latest tech insights and career advice.
+          <div className="text-center mb-16 animate-fade-in">
+            <div className="inline-flex items-center gap-2 bg-purple-50 text-purple-600 rounded-full px-4 py-2 mb-4 font-medium text-sm">
+              <Award className="h-4 w-4" />
+              KNOWLEDGE HUB
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              Latest Insights & Tips
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Stay ahead with expert insights, career advice, and industry trends from our knowledge base.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {blogs.map((blog) => (
-              <BlogCard
-                key={blog.id}
-                id={blog.id}
-                title={blog.title}
-                excerpt={blog.excerpt}
-                thumbnail={blog.thumbnail}
-                category={blog.category}
-                date={blog.date}
-              />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {blogs.map((blog, index) => (
+              <div key={blog.id} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+                <BlogCard
+                  id={blog.id}
+                  title={blog.title}
+                  excerpt={blog.excerpt}
+                  thumbnail={blog.thumbnail}
+                  category={blog.category}
+                  date={blog.date}
+                />
+              </div>
             ))}
           </div>
           
-          <div className="text-center mt-12">
+          <div className="text-center animate-fade-in" style={{animationDelay: '0.4s'}}>
             <Link to="/blogs">
-              <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
-                View All Blogs
+              <Button variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-lg">
+                Read More Articles
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 bg-white">
+      {/* Enhanced Testimonials Section */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Student Reviews</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Here's what our students have to say about their experience with us.
+          <div className="text-center mb-16 animate-fade-in">
+            <div className="inline-flex items-center gap-2 bg-green-50 text-green-600 rounded-full px-4 py-2 mb-4 font-medium text-sm">
+              <CheckCircle className="h-4 w-4" />
+              SUCCESS STORIES
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              What Our Students Say
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Real stories from professionals who transformed their careers with our guidance and support.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <TestimonialCard
-                key={index}
-                name={testimonial.name}
-                role={testimonial.role}
-                company={testimonial.company}
-                testimonial={testimonial.testimonial}
-                avatar={testimonial.avatar}
-              />
+              <div key={index} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+                <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-1">
+                  <TestimonialCard
+                    name={testimonial.name}
+                    role={testimonial.role}
+                    company={testimonial.company}
+                    testimonial={testimonial.testimonial}
+                    avatar={testimonial.avatar}
+                  />
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Subscribe Section */}
-      <SubscribeBox />
+      {/* Enhanced Subscribe Section */}
+      <div className="animate-fade-in">
+        <SubscribeBox />
+      </div>
       
       <Footer />
     </>
