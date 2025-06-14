@@ -18,9 +18,7 @@ const StudyMaterialCategoriesSidebar = () => {
       navigate(`/study-material/category/${categoryId}`);
     }
     // Close categories on mobile after selection
-    if (window.innerWidth < 1024) {
-      setShowCategories(false);
-    }
+    setShowCategories(false);
   };
 
   // Group categories by type
@@ -34,17 +32,17 @@ const StudyMaterialCategoriesSidebar = () => {
 
   return (
     <div className="w-full">
-      <div className="bg-gray-50 p-4 lg:p-6 rounded-lg lg:sticky lg:top-24">
-        <div className="flex items-center justify-between mb-4 lg:mb-6">
-          <h2 className="text-lg lg:text-xl font-bold">Categories</h2>
+      <div className="bg-gray-50 p-4 rounded-lg sticky top-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold">Categories</h2>
         </div>
         
         {/* Desktop: Browse Categories Dropdown */}
-        <div className="hidden lg:block">
+        <div className="hidden md:block">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                className="w-full bg-brand-red hover:bg-red-600 text-white text-sm flex items-center justify-center"
+                className="w-full bg-brand-red hover:bg-red-600 text-white text-sm flex items-center justify-center py-2.5"
                 size="sm"
               >
                 <Plus size={16} className="mr-2" />
@@ -52,38 +50,49 @@ const StudyMaterialCategoriesSidebar = () => {
                 <ChevronDown size={16} className="ml-2" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="w-56 bg-white z-[100] shadow-lg border">
-              <DropdownMenuItem onClick={() => handleCategoryClick('all')} className="cursor-pointer">
+            <DropdownMenuContent 
+              align="start" 
+              className="w-64 bg-white shadow-lg border z-50 max-h-96 overflow-y-auto"
+              sideOffset={4}
+            >
+              <DropdownMenuItem 
+                onClick={() => handleCategoryClick('all')} 
+                className="cursor-pointer py-2.5 text-sm hover:bg-gray-50"
+              >
                 All Materials
               </DropdownMenuItem>
               
               <DropdownMenuSeparator />
-              <DropdownMenuLabel>Topics</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-xs font-semibold text-gray-500 uppercase tracking-wide py-2">
+                Topics
+              </DropdownMenuLabel>
               {topicCategories.map((category) => {
                 const IconComponent = category.icon;
                 return (
                   <DropdownMenuItem
                     key={category.id}
                     onClick={() => handleCategoryClick(category.id)}
-                    className="flex items-center cursor-pointer"
+                    className="flex items-center cursor-pointer py-2.5 text-sm hover:bg-gray-50"
                   >
-                    <IconComponent size={14} className="mr-2" />
+                    <IconComponent size={16} className="mr-3 text-gray-600" />
                     {category.name}
                   </DropdownMenuItem>
                 );
               })}
               
               <DropdownMenuSeparator />
-              <DropdownMenuLabel>Companies</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-xs font-semibold text-gray-500 uppercase tracking-wide py-2">
+                Companies
+              </DropdownMenuLabel>
               {companyCategories.map((category) => {
                 const IconComponent = category.icon;
                 return (
                   <DropdownMenuItem
                     key={category.id}
                     onClick={() => handleCategoryClick(category.id)}
-                    className="flex items-center cursor-pointer"
+                    className="flex items-center cursor-pointer py-2.5 text-sm hover:bg-gray-50"
                   >
-                    <IconComponent size={14} className="mr-2" />
+                    <IconComponent size={16} className="mr-3 text-gray-600" />
                     {category.name}
                   </DropdownMenuItem>
                 );
@@ -92,8 +101,8 @@ const StudyMaterialCategoriesSidebar = () => {
           </DropdownMenu>
         </div>
         
-        {/* Mobile/Tablet: Collapsible Categories */}
-        <div className="lg:hidden">
+        {/* Mobile/Small Tablet: Collapsible Categories */}
+        <div className="md:hidden">
           <Collapsible open={showCategories} onOpenChange={setShowCategories}>
             <CollapsibleTrigger asChild>
               <Button
@@ -107,29 +116,31 @@ const StudyMaterialCategoriesSidebar = () => {
               </Button>
             </CollapsibleTrigger>
             
-            <CollapsibleContent className="mt-4 space-y-3">
+            <CollapsibleContent className="mt-3 space-y-2 max-h-80 overflow-y-auto">
               {/* All Materials */}
               <Button
                 variant="outline"
-                className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
+                className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2.5"
                 onClick={() => handleCategoryClick('all')}
               >
                 All Materials
               </Button>
 
               {/* Topic-based categories */}
-              <div className="space-y-2">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Topics</p>
+              <div className="space-y-1">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-2 py-1">
+                  Topics
+                </p>
                 {topicCategories.map((category) => {
                   const IconComponent = category.icon;
                   return (
                     <Button
                       key={category.id}
                       variant="outline"
-                      className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
+                      className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2.5"
                       onClick={() => handleCategoryClick(category.id)}
                     >
-                      <IconComponent size={14} className="mr-2 shrink-0" />
+                      <IconComponent size={16} className="mr-3 shrink-0 text-gray-600" />
                       <span className="truncate">{category.name}</span>
                     </Button>
                   );
@@ -137,18 +148,20 @@ const StudyMaterialCategoriesSidebar = () => {
               </div>
 
               {/* Company-specific categories */}
-              <div className="space-y-2">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Companies</p>
+              <div className="space-y-1">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-2 py-1">
+                  Companies
+                </p>
                 {companyCategories.map((category) => {
                   const IconComponent = category.icon;
                   return (
                     <Button
                       key={category.id}
                       variant="outline"
-                      className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
+                      className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2.5"
                       onClick={() => handleCategoryClick(category.id)}
                     >
-                      <IconComponent size={14} className="mr-2 shrink-0" />
+                      <IconComponent size={16} className="mr-3 shrink-0 text-gray-600" />
                       <span className="truncate">{category.name}</span>
                     </Button>
                   );
