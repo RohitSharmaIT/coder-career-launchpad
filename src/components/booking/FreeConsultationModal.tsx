@@ -1,14 +1,12 @@
 
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import DateTimeSelection from './DateTimeSelection';
 import BookingSteps from './BookingSteps';
 import NavigationButtons from './NavigationButtons';
+import PersonalInfoStep from './PersonalInfoStep';
+import ReviewStep from './ReviewStep';
 
 interface ConsultationData {
   name: string;
@@ -157,68 +155,10 @@ const FreeConsultationModal = ({ isOpen, onClose }: FreeConsultationModalProps) 
           <BookingSteps currentStep={currentStep} steps={steps} />
 
           {currentStep === 1 && (
-            <div className="space-y-6">
-              <h2 className="text-xl font-bold mb-4">Personal Information</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="name">Full Name *</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="Enter your full name"
-                    className="mt-2"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="companyName">Company Name</Label>
-                  <Input
-                    id="companyName"
-                    value={formData.companyName}
-                    onChange={(e) => handleInputChange('companyName', e.target.value)}
-                    placeholder="Enter your company name"
-                    className="mt-2"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="email">Email Address *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    placeholder="Enter your email address"
-                    className="mt-2"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="contactDetail">Contact Number *</Label>
-                  <Input
-                    id="contactDetail"
-                    value={formData.contactDetail}
-                    onChange={(e) => handleInputChange('contactDetail', e.target.value)}
-                    placeholder="Enter your phone number"
-                    className="mt-2"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="requirement">Requirement to Connect *</Label>
-                <Textarea
-                  id="requirement"
-                  value={formData.requirement}
-                  onChange={(e) => handleInputChange('requirement', e.target.value)}
-                  placeholder="Describe your requirements or questions"
-                  rows={4}
-                  className="mt-2"
-                />
-              </div>
-            </div>
+            <PersonalInfoStep 
+              formData={formData}
+              onInputChange={handleInputChange}
+            />
           )}
 
           {currentStep === 2 && (
@@ -232,50 +172,7 @@ const FreeConsultationModal = ({ isOpen, onClose }: FreeConsultationModalProps) 
           )}
 
           {currentStep === 3 && (
-            <div className="space-y-6">
-              <h2 className="text-xl font-bold mb-4">Review & Confirm</h2>
-              
-              <div className="bg-gray-50 p-6 rounded-lg space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <div className="font-semibold text-gray-700">Full Name</div>
-                    <div>{formData.name}</div>
-                  </div>
-                  
-                  {formData.companyName && (
-                    <div>
-                      <div className="font-semibold text-gray-700">Company</div>
-                      <div>{formData.companyName}</div>
-                    </div>
-                  )}
-                  
-                  <div>
-                    <div className="font-semibold text-gray-700">Email</div>
-                    <div>{formData.email}</div>
-                  </div>
-                  
-                  <div>
-                    <div className="font-semibold text-gray-700">Contact</div>
-                    <div>{formData.contactDetail}</div>
-                  </div>
-                  
-                  <div>
-                    <div className="font-semibold text-gray-700">Date</div>
-                    <div>{formData.selectedDate ? formData.selectedDate.toLocaleDateString() : ''}</div>
-                  </div>
-                  
-                  <div>
-                    <div className="font-semibold text-gray-700">Time</div>
-                    <div>{formData.selectedTime}</div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="font-semibold text-gray-700">Requirement</div>
-                  <div className="mt-1">{formData.requirement}</div>
-                </div>
-              </div>
-            </div>
+            <ReviewStep formData={formData} />
           )}
 
           <NavigationButtons
