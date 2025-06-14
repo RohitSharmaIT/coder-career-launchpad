@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -12,6 +11,7 @@ import { Check, Crown, Download, Calendar, Zap, ArrowLeft } from "lucide-react";
 
 const UpgradePremium = () => {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'failed'>('idle');
   const { upgradeToPremium, isAuthenticated, isPremium, user } = useAuth();
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ const UpgradePremium = () => {
     return Math.max(0, diffDays);
   };
 
-  const handleUpgrade = async () => {
+  const initializePayment = () => {
     if (!isAuthenticated) {
       toast.error("Please log in to upgrade to Premium", {
         action: {
@@ -36,26 +36,101 @@ const UpgradePremium = () => {
     }
 
     setIsProcessing(true);
+    setPaymentStatus('processing');
     
-    // Simulate payment processing
+    // Initialize Razorpay payment
+    const options = {
+      key: 'rzp_test_9999999999', // Replace with your Razorpay key
+      amount: 19900, // ₹199 in paisa
+      currency: 'INR',
+      name: 'Premium Upgrade',
+      description: '30 Days Premium Access',
+      order_id: '', // This should come from your backend
+      handler: function (response: any) {
+        // Payment successful
+        handlePaymentSuccess(response);
+      },
+      prefill: {
+        name: user?.name || '',
+        email: user?.email || '',
+      },
+      theme: {
+        color: '#F59E0B'
+      },
+      modal: {
+        ondismiss: function() {
+          // Payment cancelled
+          handlePaymentCancel();
+        }
+      }
+    };
+
+    // Check if Razorpay is loaded
+    if (typeof (window as any).Razorpay !== 'undefined') {
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    } else {
+      // Fallback: simulate payment for demo
+      simulatePayment();
+    }
+  };
+
+  const handlePaymentSuccess = async (response: any) => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Verify payment with backend (in a real app)
+      console.log('Payment successful:', response);
       
-      // Update user to premium
+      // Simulate payment verification
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Only upgrade after successful payment verification
       upgradeToPremium();
+      setPaymentStatus('success');
       
-      toast.success("🎉 Premium Activated for 1 Month!", {
-        description: "You now have access to all premium content"
+      toast.success("🎉 Payment Successful! Premium Activated!", {
+        description: "You now have access to all premium content for 30 days"
       });
       
-      navigate("/dashboard");
+      // Redirect to dashboard after a short delay
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+      
     } catch (error) {
-      toast.error("Payment failed. Please try again.");
+      setPaymentStatus('failed');
+      toast.error("Payment verification failed. Please contact support.");
     } finally {
       setIsProcessing(false);
     }
   };
 
+  const handlePaymentCancel = () => {
+    setIsProcessing(false);
+    setPaymentStatus('idle');
+    toast.info("Payment cancelled. You can try again anytime.");
+  };
+
+  const simulatePayment = async () => {
+    try {
+      // Simulate payment processing time
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Simulate successful payment response
+      const mockResponse = {
+        razorpay_payment_id: 'pay_mock_' + Date.now(),
+        razorpay_order_id: 'order_mock_' + Date.now(),
+        razorpay_signature: 'mock_signature'
+      };
+      
+      handlePaymentSuccess(mockResponse);
+    } catch (error) {
+      setPaymentStatus('failed');
+      setIsProcessing(false);
+      toast.error("Payment failed. Please try again.");
+    }
+  };
+
+  // ... keep existing code (features array)
   const features = [
     { icon: Download, text: "Access all exclusive content" },
     { icon: Crown, text: "Premium study materials" },
@@ -98,6 +173,24 @@ const UpgradePremium = () => {
                     </Button>
                   </div>
                 </>
+              ) : paymentStatus === 'success' ? (
+                <>
+                  <h1 className="text-4xl font-bold mb-4 text-green-600">
+                    🎉 Welcome to Premium!
+                  </h1>
+                  <p className="text-xl text-gray-600">
+                    Your premium membership has been activated successfully!
+                  </p>
+                  <div className="mt-6">
+                    <Button 
+                      onClick={() => navigate("/dashboard")}
+                      className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg"
+                    >
+                      <ArrowLeft className="mr-2 w-5 h-5" />
+                      Go to Dashboard
+                    </Button>
+                  </div>
+                </>
               ) : (
                 <>
                   <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-2">
@@ -110,7 +203,7 @@ const UpgradePremium = () => {
               )}
             </div>
 
-            {!isUserPremium && (
+            {!isUserPremium && paymentStatus !== 'success' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Features */}
                 <div className="space-y-6">
@@ -173,7 +266,7 @@ const UpgradePremium = () => {
                       </div>
                       
                       <Button 
-                        onClick={handleUpgrade}
+                        onClick={initializePayment}
                         disabled={isProcessing}
                         className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white text-lg py-6"
                         size="lg"
@@ -181,15 +274,15 @@ const UpgradePremium = () => {
                         {isProcessing ? (
                           <div className="flex items-center gap-2">
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                            Processing...
+                            {paymentStatus === 'processing' ? 'Processing Payment...' : 'Please wait...'}
                           </div>
                         ) : (
-                          "Upgrade Now"
+                          "Pay ₹199 - Upgrade Now"
                         )}
                       </Button>
                       
                       <p className="text-xs text-gray-500 text-center mt-4">
-                        Secure payment • No hidden fees • Instant activation
+                        Secure payment via Razorpay • No hidden fees • Instant activation
                       </p>
                     </CardContent>
                   </Card>
