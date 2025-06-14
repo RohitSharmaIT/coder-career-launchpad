@@ -57,27 +57,26 @@ const Jobs = () => {
 
   // Filter jobs based on search term and filters
   const filteredJobs = jobs.filter(job => {
+    // Search term matching
     const matchesSearchTerm = 
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
       job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (job.skills && job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())));
     
+    // Location matching
     const matchesLocation = selectedLocations.length === 0 || 
-      selectedLocations.some(loc => job.location.includes(loc));
+      selectedLocations.some(loc => job.location.toLowerCase().includes(loc.toLowerCase()));
     
+    // Job type matching
     const matchesType = selectedTypes.length === 0 || 
       selectedTypes.includes(job.type);
     
-    // Simplified experience matching
+    // Experience matching - simplified for now
     const matchesExperience = selectedExperience.length === 0 || true;
     
-    // Category matching - assuming jobs have a category property
+    // Category matching - check if job's category matches selected categories
     const matchesCategory = selectedCategories.length === 0 || 
-      selectedCategories.some(cat => {
-        // Find the category object and match by value
-        const categoryObj = jobCategories.find(c => c.value === cat);
-        return categoryObj && job.title.toLowerCase().includes(categoryObj.label.toLowerCase());
-      });
+      (job.category && selectedCategories.includes(job.category));
     
     return matchesSearchTerm && matchesLocation && matchesType && matchesExperience && matchesCategory;
   });

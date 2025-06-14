@@ -40,6 +40,7 @@ const JobsList = ({ filteredJobs }: JobsListProps) => {
               location={job.location}
               type={job.type}
               postedDate={job.postedDate}
+              logo={job.logo}
             />
           ))}
         </div>
