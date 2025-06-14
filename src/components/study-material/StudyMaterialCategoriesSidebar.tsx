@@ -43,10 +43,9 @@ const StudyMaterialCategoriesSidebar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-brand-red border-brand-red hover:bg-brand-red hover:text-white"
+                  className="bg-brand-red hover:bg-red-600 text-white text-sm"
                 >
+                  <Plus size={16} className="mr-2" />
                   Browse Categories
                   <ChevronDown size={16} className="ml-2" />
                 </Button>
