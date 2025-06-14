@@ -1,13 +1,13 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Camera, Save, X } from "lucide-react";
+import { Save, X } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import ProfileImageUpload from './profile/ProfileImageUpload';
+import BasicInfoFields from './profile/BasicInfoFields';
+import BioField from './profile/BioField';
+import PasswordChangeSection from './profile/PasswordChangeSection';
 
 interface ProfileEditFormProps {
   onCancel: () => void;
@@ -101,107 +101,33 @@ const ProfileEditForm = ({ onCancel }: ProfileEditFormProps) => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Profile Picture */}
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative">
-            <Avatar className="h-24 w-24">
-              <AvatarImage src={formData.profilePicture} />
-              <AvatarFallback className="text-lg">
-                {formData.name.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <label htmlFor="profile-picture" className="absolute bottom-0 right-0 bg-brand-red text-white rounded-full p-2 cursor-pointer hover:bg-red-600 transition-colors">
-              <Camera className="h-4 w-4" />
-            </label>
-            <input
-              id="profile-picture"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-            />
-          </div>
-          <p className="text-sm text-gray-600">Click the camera icon to change your profile picture</p>
-        </div>
+        <ProfileImageUpload
+          profilePicture={formData.profilePicture}
+          name={formData.name}
+          onImageUpload={handleImageUpload}
+        />
 
-        {/* Basic Information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="name">Full Name</Label>
-            <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              required
-            />
-          </div>
-          
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-              required
-            />
-          </div>
-        </div>
+        <BasicInfoFields
+          name={formData.name}
+          email={formData.email}
+          onNameChange={(value) => setFormData(prev => ({ ...prev, name: value }))}
+          onEmailChange={(value) => setFormData(prev => ({ ...prev, email: value }))}
+        />
 
-        {/* Bio */}
-        <div>
-          <Label htmlFor="bio">Bio</Label>
-          <Textarea
-            id="bio"
-            placeholder="Tell us about yourself..."
-            value={formData.bio}
-            onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
-            rows={3}
-          />
-        </div>
+        <BioField
+          bio={formData.bio}
+          onBioChange={(value) => setFormData(prev => ({ ...prev, bio: value }))}
+        />
 
-        {/* Password Change Section */}
-        <div className="border-t pt-6">
-          <h3 className="text-lg font-semibold mb-4">Change Password</h3>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="current-password">Current Password</Label>
-              <Input
-                id="current-password"
-                type="password"
-                value={formData.currentPassword}
-                onChange={(e) => setFormData(prev => ({ ...prev, currentPassword: e.target.value }))}
-                placeholder="Enter current password"
-              />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="new-password">New Password</Label>
-                <Input
-                  id="new-password"
-                  type="password"
-                  value={formData.newPassword}
-                  onChange={(e) => setFormData(prev => ({ ...prev, newPassword: e.target.value }))}
-                  placeholder="Enter new password"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="confirm-password">Confirm New Password</Label>
-                <Input
-                  id="confirm-password"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                  placeholder="Confirm new password"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <PasswordChangeSection
+          currentPassword={formData.currentPassword}
+          newPassword={formData.newPassword}
+          confirmPassword={formData.confirmPassword}
+          onCurrentPasswordChange={(value) => setFormData(prev => ({ ...prev, currentPassword: value }))}
+          onNewPasswordChange={(value) => setFormData(prev => ({ ...prev, newPassword: value }))}
+          onConfirmPasswordChange={(value) => setFormData(prev => ({ ...prev, confirmPassword: value }))}
+        />
 
-        {/* Action Buttons */}
         <div className="flex justify-end space-x-4 pt-4">
           <Button type="button" variant="outline" onClick={onCancel}>
             Cancel
