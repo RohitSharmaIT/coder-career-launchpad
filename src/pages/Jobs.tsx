@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -96,31 +95,29 @@ const Jobs = () => {
       <JobsHero searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       
       {/* Jobs Listing Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-10">
-            {/* Filters - Mobile Toggle */}
-            <MobileFilterToggle showFilters={showFilters} setShowFilters={setShowFilters} />
-            
-            {/* Filters */}
-            <div className={`lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-              <JobsFilters 
-                selectedLocations={selectedLocations}
-                selectedTypes={selectedTypes}
-                selectedExperience={selectedExperience}
-                selectedCategories={selectedCategories}
-                toggleFilter={toggleFilter}
-                resetFilters={resetFilters}
-                locations={locations}
-                jobTypes={jobTypes}
-                experienceLevels={experienceLevels}
-                categories={jobCategories}
-              />
-            </div>
-            
-            {/* Job Listings */}
-            <JobsList filteredJobs={filteredJobs} />
+      <section className="bg-white">
+        <div className="flex flex-col lg:flex-row">
+          {/* Filters - Mobile Toggle */}
+          <MobileFilterToggle showFilters={showFilters} setShowFilters={setShowFilters} />
+          
+          {/* Filters */}
+          <div className={`lg:w-1/4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+            <JobsFilters 
+              selectedLocations={selectedLocations}
+              selectedTypes={selectedTypes}
+              selectedExperience={selectedExperience}
+              selectedCategories={selectedCategories}
+              toggleFilter={toggleFilter}
+              resetFilters={resetFilters}
+              locations={locations}
+              jobTypes={jobTypes}
+              experienceLevels={experienceLevels}
+              categories={jobCategories}
+            />
           </div>
+          
+          {/* Job Listings */}
+          <JobsList filteredJobs={filteredJobs} />
         </div>
       </section>
       

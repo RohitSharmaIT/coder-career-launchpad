@@ -1,4 +1,3 @@
-
 import { useParams, Link } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -43,23 +42,21 @@ const StudyMaterialDetails = () => {
         <StudyMaterialBreadcrumbs />
         
         {/* Main Content */}
-        <section className="py-8 lg:py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-              {/* Left Sidebar - Categories */}
-              <div className="lg:w-1/4">
-                <StudyMaterialCategoriesSidebar />
-              </div>
-              
-              {/* Main Content Area */}
-              <div className="lg:w-1/2">
-                <StudyMaterialDetailsContent material={material} />
-              </div>
-              
-              {/* Right Sidebar - Material Info */}
-              <div className="lg:w-1/4">
-                <StudyMaterialInfoSidebar material={material} />
-              </div>
+        <section className="bg-white">
+          <div className="flex flex-col lg:flex-row">
+            {/* Left Sidebar - Categories */}
+            <div className="lg:w-1/4">
+              <StudyMaterialCategoriesSidebar />
+            </div>
+            
+            {/* Main Content Area */}
+            <div className="lg:w-1/2">
+              <StudyMaterialDetailsContent material={material} />
+            </div>
+            
+            {/* Right Sidebar - Material Info */}
+            <div className="lg:w-1/4">
+              <StudyMaterialInfoSidebar material={material} />
             </div>
           </div>
         </section>

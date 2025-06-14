@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -92,31 +91,29 @@ const Dashboard = () => {
     <div className="pt-20">
       <Navbar />
       
-      <div className="bg-gray-50 py-10">
-        <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold">Dashboard</h1>
-            <p className="text-gray-600">Welcome back, {user?.name || 'User'}</p>
-          </div>
+      <div className="bg-gray-50">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <p className="text-gray-600">Welcome back, {user?.name || 'User'}</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4">
+          {/* Sidebar */}
+          <DashboardSidebar 
+            user={user} 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab} 
+            logout={logout} 
+          />
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Sidebar */}
-            <DashboardSidebar 
-              user={user} 
-              activeTab={activeTab} 
-              setActiveTab={setActiveTab} 
-              logout={logout} 
-            />
-            
-            {/* Main Content */}
-            <DashboardContent 
-              activeTab={activeTab}
-              upcomingServices={upcomingServices}
-              pastServices={pastServices}
-              jobApplications={jobApplications}
-              setActiveTab={setActiveTab}
-            />
-          </div>
+          {/* Main Content */}
+          <DashboardContent 
+            activeTab={activeTab}
+            upcomingServices={upcomingServices}
+            pastServices={pastServices}
+            jobApplications={jobApplications}
+            setActiveTab={setActiveTab}
+          />
         </div>
       </div>
       

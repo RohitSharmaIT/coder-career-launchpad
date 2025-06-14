@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -47,71 +46,69 @@ const Login = () => {
     <>
       <Navbar />
       
-      <div className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-center mb-6">Log In</h2>
-              
-              <form onSubmit={handleSubmit}>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your.email@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                    <div className="text-xs text-gray-500 mt-1">
-                      Demo: user@example.com / password
-                    </div>
+      <div className="bg-gray-50">
+        <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+          <div>
+            <h2 className="text-2xl font-bold text-center mb-6">Log In</h2>
+            
+            <form onSubmit={handleSubmit}>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <div className="text-xs text-gray-500 mt-1">
+                    Demo: user@example.com / password
                   </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <Label htmlFor="password">Password</Label>
-                      <Link to="/forgot-password" className="text-sm text-brand-red hover:underline">
-                        Forgot password?
-                      </Link>
-                    </div>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-brand-red hover:bg-red-600 text-white"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span className="flex items-center justify-center">
-                        <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
-                        Logging in...
-                      </span>
-                    ) : (
-                      "Log In"
-                    )}
-                  </Button>
                 </div>
-              </form>
-              
-              <div className="mt-6 text-center text-sm">
-                <p>
-                  Don't have an account?{" "}
-                  <Link to="/signup" className="text-brand-red hover:underline font-medium">
-                    Sign up
-                  </Link>
-                </p>
+                
+                <div>
+                  <div className="flex justify-between items-center">
+                    <Label htmlFor="password">Password</Label>
+                    <Link to="/forgot-password" className="text-sm text-brand-red hover:underline">
+                      Forgot password?
+                    </Link>
+                  </div>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full bg-brand-red hover:bg-red-600 text-white"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center">
+                      <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+                      Logging in...
+                    </span>
+                  ) : (
+                    "Log In"
+                  )}
+                </Button>
               </div>
+            </form>
+            
+            <div className="mt-6 text-center text-sm">
+              <p>
+                Don't have an account?{" "}
+                <Link to="/signup" className="text-brand-red hover:underline font-medium">
+                  Sign up
+                </Link>
+              </p>
             </div>
           </div>
         </div>

@@ -13,8 +13,8 @@ const AdminPanel = () => {
     <div className="pt-20">
       <Navbar />
       
-      <div className="py-10 bg-gray-50">
-        <div className="container mx-auto px-4">
+      <div className="bg-gray-50">
+        <div>
           <AdminPanelHeader />
           
           <Tabs defaultValue="post-job" className="max-w-6xl mx-auto">
