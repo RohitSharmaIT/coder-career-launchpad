@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useBlogs } from '@/contexts/BlogsContext';
 import { useCategories } from '@/contexts/CategoriesContext';
 import CategorySelect from './CategorySelect';
+import RichTextEditor from './rich-text-editor/RichTextEditor';
 
 const AdminBlogForm = () => {
   const navigate = useNavigate();
@@ -50,10 +50,11 @@ const AdminBlogForm = () => {
       return;
     }
     
-    // Generate excerpt from content (first 150 characters)
-    const excerpt = blogContent.length > 150 
-      ? blogContent.substring(0, 150) + "..."
-      : blogContent;
+    // Generate excerpt from content (first 150 characters, strip HTML)
+    const textContent = blogContent.replace(/<[^>]*>/g, '');
+    const excerpt = textContent.length > 150 
+      ? textContent.substring(0, 150) + "..."
+      : textContent;
     
     // Add blog to the context
     addBlog({
@@ -85,7 +86,7 @@ const AdminBlogForm = () => {
       <h2 className="text-xl font-bold mb-6">Write a New Blog Post</h2>
       
       <form onSubmit={handleBlogSubmit}>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div>
             <Label htmlFor="blogTitle" className="required">Blog Title</Label>
             <Input
@@ -135,15 +136,15 @@ const AdminBlogForm = () => {
           </div>
           
           <div>
-            <Label htmlFor="blogContent" className="required">Blog Content</Label>
-            <Textarea
-              id="blogContent"
-              placeholder="Write your blog post content here..."
-              rows={12}
-              value={blogContent}
-              onChange={(e) => setBlogContent(e.target.value)}
-              required
-            />
+            <Label className="required">Blog Content</Label>
+            <div className="mt-2">
+              <RichTextEditor
+                value={blogContent}
+                onChange={setBlogContent}
+                placeholder="Write your blog post content here... Use the toolbar to format your text, add images, links, and more."
+                minHeight="500px"
+              />
+            </div>
           </div>
           
           <Button
