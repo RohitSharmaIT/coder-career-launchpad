@@ -8,14 +8,26 @@ interface ServicesActionsProps {
   showBookSlot?: boolean;
   showPricing?: boolean;
   bookLink?: string;
+  serviceId?: string;
+  serviceName?: string;
 }
 
 const ServicesActions = ({ 
   showLearnMore = true, 
   showBookSlot = true,
   showPricing = false,
-  bookLink = "/book-a-consultation"
+  bookLink = "/book-a-consultation",
+  serviceId,
+  serviceName
 }: ServicesActionsProps) => {
+  // Create booking link with service parameter
+  const getBookingLink = () => {
+    if (serviceId) {
+      return `/book-slot?service=${serviceId}`;
+    }
+    return bookLink;
+  };
+
   return (
     <div className="mt-8 flex flex-wrap gap-4">
       {showLearnMore && (
@@ -25,7 +37,7 @@ const ServicesActions = ({
       )}
       
       {showBookSlot && (
-        <Link to={bookLink} className="inline-block">
+        <Link to={getBookingLink()} className="inline-block">
           <Button className="bg-brand-red hover:bg-red-600 text-white">
             Book Slot
           </Button>

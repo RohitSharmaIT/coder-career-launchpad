@@ -26,6 +26,7 @@ const ServicesList = () => {
         bookSlot: true,
         viewPricing: false
       },
+      serviceId: "resume",
       includes: [
         "Professional resume crafting",
         "ATS optimization",
@@ -48,6 +49,7 @@ const ServicesList = () => {
         bookSlot: true,
         viewPricing: false
       },
+      serviceId: "webdev",
       includes: [
         "Custom design",
         "Mobile-responsive layouts",
@@ -71,6 +73,7 @@ const ServicesList = () => {
         bookSlot: true,
         viewPricing: false
       },
+      serviceId: "interview",
       includes: [
         "1-hour mock interview session",
         "Industry-specific questions",
@@ -93,6 +96,7 @@ const ServicesList = () => {
         bookSlot: false,
         viewPricing: true
       },
+      serviceId: "guidance",
       includes: [
         "1-hour consultation session",
         "Personalized career roadmap",

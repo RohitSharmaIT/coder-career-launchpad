@@ -4,17 +4,25 @@ import ServiceItem, { ServiceItemProps } from '../ServiceItem';
 
 interface ServiceListContainerProps {
   services: ServiceItemProps[];
-  limit?: number;
 }
 
-const ServiceListContainer = ({ services, limit = services.length }: ServiceListContainerProps) => {
+const ServiceListContainer = ({ services }: ServiceListContainerProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {services.slice(0, limit).map((service) => (
-        <ServiceItem 
+    <div className="space-y-12">
+      {services.map((service) => (
+        <ServiceItem
           key={service.id}
-          {...service}
-          bookLink={`/book-slot?service=${service.id}`}
+          id={service.id}
+          title={service.title}
+          shortDescription={service.shortDescription}
+          longDescription={service.longDescription}
+          icon={service.icon}
+          price={service.price}
+          imageSrc={service.imageSrc}
+          imageAlt={service.imageAlt}
+          serviceId={service.serviceId}
+          buttons={service.buttons}
+          includes={service.includes}
         />
       ))}
     </div>
