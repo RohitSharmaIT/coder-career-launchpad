@@ -2,9 +2,11 @@
 import React from 'react';
 import { format } from "date-fns";
 import { Calendar, Clock } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { BookedService } from "@/contexts/BookingContext";
+import { BookedService, useBooking } from "@/contexts/BookingContext";
+import { toast } from "sonner";
 
 interface ServiceCardProps {
   service: BookedService;
@@ -12,6 +14,48 @@ interface ServiceCardProps {
 }
 
 const ServiceCard = ({ service, isPast = false }: ServiceCardProps) => {
+  const navigate = useNavigate();
+  const { updateBookingStatus } = useBooking();
+
+  const handleReschedule = () => {
+    // Navigate to booking page with pre-selected service for rescheduling
+    const serviceMapping: { [key: string]: string } = {
+      "Resume Building": "resume",
+      "Web Design & Development": "webdev",
+      "Mock Interview": "interview",
+      "Company Assessment Preparation": "assessment",
+      "Career Guidance": "guidance",
+      "Career Strategy & Projects": "strategy",
+      "Take-home Projects": "projects"
+    };
+    
+    const serviceId = serviceMapping[service.service] || "resume";
+    navigate(`/book-slot?service=${serviceId}&reschedule=${service.id}`);
+    toast.info("Redirecting to reschedule your appointment...");
+  };
+
+  const handleBookAgain = () => {
+    // Navigate to booking page with the same service pre-selected
+    const serviceMapping: { [key: string]: string } = {
+      "Resume Building": "resume",
+      "Web Design & Development": "webdev", 
+      "Mock Interview": "interview",
+      "Company Assessment Preparation": "assessment",
+      "Career Guidance": "guidance",
+      "Career Strategy & Projects": "strategy",
+      "Take-home Projects": "projects"
+    };
+    
+    const serviceId = serviceMapping[service.service] || "resume";
+    navigate(`/book-slot?service=${serviceId}`);
+    toast.success("Redirecting to book the same service again...");
+  };
+
+  const handleCancel = () => {
+    updateBookingStatus(service.id, "cancelled");
+    toast.success("Appointment cancelled successfully");
+  };
+
   return (
     <Card key={service.id}>
       <CardHeader>
@@ -48,11 +92,17 @@ const ServiceCard = ({ service, isPast = false }: ServiceCardProps) => {
       <CardFooter className="flex justify-between">
         {!isPast ? (
           <>
-            <Button variant="outline">Reschedule</Button>
-            <Button variant="destructive">Cancel</Button>
+            <Button variant="outline" onClick={handleReschedule}>
+              Reschedule
+            </Button>
+            <Button variant="destructive" onClick={handleCancel}>
+              Cancel
+            </Button>
           </>
         ) : (
-          <Button variant="outline" className="w-full">Book Again</Button>
+          <Button variant="outline" className="w-full" onClick={handleBookAgain}>
+            Book Again
+          </Button>
         )}
       </CardFooter>
     </Card>
