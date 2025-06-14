@@ -1,3 +1,4 @@
+
 import { useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -36,7 +37,7 @@ const UpgradePremium = () => {
       
       <section className="py-16 bg-gradient-to-br from-yellow-50 to-orange-50 min-h-screen">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <PremiumHeader 
               isUserPremium={isUserPremium}
               daysLeft={daysLeft}
@@ -45,13 +46,17 @@ const UpgradePremium = () => {
             />
 
             {!isUserPremium && paymentStatus !== 'success' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                <PremiumFeatures />
-                <PaymentCard 
-                  isProcessing={isProcessing}
-                  paymentStatus={paymentStatus}
-                  onPayment={initializePayment}
-                />
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start mt-12">
+                <div className="lg:col-span-2">
+                  <PremiumFeatures />
+                </div>
+                <div className="lg:col-span-1">
+                  <PaymentCard 
+                    isProcessing={isProcessing}
+                    paymentStatus={paymentStatus}
+                    onPayment={initializePayment}
+                  />
+                </div>
               </div>
             )}
 
