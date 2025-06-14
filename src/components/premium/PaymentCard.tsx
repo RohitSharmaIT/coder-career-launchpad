@@ -17,14 +17,14 @@ const PaymentCard = ({ isProcessing, paymentStatus, onPayment }: PaymentCardProp
         <CardHeader className="text-center bg-gradient-to-r from-yellow-100 to-orange-100">
           <div className="flex justify-center mb-2">
             <Badge className="bg-yellow-500 text-white text-lg px-4 py-1">
-              Limited Time Offer
+              Free Upgrade
             </Badge>
           </div>
           <CardTitle className="text-3xl font-bold">Premium Access</CardTitle>
-          <div className="text-4xl font-bold text-yellow-600 mt-4">
-            💰 ₹199
+          <div className="text-4xl font-bold text-green-600 mt-4">
+            🎉 FREE
           </div>
-          <p className="text-gray-600">One-time payment</p>
+          <p className="text-gray-600">No payment required</p>
         </CardHeader>
         <CardContent className="p-6">
           <div className="space-y-4 mb-6">
@@ -45,21 +45,21 @@ const PaymentCard = ({ isProcessing, paymentStatus, onPayment }: PaymentCardProp
           <Button 
             onClick={onPayment}
             disabled={isProcessing}
-            className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white text-lg py-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white text-lg py-6 disabled:opacity-50 disabled:cursor-not-allowed"
             size="lg"
           >
             {isProcessing ? (
               <div className="flex items-center gap-2">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                {paymentStatus === 'processing' ? 'Opening Payment...' : 'Please wait...'}
+                {paymentStatus === 'processing' ? 'Activating Premium...' : 'Please wait...'}
               </div>
             ) : (
-              "Pay ₹199 - Upgrade Now"
+              "Activate Premium - FREE"
             )}
           </Button>
           
           <p className="text-xs text-gray-500 text-center mt-4">
-            Secure payment via Razorpay • Instant activation
+            Instant activation • No payment required
           </p>
         </CardContent>
       </Card>
