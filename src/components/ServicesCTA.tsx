@@ -30,7 +30,7 @@ const ServicesCTA = () => {
           </p>
           
           {/* CTA Button */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex justify-center items-center">
             <Link to="/book-slot">
               <Button 
                 size="lg"
@@ -40,14 +40,6 @@ const ServicesCTA = () => {
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
-            
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm text-lg px-8 py-6 rounded-full font-semibold transition-all duration-300"
-            >
-              Contact Us
-            </Button>
           </div>
           
           {/* Trust Indicators */}
