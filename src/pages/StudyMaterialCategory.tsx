@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useMemo } from 'react';
 import Navbar from "@/components/Navbar";
@@ -42,7 +41,7 @@ const StudyMaterialCategory = () => {
       navigate('/upgrade-premium');
       return;
     }
-    handleDownload(id);
+    handleDownload(id, isPremium);
   };
 
   const onSpecialCardClick = (material: any) => {
