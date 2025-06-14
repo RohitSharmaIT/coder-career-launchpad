@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,22 +28,11 @@ interface MaterialCardProps {
 }
 
 const MaterialCard = ({ material, onDownload, onSpecialCardClick }: MaterialCardProps) => {
-  // Check if this is the special "Complete DSA Interview Preparation" card (id: 1)
-  const isSpecialCard = material.id === 1 && material.title === "Complete DSA Interview Preparation";
-  
-  const handleCardClick = (e: React.MouseEvent) => {
-    if (isSpecialCard && onSpecialCardClick) {
-      e.preventDefault();
-      onSpecialCardClick(material);
-    }
-  };
-
   return (
     <Card key={material.id} className="overflow-hidden hover:shadow-lg transition-shadow">
       <Link 
         to={`/study-material/${material.id}`} 
         className="block"
-        onClick={handleCardClick}
       >
         <div className="h-48 overflow-hidden relative">
           <img 

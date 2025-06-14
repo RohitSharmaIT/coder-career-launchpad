@@ -1,4 +1,3 @@
-
 import { Book, FileText, Code, Globe, Brain, Zap } from "lucide-react";
 import { StudyMaterial } from "./MaterialCard";
 import { LucideIcon } from "lucide-react";
@@ -8,40 +7,80 @@ export interface CategoryItem {
   id: string;
   name: string;
   icon: LucideIcon;
+  topics?: string[];
 }
 
-// Sample categories
+// Sample categories with study topics
 export const categories: CategoryItem[] = [
-  { id: 'all', name: 'All', icon: Book },
-  { id: 'interview', name: 'Interview Preparation', icon: FileText },
-  { id: 'dsa', name: 'Data Structures & Algorithms', icon: Code },
-  { id: 'web-development', name: 'Web Development', icon: Globe },
-  { id: 'ai-ml', name: 'AI & ML', icon: Brain },
-  { id: 'ai-tools', name: 'AI Tools', icon: Zap },
-  { id: 'tcs', name: 'TCS Specific', icon: FileText },
-  { id: 'wipro', name: 'Wipro Specific', icon: FileText },
-  { id: 'infosys', name: 'Infosys Specific', icon: FileText },
-  { id: 'cognizant', name: 'Cognizant Specific', icon: FileText },
-  { id: 'accenture', name: 'Accenture Specific', icon: FileText }
+  { 
+    id: 'all', 
+    name: 'All', 
+    icon: Book 
+  },
+  { 
+    id: 'interview', 
+    name: 'Interview Preparation', 
+    icon: FileText,
+    topics: ['Technical Interviews', 'Behavioral Questions', 'System Design', 'Coding Challenges', 'Mock Interviews']
+  },
+  { 
+    id: 'dsa', 
+    name: 'Data Structures & Algorithms', 
+    icon: Code,
+    topics: ['Arrays & Strings', 'Linked Lists', 'Trees & Graphs', 'Dynamic Programming', 'Sorting & Searching']
+  },
+  { 
+    id: 'web-development', 
+    name: 'Web Development', 
+    icon: Globe,
+    topics: ['React.js', 'Node.js', 'JavaScript ES6+', 'CSS3 & HTML5', 'API Development']
+  },
+  { 
+    id: 'ai-ml', 
+    name: 'AI & ML', 
+    icon: Brain,
+    topics: ['Machine Learning Basics', 'Neural Networks', 'Deep Learning', 'Python for ML', 'Data Science']
+  },
+  { 
+    id: 'ai-tools', 
+    name: 'AI Tools', 
+    icon: Zap,
+    topics: ['ChatGPT for Developers', 'GitHub Copilot', 'AI Code Generation', 'Prompt Engineering', 'AI Productivity']
+  },
+  { 
+    id: 'tcs', 
+    name: 'TCS Specific', 
+    icon: FileText,
+    topics: ['TCS NQT Preparation', 'TCS Digital Exam', 'TCS Ninja Process', 'TCS Aptitude', 'TCS Coding Questions']
+  },
+  { 
+    id: 'wipro', 
+    name: 'Wipro Specific', 
+    icon: FileText,
+    topics: ['Wipro ELITE', 'Wipro WILP', 'Wipro Aptitude', 'Wipro Coding Test', 'Wipro Interview Process']
+  },
+  { 
+    id: 'infosys', 
+    name: 'Infosys Specific', 
+    icon: FileText,
+    topics: ['Infosys Specialist Programmer', 'Infosys Power Programmer', 'Infosys Aptitude', 'Infosys Coding', 'Infosys HackWithInfy']
+  },
+  { 
+    id: 'cognizant', 
+    name: 'Cognizant Specific', 
+    icon: FileText,
+    topics: ['Cognizant GenC', 'Cognizant GenC Elevate', 'Cognizant Aptitude', 'Cognizant Coding Assessment', 'Cognizant Interview']
+  },
+  { 
+    id: 'accenture', 
+    name: 'Accenture Specific', 
+    icon: FileText,
+    topics: ['Accenture Aptitude', 'Accenture Coding', 'Accenture Communication Test', 'Accenture Interview Tips', 'Accenture ASE Process']
+  }
 ];
 
-// Sample study materials
+// Sample study materials (removed the first DSA material)
 export const allMaterials: StudyMaterial[] = [
-  {
-    id: 1,
-    title: "Complete DSA Interview Preparation",
-    description: "Comprehensive guide covering all essential DSA topics for technical interviews.",
-    thumbnail: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80",
-    category: "interview",
-    type: "PDF",
-    size: "4.2 MB",
-    isPremium: false,
-    downloadCount: 1250,
-    date: "May 5, 2024",
-    content: "This comprehensive guide covers all essential data structures and algorithms topics needed for technical interviews. It includes detailed explanations, code examples, and practice problems for arrays, linked lists, stacks, queues, trees, graphs, dynamic programming, and more.",
-    author: "Tech Interview Experts",
-    tags: ["DSA", "Interview", "Algorithms", "Data Structures", "Programming"]
-  },
   {
     id: 2,
     title: "TCS NQT Aptitude Questions",

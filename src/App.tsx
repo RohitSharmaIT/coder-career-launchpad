@@ -21,6 +21,7 @@ import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Services from './pages/Services';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import NotFound from './pages/NotFound';
 
 import { AuthProvider } from './contexts/AuthContext';
@@ -61,6 +62,8 @@ function App() {
                         <Route path="/book-slot" element={<BookSlot />} />
                         <Route path="/post-job" element={<PostJob />} />
                         <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/register" element={<Signup />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/admin-panel" element={<AdminPanel />} />
                         <Route path="/admin" element={<AdminPanel />} />
