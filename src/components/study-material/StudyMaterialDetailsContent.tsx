@@ -273,26 +273,26 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
                 </div>
               </div>
             )}
+
+            {/* Tags in Material Info */}
+            {material.tags && material.tags.length > 0 && (
+              <div className="col-span-1 sm:col-span-2">
+                <p className="text-sm font-medium text-gray-500 mb-2">Tags</p>
+                <div className="flex flex-wrap gap-2">
+                  {material.tags.map((tag, index) => (
+                    <Badge 
+                      key={index} 
+                      variant="secondary" 
+                      className="px-3 py-1 text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer transition-colors"
+                    >
+                      #{tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* 7. Tags */}
-        {material.tags && material.tags.length > 0 && (
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Tags</h3>
-            <div className="flex flex-wrap gap-2">
-              {material.tags.map((tag, index) => (
-                <Badge 
-                  key={index} 
-                  variant="secondary" 
-                  className="px-3 py-1 text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer transition-colors"
-                >
-                  #{tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
