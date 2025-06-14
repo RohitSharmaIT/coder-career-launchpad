@@ -1,7 +1,8 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Download, Eye, Lock, Calendar, User, BarChart3 } from "lucide-react";
+import { Download, Eye, Lock, Calendar, User, BarChart3, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStudyMaterialDownload } from "@/hooks/useStudyMaterialDownload";
 import { useNavigate } from "react-router-dom";
@@ -31,13 +32,19 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
   const { handleDownload } = useStudyMaterialDownload();
   const navigate = useNavigate();
   const isPremiumUser = user?.premium || false;
+  const [showFullContent, setShowFullContent] = useState(false);
 
   const handleViewContent = () => {
     if (material.isPremium && !isPremiumUser) {
       alert("This is premium content. Please upgrade to access full content.");
       return;
     }
+    setShowFullContent(true);
     console.log("Viewing content for:", material.title);
+  };
+
+  const handleBackToPreview = () => {
+    setShowFullContent(false);
   };
 
   const handleDownloadClick = () => {
@@ -82,6 +89,64 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
     );
   };
 
+  // If showing full content, render the full content view
+  if (showFullContent) {
+    return (
+      <div className="bg-white">
+        <div className="space-y-6">
+          {/* Back button */}
+          <Button
+            onClick={handleBackToPreview}
+            variant="outline"
+            className="mb-4"
+          >
+            <ArrowLeft size={18} className="mr-2" />
+            Back to Preview
+          </Button>
+
+          {/* Title */}
+          <div>
+            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+              {material.title}
+            </h1>
+          </div>
+
+          {/* Tagline */}
+          {material.tagline && (
+            <div>
+              <p className="text-lg text-blue-600 font-medium">
+                {material.tagline}
+              </p>
+            </div>
+          )}
+
+          {/* Full Content */}
+          <div className="bg-white p-6 rounded-lg border">
+            <div className="text-gray-700">
+              {material.content ? (
+                renderContentPreview(material.content, false)
+              ) : (
+                <p className="text-gray-600 leading-relaxed">{material.description}</p>
+              )}
+            </div>
+          </div>
+
+          {/* Download Button */}
+          <div className="flex justify-center">
+            <Button
+              onClick={handleDownloadClick}
+              className="bg-brand-red hover:bg-red-600 text-white px-8 py-3 text-base font-medium"
+            >
+              <Download size={18} className="mr-2" />
+              Download Material
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Regular preview view
   return (
     <div className="bg-white">
       <div className="space-y-6">
