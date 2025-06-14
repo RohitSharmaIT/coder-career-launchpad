@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 interface StudyMaterial {
   id: number;
   title: string;
+  tagline?: string;
   description: string;
   content?: string;
   category: string;
@@ -91,6 +92,11 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 lg:mb-4">
             {material.title}
           </h1>
+          {material.tagline && (
+            <p className="text-lg sm:text-xl text-gray-500 mb-2 sm:mb-3 italic">
+              {material.tagline}
+            </p>
+          )}
           <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 lg:mb-6">
             {material.description}
           </p>

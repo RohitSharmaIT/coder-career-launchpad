@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +12,7 @@ const AdminStudyMaterialForm = () => {
   
   const [formData, setFormData] = useState({
     title: '',
+    tagline: '',
     description: '',
     content: '',
     category: '',
@@ -81,6 +81,7 @@ const AdminStudyMaterialForm = () => {
 
     addStudyMaterial({
       title: formData.title,
+      tagline: formData.tagline,
       description: formData.description,
       content: formData.content,
       category: formData.category,
@@ -98,6 +99,7 @@ const AdminStudyMaterialForm = () => {
     // Reset form
     setFormData({
       title: '',
+      tagline: '',
       description: '',
       content: '',
       category: '',

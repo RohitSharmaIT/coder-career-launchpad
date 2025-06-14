@@ -9,6 +9,7 @@ import RichTextEditor from '../rich-text-editor/RichTextEditor';
 
 interface FormData {
   title: string;
+  tagline: string;
   description: string;
   content: string;
   category: string;
@@ -37,6 +38,17 @@ const StudyMaterialFormFields = ({ formData, onInputChange }: StudyMaterialFormF
           onChange={(e) => onInputChange('title', e.target.value)}
           placeholder="Enter study material title"
           required
+        />
+      </div>
+
+      {/* Tagline */}
+      <div>
+        <Label htmlFor="tagline">Tagline</Label>
+        <Input
+          id="tagline"
+          value={formData.tagline}
+          onChange={(e) => onInputChange('tagline', e.target.value)}
+          placeholder="Enter a catchy tagline or subtitle"
         />
       </div>
 

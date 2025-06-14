@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 export interface StudyMaterialItem {
   id: number;
   title: string;
+  tagline: string;
   description: string;
   content: string;
   category: string;
