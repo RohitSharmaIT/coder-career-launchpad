@@ -23,6 +23,9 @@ const AdminJobForm = () => {
     setRequirements,
     jobCategory,
     setJobCategory,
+    logo,
+    logoPreview,
+    handleLogoChange,
     isSubmitting,
     handleJobSubmit
   } = useAdminJobForm();
@@ -50,6 +53,9 @@ const AdminJobForm = () => {
             setJobDescription={setJobDescription}
             requirements={requirements}
             setRequirements={setRequirements}
+            logo={logo}
+            logoPreview={logoPreview}
+            onLogoChange={handleLogoChange}
           />
 
           <CategorySelect

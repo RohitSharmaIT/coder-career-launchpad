@@ -2,6 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import LogoUpload from "./LogoUpload";
 
 interface JobFormFieldsProps {
   jobTitle: string;
@@ -18,6 +19,9 @@ interface JobFormFieldsProps {
   setJobDescription: (value: string) => void;
   requirements: string;
   setRequirements: (value: string) => void;
+  logo: File | null;
+  logoPreview: string;
+  onLogoChange: (file: File | null) => void;
 }
 
 const JobFormFields = ({
@@ -34,7 +38,10 @@ const JobFormFields = ({
   jobDescription,
   setJobDescription,
   requirements,
-  setRequirements
+  setRequirements,
+  logo,
+  logoPreview,
+  onLogoChange
 }: JobFormFieldsProps) => {
   return (
     <div className="space-y-4">
@@ -49,15 +56,25 @@ const JobFormFields = ({
         />
       </div>
       
-      <div>
-        <Label htmlFor="company" className="required">Company Name</Label>
-        <Input
-          id="company"
-          placeholder="e.g., TechCorp Inc."
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-          required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="company" className="required">Company Name</Label>
+          <Input
+            id="company"
+            placeholder="e.g., TechCorp Inc."
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            required
+          />
+        </div>
+        
+        <div>
+          <LogoUpload
+            logo={logo}
+            logoPreview={logoPreview}
+            onLogoChange={onLogoChange}
+          />
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

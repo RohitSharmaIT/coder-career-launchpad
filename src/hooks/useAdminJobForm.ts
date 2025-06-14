@@ -17,9 +17,24 @@ export const useAdminJobForm = () => {
   const [jobDescription, setJobDescription] = useState('');
   const [requirements, setRequirements] = useState('');
   const [jobCategory, setJobCategory] = useState('');
+  const [logo, setLogo] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>('');
   
   // Form submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const handleLogoChange = (file: File | null) => {
+    setLogo(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setLogoPreview('');
+    }
+  };
   
   const resetForm = () => {
     setJobTitle('');
@@ -30,6 +45,8 @@ export const useAdminJobForm = () => {
     setJobDescription('');
     setRequirements('');
     setJobCategory('');
+    setLogo(null);
+    setLogoPreview('');
   };
   
   const handleJobSubmit = (e: React.FormEvent) => {
@@ -59,7 +76,9 @@ export const useAdminJobForm = () => {
             jobType === 'contract' ? 'Contract' :
             jobType === 'internship' ? 'Internship' : 'Remote',
       salary: salary,
-      skills: skills
+      skills: skills,
+      category: jobCategory,
+      logo: logoPreview || undefined
     });
     
     // In a real app with backend, this would be an API call
@@ -71,7 +90,8 @@ export const useAdminJobForm = () => {
       salary,
       description: jobDescription,
       requirements: skills,
-      category: jobCategory
+      category: jobCategory,
+      logo: logoPreview
     });
     
     // Simulate API call
@@ -103,6 +123,9 @@ export const useAdminJobForm = () => {
     setRequirements,
     jobCategory,
     setJobCategory,
+    logo,
+    logoPreview,
+    handleLogoChange,
     isSubmitting,
     // Form actions
     handleJobSubmit,

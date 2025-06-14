@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface Job {
@@ -12,6 +11,7 @@ export interface Job {
   experience?: string;
   skills?: string[];
   category?: string;
+  logo?: string;
 }
 
 interface JobsContextType {
