@@ -11,34 +11,44 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 
 const HomePage = () => {
   return (
-    <>
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Navbar />
       
-      {/* Hero Section */}
+      {/* Full-screen Hero Section */}
       <HeroSection />
 
-      {/* Enhanced Services Section */}
-      <ServicesSection />
+      {/* Full-width Services Section */}
+      <div className="full-width">
+        <ServicesSection />
+      </div>
 
-      {/* Enhanced Stats Section */}
-      <StatsSection />
+      {/* Full-width Stats Section */}
+      <div className="full-width">
+        <StatsSection />
+      </div>
 
-      {/* Enhanced Featured Jobs Section */}
-      <JobsSection />
+      {/* Full-width Featured Jobs Section */}
+      <div className="full-width">
+        <JobsSection />
+      </div>
 
-      {/* Enhanced Recent Blogs Section */}
-      <BlogsSection />
+      {/* Full-width Recent Blogs Section */}
+      <div className="full-width">
+        <BlogsSection />
+      </div>
 
-      {/* Enhanced Testimonials Section */}
-      <TestimonialsSection />
+      {/* Full-width Testimonials Section */}
+      <div className="full-width">
+        <TestimonialsSection />
+      </div>
 
-      {/* Enhanced Subscribe Section */}
-      <div className="animate-fade-in">
+      {/* Full-width Subscribe Section */}
+      <div className="full-width">
         <SubscribeBox />
       </div>
       
       <Footer />
-    </>
+    </div>
   );
 };
 

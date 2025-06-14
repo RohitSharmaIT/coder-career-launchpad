@@ -33,22 +33,22 @@ const JobsSection = () => {
   ];
 
   return (
-    <section className="bg-white">
-      <div className="container mx-auto">
-        <div className="text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-4 py-2 mb-4 font-medium text-sm">
-            <Users className="h-4 w-4" />
+    <section className="bg-white section-padding">
+      <div className="container-full">
+        <div className="text-center mb-20 animate-fade-in">
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-6 py-3 mb-6 font-medium text-lg">
+            <Users className="h-5 w-5" />
             CAREER OPPORTUNITIES
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+          <h2 className="text-5xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
             Featured Job Openings
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             Discover exciting career opportunities curated specifically for our community members.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
           {jobs.map((job, index) => (
             <div key={job.id} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
               <JobCard
@@ -65,7 +65,7 @@ const JobsSection = () => {
         
         <div className="text-center animate-fade-in" style={{animationDelay: '0.4s'}}>
           <Link to="/jobs">
-            <Button variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-lg">
+            <Button variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-12 py-6 rounded-xl font-semibold text-xl transition-all duration-300 hover:shadow-lg">
               Browse All Jobs
             </Button>
           </Link>

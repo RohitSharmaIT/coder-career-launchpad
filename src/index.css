@@ -91,12 +91,33 @@
     @apply border-border;
   }
 
+  html, body, #root {
+    @apply h-full w-full m-0 p-0 overflow-x-hidden;
+  }
+
   body {
-    @apply bg-background text-foreground font-[Poppins];
+    @apply bg-background text-foreground font-[Poppins] antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-[Inter] font-bold;
+  }
+
+  /* Full-screen layout utilities */
+  .full-width {
+    @apply w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw];
+  }
+
+  .full-section {
+    @apply w-full min-h-screen flex items-center justify-center;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .container-full {
+    @apply max-w-none w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16;
   }
 }
 
@@ -111,22 +132,34 @@
   }
   
   .service-card {
-    @apply bg-white p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl border border-gray-100;
+    @apply bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-3 hover:scale-105;
   }
   
   .job-card {
-    @apply bg-white p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl border border-gray-100;
+    @apply bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-1;
   }
   
   .blog-card {
-    @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100;
+    @apply bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-1;
   }
   
   .team-card {
-    @apply bg-white p-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl border border-gray-100 text-center;
+    @apply bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-brand-red/20 text-center transform hover:-translate-y-1;
   }
 
   .hero-overlay {
-    @apply absolute inset-0 bg-black/50 z-0;
+    @apply absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60 z-0;
+  }
+
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-brand-red via-red-500 to-pink-500 bg-clip-text text-transparent;
+  }
+
+  .section-gradient {
+    @apply bg-gradient-to-br from-gray-50 via-white to-blue-50/30;
   }
 }
