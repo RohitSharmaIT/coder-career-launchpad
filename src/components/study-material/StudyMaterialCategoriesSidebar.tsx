@@ -6,10 +6,12 @@ import { Plus, ChevronDown, ChevronUp } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
 import { categories } from "@/components/study-material/materialData";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const StudyMaterialCategoriesSidebar = () => {
   const navigate = useNavigate();
   const [showCategories, setShowCategories] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleCategoryClick = (categoryId: string) => {
     if (categoryId === 'all') {
@@ -18,7 +20,9 @@ const StudyMaterialCategoriesSidebar = () => {
       navigate(`/study-material/category/${categoryId}`);
     }
     // Close categories on mobile after selection
-    setShowCategories(false);
+    if (isMobile) {
+      setShowCategories(false);
+    }
   };
 
   // Group categories by type
@@ -37,8 +41,8 @@ const StudyMaterialCategoriesSidebar = () => {
           <h2 className="text-lg font-bold">Categories</h2>
         </div>
         
-        {/* Large screens: Dropdown Menu */}
-        <div className="hidden lg:block">
+        {/* Desktop: Dropdown Menu */}
+        <div className="hidden md:block">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -101,60 +105,72 @@ const StudyMaterialCategoriesSidebar = () => {
           </DropdownMenu>
         </div>
         
-        {/* Small/Medium screens: Simple button list layout */}
-        <div className="lg:hidden">
-          <div className="space-y-2">
-            {/* All Materials Button */}
-            <Button
-              variant="outline"
-              className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
-              onClick={() => handleCategoryClick('all')}
-            >
-              All Materials
-            </Button>
+        {/* Mobile/Tablet: Collapsible list */}
+        <div className="md:hidden">
+          <Collapsible open={showCategories} onOpenChange={setShowCategories}>
+            <CollapsibleTrigger asChild>
+              <Button
+                className="w-full bg-brand-red hover:bg-red-600 text-white text-sm flex items-center justify-center py-2.5"
+                size="sm"
+              >
+                <Plus size={16} className="mr-2" />
+                Browse Categories
+                {showCategories ? <ChevronUp size={16} className="ml-2" /> : <ChevronDown size={16} className="ml-2" />}
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-3 space-y-2">
+              {/* All Materials Button */}
+              <Button
+                variant="outline"
+                className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
+                onClick={() => handleCategoryClick('all')}
+              >
+                All Materials
+              </Button>
 
-            {/* Topic Categories */}
-            <div className="space-y-1">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-2 py-1">
-                Topics
-              </p>
-              {topicCategories.map((category) => {
-                const IconComponent = category.icon;
-                return (
-                  <Button
-                    key={category.id}
-                    variant="outline"
-                    className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
-                    onClick={() => handleCategoryClick(category.id)}
-                  >
-                    <IconComponent size={14} className="mr-2 shrink-0 text-gray-600" />
-                    <span className="truncate text-xs">{category.name}</span>
-                  </Button>
-                );
-              })}
-            </div>
+              {/* Topic Categories */}
+              <div className="space-y-1">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-2 py-1">
+                  Topics
+                </p>
+                {topicCategories.map((category) => {
+                  const IconComponent = category.icon;
+                  return (
+                    <Button
+                      key={category.id}
+                      variant="outline"
+                      className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
+                      onClick={() => handleCategoryClick(category.id)}
+                    >
+                      <IconComponent size={14} className="mr-2 shrink-0 text-gray-600" />
+                      <span className="truncate text-xs">{category.name}</span>
+                    </Button>
+                  );
+                })}
+              </div>
 
-            {/* Company Categories */}
-            <div className="space-y-1">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-2 py-1">
-                Companies
-              </p>
-              {companyCategories.map((category) => {
-                const IconComponent = category.icon;
-                return (
-                  <Button
-                    key={category.id}
-                    variant="outline"
-                    className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
-                    onClick={() => handleCategoryClick(category.id)}
-                  >
-                    <IconComponent size={14} className="mr-2 shrink-0 text-gray-600" />
-                    <span className="truncate text-xs">{category.name}</span>
-                  </Button>
-                );
-              })}
-            </div>
-          </div>
+              {/* Company Categories */}
+              <div className="space-y-1">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-2 py-1">
+                  Companies
+                </p>
+                {companyCategories.map((category) => {
+                  const IconComponent = category.icon;
+                  return (
+                    <Button
+                      key={category.id}
+                      variant="outline"
+                      className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
+                      onClick={() => handleCategoryClick(category.id)}
+                    >
+                      <IconComponent size={14} className="mr-2 shrink-0 text-gray-600" />
+                      <span className="truncate text-xs">{category.name}</span>
+                    </Button>
+                  );
+                })}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </div>
     </div>
