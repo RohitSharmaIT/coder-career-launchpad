@@ -13,7 +13,7 @@ const BookingSteps = ({ currentStep, steps, serviceParam }: BookingStepsProps) =
     <div className="mb-8">
       <div className="flex items-center justify-center">
         {steps.map((step, index) => (
-          <div key={index} className={`flex items-center ${currentStep === 1 && index === 0 ? 'hidden' : ''}`}>
+          <div key={index} className="flex items-center">
             <div
               className={`flex items-center justify-center w-8 h-8 rounded-full ${
                 currentStep > index + 1
@@ -26,7 +26,7 @@ const BookingSteps = ({ currentStep, steps, serviceParam }: BookingStepsProps) =
               {currentStep > index + 1 ? (
                 <Check className="w-5 h-5" />
               ) : (
-                <span>{serviceParam && index > 0 ? index : index + 1}</span>
+                <span>{index + 1}</span>
               )}
             </div>
             
