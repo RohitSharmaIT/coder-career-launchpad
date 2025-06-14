@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogCard from "@/components/BlogCard";
@@ -104,7 +105,7 @@ const Blogs = () => {
                 <h3 className="text-lg font-bold mb-4">Recent Posts</h3>
                 <div className="space-y-4">
                   {allBlogs.slice(0, 3).map((blog) => (
-                    <div key={blog.id} className="flex gap-3">
+                    <Link key={blog.id} to={`/blogs/${blog.id}`} className="flex gap-3 hover:bg-gray-50 p-2 rounded transition-colors">
                       <div className="w-20 h-20 shrink-0 rounded overflow-hidden">
                         <img 
                           src={blog.thumbnail} 
@@ -113,10 +114,10 @@ const Blogs = () => {
                         />
                       </div>
                       <div>
-                        <h4 className="font-medium text-sm line-clamp-2">{blog.title}</h4>
+                        <h4 className="font-medium text-sm line-clamp-2 hover:text-brand-red transition-colors">{blog.title}</h4>
                         <p className="text-gray-500 text-xs mt-1">{blog.date}</p>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
