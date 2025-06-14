@@ -1,7 +1,9 @@
+
 import { Button } from "@/components/ui/button";
 import { Download, Eye, Lock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStudyMaterialDownload } from "@/hooks/useStudyMaterialDownload";
+import { useNavigate } from "react-router-dom";
 
 interface StudyMaterial {
   id: number;
@@ -24,6 +26,7 @@ interface StudyMaterialDetailsContentProps {
 const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentProps) => {
   const { user } = useAuth();
   const { handleDownload } = useStudyMaterialDownload();
+  const navigate = useNavigate();
   const isPremiumUser = user?.premium || false;
 
   const handleViewContent = () => {
@@ -38,6 +41,10 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
 
   const handleDownloadClick = () => {
     handleDownload(material.id, material.isPremium);
+  };
+
+  const handleUpgradeClick = () => {
+    navigate('/upgrade-simple');
   };
 
   return (
@@ -95,7 +102,11 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
                       <p className="text-sm text-gray-600 mb-3">
                         Upgrade to premium to access full content
                       </p>
-                      <Button size="sm" className="bg-brand-red hover:bg-red-600">
+                      <Button 
+                        size="sm" 
+                        className="bg-brand-red hover:bg-red-600"
+                        onClick={handleUpgradeClick}
+                      >
                         Upgrade Now
                       </Button>
                     </div>
