@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useCategories } from '@/contexts/CategoriesContext';
 import CategorySelect from '../CategorySelect';
+import RichTextEditor from '../rich-text-editor/RichTextEditor';
 
 interface FormData {
   title: string;
@@ -63,15 +64,13 @@ const StudyMaterialFormFields = ({ formData, onInputChange }: StudyMaterialFormF
         required
       />
 
-      {/* Content */}
+      {/* Rich Text Content */}
       <div>
-        <Label htmlFor="content">Content (Rich Text)</Label>
-        <Textarea
-          id="content"
+        <Label>Content (Rich Text Editor)</Label>
+        <RichTextEditor
           value={formData.content}
-          onChange={(e) => onInputChange('content', e.target.value)}
+          onChange={(value) => onInputChange('content', value)}
           placeholder="Write your study material content here..."
-          rows={8}
         />
       </div>
 
