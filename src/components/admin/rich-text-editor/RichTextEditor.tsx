@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -38,33 +39,42 @@ const RichTextEditor = ({
     editorRef.current.focus();
     
     try {
-      // Special handling for list commands
+      // Enhanced list handling
       if (command === 'insertUnorderedList' || command === 'insertOrderedList') {
-        // Save current selection
         const selection = window.getSelection();
         const range = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
         
-        // Execute the command
+        // Try the standard command first
         const success = document.execCommand(command, false, value);
         console.log('List command success:', success);
         
-        // If command failed, try alternative approach
-        if (!success && range) {
+        // Enhanced fallback approach
+        if (!success || !selection) {
           const listTag = command === 'insertUnorderedList' ? 'ul' : 'ol';
           const listElement = document.createElement(listTag);
+          listElement.style.marginLeft = '20px';
+          listElement.style.paddingLeft = '20px';
+          
           const listItem = document.createElement('li');
+          listItem.style.marginBottom = '4px';
           listItem.innerHTML = '&nbsp;';
           listElement.appendChild(listItem);
           
-          range.deleteContents();
-          range.insertNode(listElement);
-          
-          // Position cursor in the list item
-          const newRange = document.createRange();
-          newRange.setStart(listItem, 0);
-          newRange.setEnd(listItem, 0);
-          selection?.removeAllRanges();
-          selection?.addRange(newRange);
+          if (range) {
+            // Insert at current position
+            range.deleteContents();
+            range.insertNode(listElement);
+            
+            // Position cursor in the list item
+            const newRange = document.createRange();
+            newRange.setStart(listItem, 0);
+            newRange.setEnd(listItem, 0);
+            selection?.removeAllRanges();
+            selection?.addRange(newRange);
+          } else {
+            // Insert at the end if no selection
+            editorRef.current.appendChild(listElement);
+          }
         }
       } else {
         // Regular command execution
@@ -140,47 +150,46 @@ const RichTextEditor = ({
     }, 50);
   }, [onChange]);
 
-  const handleLinkInsert = useCallback((url: string) => {
+  // Enhanced link insertion with custom text
+  const handleLinkInsert = useCallback((url: string, displayText?: string) => {
     if (!editorRef.current) return;
     
     editorRef.current.focus();
     
     const selection = window.getSelection();
-    if (selection && selection.toString().trim()) {
-      // If text is selected, make it a link
-      try {
-        document.execCommand('createLink', false, url);
-        // Set target="_blank" for the created link
-        setTimeout(() => {
-          const links = editorRef.current?.querySelectorAll('a[href="' + url + '"]');
-          links?.forEach(link => {
-            link.setAttribute('target', '_blank');
-            link.setAttribute('rel', 'noopener noreferrer');
-          });
-        }, 10);
-      } catch (error) {
-        console.log('Link creation failed:', error);
-      }
-    } else {
-      // If no text is selected, insert the URL as both text and link
-      const link = document.createElement('a');
-      link.href = url;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.textContent = url;
-      link.style.color = '#0066cc';
-      link.style.textDecoration = 'underline';
+    const text = displayText || 'Click here';
+    
+    // Create the link element
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = text;
+    link.style.color = '#0066cc';
+    link.style.textDecoration = 'underline';
+    
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
       
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
+      // If there's selected text, replace it with the link
+      if (selection.toString().trim()) {
+        link.textContent = selection.toString();
+        range.deleteContents();
         range.insertNode(link);
-        range.setStartAfter(link);
-        range.setEndAfter(link);
-        selection.removeAllRanges();
-        selection.addRange(range);
       } else {
-        editorRef.current.appendChild(link);
+        // If no selected text, insert the link with custom text
+        range.insertNode(link);
       }
+      
+      // Position cursor after the link
+      range.setStartAfter(link);
+      range.setEndAfter(link);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } else {
+      // If no selection, append to the end
+      editorRef.current.appendChild(link);
+      editorRef.current.appendChild(document.createTextNode(' '));
     }
     
     // Update content
@@ -215,7 +224,7 @@ const RichTextEditor = ({
       }
     }
     
-    // Handle Enter key to maintain proper line breaks
+    // Handle Enter key for better list behavior
     if (e.key === 'Enter') {
       // Let the browser handle Enter normally for better list behavior
       setTimeout(() => {

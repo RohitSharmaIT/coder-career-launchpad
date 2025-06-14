@@ -25,11 +25,12 @@ import {
 interface EditorToolbarProps {
   onCommand: (command: string, value?: string) => void;
   onImageInsert: (imageUrl: string) => void;
-  onLinkInsert: (url: string) => void;
+  onLinkInsert: (url: string, text?: string) => void;
 }
 
 const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbarProps) => {
   const [linkUrl, setLinkUrl] = useState('');
+  const [linkText, setLinkText] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [textColor, setTextColor] = useState('#000000');
   const [highlightColor, setHighlightColor] = useState('#ffff00');
@@ -39,8 +40,10 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
 
   const handleLinkSubmit = () => {
     if (linkUrl.trim()) {
-      onLinkInsert(linkUrl);
+      const displayText = linkText.trim() || 'Click here';
+      onLinkInsert(linkUrl, displayText);
       setLinkUrl('');
+      setLinkText('');
       setIsLinkDialogOpen(false);
     }
   };
@@ -84,7 +87,7 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
     }
   };
 
-  // Fixed list command handler
+  // Enhanced list command handler
   const handleListCommand = (listType: 'insertUnorderedList' | 'insertOrderedList') => {
     console.log('List command triggered:', listType);
     onCommand(listType);
@@ -247,7 +250,7 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
 
       <Separator orientation="vertical" className="h-6" />
 
-      {/* Lists - Simplified and fixed */}
+      {/* Lists - Enhanced functionality */}
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"
@@ -273,7 +276,7 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
 
       <Separator orientation="vertical" className="h-6" />
 
-      {/* Link */}
+      {/* Enhanced Link Dialog */}
       <Dialog open={isLinkDialogOpen} onOpenChange={setIsLinkDialogOpen}>
         <DialogTrigger asChild>
           <Button variant="ghost" size="sm" className="p-2 hover:bg-gray-200" type="button">
@@ -284,26 +287,41 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
           <DialogHeader>
             <DialogTitle>Insert Link</DialogTitle>
             <DialogDescription>
-              Add a link to your content. Select text first to make it clickable, or just insert the URL.
+              Add a link with custom display text. The link will open in a new tab.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="linkUrl">URL</Label>
+              <Label htmlFor="linkUrl">URL *</Label>
               <Input
                 id="linkUrl"
                 value={linkUrl}
                 onChange={(e) => setLinkUrl(e.target.value)}
                 placeholder="https://example.com"
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     handleLinkSubmit();
                   }
                 }}
               />
             </div>
-            <Button onClick={handleLinkSubmit} className="w-full">
+            <div>
+              <Label htmlFor="linkText">Display Text</Label>
+              <Input
+                id="linkText"
+                value={linkText}
+                onChange={(e) => setLinkText(e.target.value)}
+                placeholder="Click here (optional - defaults to 'Click here')"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleLinkSubmit();
+                  }
+                }}
+              />
+            </div>
+            <Button onClick={handleLinkSubmit} className="w-full" disabled={!linkUrl.trim()}>
               Insert Link
             </Button>
           </div>
