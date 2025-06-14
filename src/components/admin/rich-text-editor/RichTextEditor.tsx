@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -33,14 +32,44 @@ const RichTextEditor = ({
   const handleCommand = useCallback((command: string, value?: string) => {
     if (!editorRef.current) return;
     
+    console.log('Executing command:', command, 'with value:', value);
+    
+    // Ensure editor is focused
     editorRef.current.focus();
     
-    // Save the current selection before executing command
-    const selection = window.getSelection();
-    const range = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
-    
     try {
-      document.execCommand(command, false, value);
+      // Special handling for list commands
+      if (command === 'insertUnorderedList' || command === 'insertOrderedList') {
+        // Save current selection
+        const selection = window.getSelection();
+        const range = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+        
+        // Execute the command
+        const success = document.execCommand(command, false, value);
+        console.log('List command success:', success);
+        
+        // If command failed, try alternative approach
+        if (!success && range) {
+          const listTag = command === 'insertUnorderedList' ? 'ul' : 'ol';
+          const listElement = document.createElement(listTag);
+          const listItem = document.createElement('li');
+          listItem.innerHTML = '&nbsp;';
+          listElement.appendChild(listItem);
+          
+          range.deleteContents();
+          range.insertNode(listElement);
+          
+          // Position cursor in the list item
+          const newRange = document.createRange();
+          newRange.setStart(listItem, 0);
+          newRange.setEnd(listItem, 0);
+          selection?.removeAllRanges();
+          selection?.addRange(newRange);
+        }
+      } else {
+        // Regular command execution
+        document.execCommand(command, false, value);
+      }
     } catch (error) {
       console.log('Command execution failed:', error);
     }

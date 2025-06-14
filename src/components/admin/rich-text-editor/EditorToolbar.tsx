@@ -84,12 +84,10 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
     }
   };
 
-  // Handle list commands with proper focus management
+  // Fixed list command handler
   const handleListCommand = (listType: 'insertUnorderedList' | 'insertOrderedList') => {
-    // Use setTimeout to ensure proper focus and command execution
-    setTimeout(() => {
-      onCommand(listType);
-    }, 10);
+    console.log('List command triggered:', listType);
+    onCommand(listType);
   };
 
   return (
@@ -249,7 +247,7 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
 
       <Separator orientation="vertical" className="h-6" />
 
-      {/* Lists - Fixed with proper focus management */}
+      {/* Lists - Simplified and fixed */}
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"
@@ -257,6 +255,7 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
           onClick={() => handleListCommand('insertUnorderedList')}
           className="p-2 hover:bg-gray-200"
           type="button"
+          title="Bullet List"
         >
           <List size={16} />
         </Button>
@@ -266,6 +265,7 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
           onClick={() => handleListCommand('insertOrderedList')}
           className="p-2 hover:bg-gray-200"
           type="button"
+          title="Numbered List"
         >
           <ListOrdered size={16} />
         </Button>
