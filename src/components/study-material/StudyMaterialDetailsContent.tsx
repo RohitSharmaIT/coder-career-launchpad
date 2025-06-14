@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStudyMaterialDownload } from "@/hooks/useStudyMaterialDownload";
@@ -7,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Eye, Download } from "lucide-react";
 import StudyMaterialMetrics from "./StudyMaterialMetrics";
 import StudyMaterialContentRenderer from "./StudyMaterialContentRenderer";
+import PremiumAccessModal from "./PremiumAccessModal";
 
 interface StudyMaterial {
   id: number;
@@ -34,10 +34,11 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
   const navigate = useNavigate();
   const isPremiumUser = user?.premium || false;
   const [showFullContent, setShowFullContent] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const handleViewContent = () => {
     if (material.isPremium && !isPremiumUser) {
-      alert("This is premium content. Please upgrade to access full content.");
+      setShowPremiumModal(true);
       return;
     }
     setShowFullContent(true);
@@ -45,6 +46,10 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
   };
 
   const handleDownloadClick = () => {
+    if (material.isPremium && !isPremiumUser) {
+      setShowPremiumModal(true);
+      return;
+    }
     handleDownload(material.id, material.isPremium);
   };
 
@@ -96,6 +101,13 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
             </Button>
           </div>
         </div>
+
+        {/* Premium Access Modal */}
+        <PremiumAccessModal
+          isOpen={showPremiumModal}
+          onClose={() => setShowPremiumModal(false)}
+          materialTitle={material.title}
+        />
       </div>
     );
   }
@@ -126,7 +138,6 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
           <Button
             onClick={handleViewContent}
             className="bg-brand-red hover:bg-red-600 text-white px-8 py-3 text-base font-medium flex items-center justify-center"
-            disabled={material.isPremium && !isPremiumUser}
           >
             <Eye size={18} className="mr-2" />
             View Full Content
@@ -145,6 +156,13 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
         {/* Material Metrics */}
         <StudyMaterialMetrics material={material} />
       </div>
+
+      {/* Premium Access Modal */}
+      <PremiumAccessModal
+        isOpen={showPremiumModal}
+        onClose={() => setShowPremiumModal(false)}
+        materialTitle={material.title}
+      />
     </div>
   );
 };
