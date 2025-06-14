@@ -5,40 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { GraduationCap, Users, Award, Target, Eye, Clock, CheckCircle } from "lucide-react";
+import { GraduationCap, Users, Award, Target, Eye, Clock, CheckCircle, Shield, Zap, Heart } from "lucide-react";
 
 const About = () => {
-  const teamMembers = [
-    {
-      name: "Rahul Kumar",
-      role: "Founder & Lead Mentor",
-      photo: "https://randomuser.me/api/portraits/men/1.jpg",
-      bio: "With 8+ years in tech and a passion for mentoring, Rahul has helped hundreds of professionals land their dream jobs.",
-      expertise: ["System Design", "Career Strategy", "Technical Leadership"]
-    },
-    {
-      name: "Priya Singh",
-      role: "Resume Expert",
-      photo: "https://randomuser.me/api/portraits/women/2.jpg",
-      bio: "Ex-recruiter with insider knowledge helping candidates create compelling resumes that stand out.",
-      expertise: ["Resume Writing", "ATS Optimization", "LinkedIn Strategy"]
-    },
-    {
-      name: "Aman Gupta",
-      role: "Technical Coach",
-      photo: "https://randomuser.me/api/portraits/men/3.jpg",
-      bio: "Full-stack developer with expertise in preparing candidates for technical interviews.",
-      expertise: ["DSA", "Mock Interviews", "Coding Challenges"]
-    },
-    {
-      name: "Neha Sharma",
-      role: "Career Strategist",
-      photo: "https://randomuser.me/api/portraits/women/4.jpg",
-      bio: "Specializing in career transitions and helping professionals navigate the tech industry.",
-      expertise: ["Career Planning", "Salary Negotiation", "Industry Insights"]
-    }
-  ];
-
   const timeline = [
     {
       year: "2020",
@@ -77,6 +46,29 @@ const About = () => {
     { number: "95%", label: "Success Rate" },
     { number: "50+", label: "Partner Companies" },
     { number: "4.9", label: "Average Rating" }
+  ];
+
+  const coreValues = [
+    {
+      icon: Shield,
+      title: "Trust & Reliability",
+      description: "We build lasting relationships based on trust, delivering consistent results and maintaining the highest standards of professionalism in every interaction."
+    },
+    {
+      icon: Zap,
+      title: "Innovation & Excellence",
+      description: "We continuously evolve our methods and tools to stay ahead of industry trends, ensuring our clients receive cutting-edge career guidance and support."
+    },
+    {
+      icon: Heart,
+      title: "Passion & Dedication",
+      description: "Our genuine passion for helping others succeed drives everything we do. We're personally invested in each client's journey and celebrate their achievements."
+    },
+    {
+      icon: Users,
+      title: "Community & Collaboration",
+      description: "We believe in the power of community and foster connections between professionals, creating a supportive network that extends beyond individual mentorship."
+    }
   ];
 
   return (
@@ -223,44 +215,32 @@ const About = () => {
         </div>
       </section>
 
-      {/* Meet Our Team */}
+      {/* Our Values */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge variant="secondary" className="mb-4 bg-brand-red/10 text-brand-red border-brand-red/20">
-              Our Experts
+              Our Foundation
             </Badge>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Meet Our Team</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Our Core Values</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Experienced professionals dedicated to your career success.
+              The principles that guide everything we do and shape our commitment to your success.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {coreValues.map((value, index) => (
+              <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg">
                 <CardHeader className="text-center pb-4">
-                  <div className="w-24 h-24 mx-auto rounded-full overflow-hidden ring-4 ring-brand-red/20 group-hover:ring-brand-red/40 transition-all duration-300">
-                    <img 
-                      src={member.photo} 
-                      alt={member.name} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
+                  <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-red/20 transition-colors">
+                    <value.icon className="w-8 h-8 text-brand-red" />
                   </div>
-                  <CardTitle className="text-xl mt-4">{member.name}</CardTitle>
-                  <p className="text-brand-red font-semibold">{member.role}</p>
+                  <CardTitle className="text-xl">{value.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <CardDescription className="text-gray-600 text-sm leading-relaxed">
-                    {member.bio}
+                <CardContent>
+                  <CardDescription className="text-gray-600 leading-relaxed">
+                    {value.description}
                   </CardDescription>
-                  <div className="flex flex-wrap gap-1">
-                    {member.expertise.map((skill, skillIndex) => (
-                      <Badge key={skillIndex} variant="secondary" className="text-xs bg-brand-red/10 text-brand-red">
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
                 </CardContent>
               </Card>
             ))}
