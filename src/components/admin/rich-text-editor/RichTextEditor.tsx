@@ -39,41 +39,74 @@ const RichTextEditor = ({
     editorRef.current.focus();
     
     try {
-      // Enhanced list handling
+      // Enhanced list handling for selected text
       if (command === 'insertUnorderedList' || command === 'insertOrderedList') {
         const selection = window.getSelection();
-        const range = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+        const selectedText = selection?.toString().trim();
         
-        // Try the standard command first
-        const success = document.execCommand(command, false, value);
-        console.log('List command success:', success);
-        
-        // Enhanced fallback approach
-        if (!success || !selection) {
+        if (selectedText && selection && selection.rangeCount > 0) {
+          // Handle selected text - convert to list items
+          const range = selection.getRangeAt(0);
           const listTag = command === 'insertUnorderedList' ? 'ul' : 'ol';
           const listElement = document.createElement(listTag);
           listElement.style.marginLeft = '20px';
           listElement.style.paddingLeft = '20px';
+          listElement.style.listStyleType = command === 'insertUnorderedList' ? 'disc' : 'decimal';
           
-          const listItem = document.createElement('li');
-          listItem.style.marginBottom = '4px';
-          listItem.innerHTML = '&nbsp;';
-          listElement.appendChild(listItem);
+          // Split selected text by lines and create list items
+          const lines = selectedText.split('\n').filter(line => line.trim());
           
-          if (range) {
-            // Insert at current position
+          if (lines.length > 0) {
+            lines.forEach(line => {
+              const listItem = document.createElement('li');
+              listItem.style.marginBottom = '4px';
+              listItem.textContent = line.trim();
+              listElement.appendChild(listItem);
+            });
+            
+            // Replace selected text with list
             range.deleteContents();
             range.insertNode(listElement);
             
-            // Position cursor in the list item
+            // Position cursor after the list
             const newRange = document.createRange();
-            newRange.setStart(listItem, 0);
-            newRange.setEnd(listItem, 0);
-            selection?.removeAllRanges();
-            selection?.addRange(newRange);
-          } else {
-            // Insert at the end if no selection
-            editorRef.current.appendChild(listElement);
+            newRange.setStartAfter(listElement);
+            newRange.setEndAfter(listElement);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+          }
+        } else {
+          // No text selected - try standard command first
+          const success = document.execCommand(command, false, value);
+          console.log('List command success:', success);
+          
+          // Fallback approach if standard command fails
+          if (!success) {
+            const listTag = command === 'insertUnorderedList' ? 'ul' : 'ol';
+            const listElement = document.createElement(listTag);
+            listElement.style.marginLeft = '20px';
+            listElement.style.paddingLeft = '20px';
+            listElement.style.listStyleType = command === 'insertUnorderedList' ? 'disc' : 'decimal';
+            
+            const listItem = document.createElement('li');
+            listItem.style.marginBottom = '4px';
+            listItem.innerHTML = '&nbsp;';
+            listElement.appendChild(listItem);
+            
+            if (selection && selection.rangeCount > 0) {
+              const range = selection.getRangeAt(0);
+              range.insertNode(listElement);
+              
+              // Position cursor in the list item
+              const newRange = document.createRange();
+              newRange.setStart(listItem, 0);
+              newRange.setEnd(listItem, 0);
+              selection.removeAllRanges();
+              selection.addRange(newRange);
+            } else {
+              // Insert at the end if no selection
+              editorRef.current.appendChild(listElement);
+            }
           }
         }
       } else {
