@@ -2,8 +2,10 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { GraduationCap, Users, Award } from "lucide-react";
+import { GraduationCap, Users, Award, Target, Eye, Clock, CheckCircle } from "lucide-react";
 
 const About = () => {
   const teamMembers = [
@@ -11,25 +13,29 @@ const About = () => {
       name: "Rahul Kumar",
       role: "Founder & Lead Mentor",
       photo: "https://randomuser.me/api/portraits/men/1.jpg",
-      bio: "With 8+ years in tech and a passion for mentoring"
+      bio: "With 8+ years in tech and a passion for mentoring, Rahul has helped hundreds of professionals land their dream jobs.",
+      expertise: ["System Design", "Career Strategy", "Technical Leadership"]
     },
     {
       name: "Priya Singh",
       role: "Resume Expert",
       photo: "https://randomuser.me/api/portraits/women/2.jpg",
-      bio: "Ex-recruiter helping candidates stand out"
+      bio: "Ex-recruiter with insider knowledge helping candidates create compelling resumes that stand out.",
+      expertise: ["Resume Writing", "ATS Optimization", "LinkedIn Strategy"]
     },
     {
       name: "Aman Gupta",
       role: "Technical Coach",
       photo: "https://randomuser.me/api/portraits/men/3.jpg",
-      bio: "Full-stack developer with expertise in interview preparation"
+      bio: "Full-stack developer with expertise in preparing candidates for technical interviews.",
+      expertise: ["DSA", "Mock Interviews", "Coding Challenges"]
     },
     {
       name: "Neha Sharma",
       role: "Career Strategist",
       photo: "https://randomuser.me/api/portraits/women/4.jpg",
-      bio: "Helping professionals navigate career transitions"
+      bio: "Specializing in career transitions and helping professionals navigate the tech industry.",
+      expertise: ["Career Planning", "Salary Negotiation", "Industry Insights"]
     }
   ];
 
@@ -37,121 +43,178 @@ const About = () => {
     {
       year: "2020",
       title: "The Beginning",
-      description: "Started as a YouTube channel sharing interview tips and coding tutorials"
+      description: "Started as a YouTube channel sharing interview tips and coding tutorials",
+      icon: "🚀"
     },
     {
       year: "2021",
       title: "Growing Community",
-      description: "Expanded to personalized career mentorship and resume reviews"
+      description: "Expanded to personalized career mentorship and resume reviews",
+      icon: "👥"
     },
     {
       year: "2022",
       title: "Formalized Services",
-      description: "Launched structured services including mock interviews and career strategy sessions"
+      description: "Launched structured services including mock interviews and career strategy sessions",
+      icon: "🎯"
     },
     {
       year: "2023",
       title: "Digital Expansion",
-      description: "Introduced online platform with resources, job listings, and community features"
+      description: "Introduced online platform with resources, job listings, and community features",
+      icon: "💻"
     },
     {
       year: "2024",
       title: "Today & Beyond",
-      description: "Continuing to innovate with new tools and resources for tech professionals"
+      description: "Continuing to innovate with new tools and resources for tech professionals",
+      icon: "⭐"
     }
+  ];
+
+  const achievements = [
+    { number: "500+", label: "Professionals Mentored" },
+    { number: "95%", label: "Success Rate" },
+    { number: "50+", label: "Partner Companies" },
+    { number: "4.9", label: "Average Rating" }
   ];
 
   return (
     <>
       <Navbar />
       
-      {/* Intro Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div>
-              <h1 className="text-4xl font-bold mb-6">About Apne Wale Coders</h1>
-              <p className="text-lg text-gray-700 mb-6">
-                At Apne Wale Coders, we're driven by a simple mission: to help tech professionals navigate and succeed in their careers. 
-                We believe that everyone deserves access to quality career guidance, regardless of their background or experience level.
+      {/* Hero Section */}
+      <section className="relative py-20 bg-gradient-to-br from-brand-red/10 via-white to-red-50 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ef4444" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <Badge variant="secondary" className="w-fit bg-brand-red/10 text-brand-red border-brand-red/20">
+                About Our Journey
+              </Badge>
+              <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+                Empowering Tech 
+                <span className="text-brand-red block">Careers</span>
+              </h1>
+              <p className="text-xl text-gray-600 leading-relaxed">
+                We're passionate about helping tech professionals achieve their career goals through personalized mentorship, expert guidance, and proven strategies.
               </p>
-              <p className="text-lg text-gray-700 mb-8">
-                What started as a small initiative has grown into a community of learners and mentors, all working together to make the tech industry more accessible and navigable.
-              </p>
-              <Link to="/services">
-                <Button className="bg-brand-red hover:bg-red-600 text-white">
-                  Explore Our Services
-                </Button>
-              </Link>
+              <div className="flex flex-wrap gap-4">
+                <Link to="/services">
+                  <Button className="bg-brand-red hover:bg-red-600 text-white px-8 py-3">
+                    Explore Services
+                  </Button>
+                </Link>
+                <Link to="/book-slot">
+                  <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-8 py-3">
+                    Book Consultation
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <div className="rounded-lg overflow-hidden shadow-xl">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-red/20 to-red-300/20 rounded-3xl transform rotate-3"></div>
               <img 
-                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" 
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
                 alt="Team collaboration" 
-                className="w-full object-cover"
+                className="relative z-10 w-full h-96 object-cover rounded-3xl shadow-2xl"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="py-16 bg-gray-50">
+      {/* Achievements Section */}
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Mission & Vision</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              From a small initiative to a leading career platform, our journey has been guided by our commitment to supporting tech professionals.
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {achievements.map((achievement, index) => (
+              <div key={index} className="text-center">
+                <div className="text-4xl lg:text-5xl font-bold text-brand-red mb-2">
+                  {achievement.number}
+                </div>
+                <div className="text-gray-600 font-medium">
+                  {achievement.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4 bg-brand-red/10 text-brand-red border-brand-red/20">
+              Our Purpose
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Mission & Vision</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Driven by purpose, guided by values, and committed to your success.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
-            <div className="bg-white p-8 rounded-lg shadow-md border border-gray-100">
-              <h3 className="text-2xl font-bold mb-4 text-brand-red">Mission</h3>
-              <p className="text-gray-700">
-                To empower tech professionals with the guidance, tools, and resources they need to advance their careers, overcome challenges, and achieve their professional goals.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-red/20 transition-colors">
+                  <Target className="w-8 h-8 text-brand-red" />
+                </div>
+                <CardTitle className="text-2xl text-brand-red">Our Mission</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-gray-700 text-lg leading-relaxed">
+                  To empower tech professionals with the guidance, tools, and resources they need to advance their careers, overcome challenges, and achieve their professional goals through personalized mentorship and proven strategies.
+                </CardDescription>
+              </CardContent>
+            </Card>
             
-            <div className="bg-white p-8 rounded-lg shadow-md border border-gray-100">
-              <h3 className="text-2xl font-bold mb-4 text-brand-red">Vision</h3>
-              <p className="text-gray-700">
-                To create a world where every tech professional has access to quality career guidance and personalized support, regardless of their background or circumstances.
-              </p>
-            </div>
+            <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-red/20 transition-colors">
+                  <Eye className="w-8 h-8 text-brand-red" />
+                </div>
+                <CardTitle className="text-2xl text-brand-red">Our Vision</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-gray-700 text-lg leading-relaxed">
+                  To create a world where every tech professional has access to quality career guidance and personalized support, breaking down barriers and democratizing career success in the technology industry.
+                </CardDescription>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Our Journey */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Journey</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              The evolution of Apne Wale Coders has been an exciting journey of growth and impact.
+          <div className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4 bg-brand-red/10 text-brand-red border-brand-red/20">
+              Our Story
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Our Journey</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              From humble beginnings to a thriving community of tech professionals.
             </p>
           </div>
           
-          <div className="max-w-4xl mx-auto">
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-200"></div>
-              
-              {/* Timeline Items */}
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               {timeline.map((item, index) => (
-                <div key={index} className={`relative z-10 mb-8 flex ${index % 2 === 0 ? 'justify-start md:justify-end' : 'justify-start'} items-center w-full`}>
-                  <div className="order-1 w-5/12"></div>
-                  
-                  <div className="z-20 flex items-center order-1 bg-brand-red shadow-xl w-8 h-8 rounded-full">
-                    <div className="mx-auto font-semibold text-lg text-white">{item.year.slice(-2)}</div>
-                  </div>
-                  
-                  <div className={`order-1 rounded-lg shadow-md px-6 py-4 border border-gray-100 bg-white ${index % 2 === 0 ? 'md:mr-12 mr-0 ml-12 md:ml-0' : 'ml-12'} w-5/12`}>
-                    <h3 className="font-bold text-brand-red text-xl">{item.year}: {item.title}</h3>
-                    <p className="text-sm text-gray-700 mt-2">{item.description}</p>
-                  </div>
-                </div>
+                <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg">
+                  <CardHeader className="text-center">
+                    <div className="text-4xl mb-3">{item.icon}</div>
+                    <div className="text-3xl font-bold text-brand-red mb-2">{item.year}</div>
+                    <CardTitle className="text-lg">{item.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-center text-gray-600">
+                      {item.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
@@ -159,73 +222,158 @@ const About = () => {
       </section>
 
       {/* Meet Our Team */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              Our dedicated team of professionals is committed to helping you succeed in your tech career.
+          <div className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4 bg-brand-red/10 text-brand-red border-brand-red/20">
+              Our Experts
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Meet Our Team</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Experienced professionals dedicated to your career success.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
-              <div key={index} className="team-card">
-                <div className="mb-4 w-32 h-32 mx-auto rounded-full overflow-hidden">
-                  <img 
-                    src={member.photo} 
-                    alt={member.name} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-2">{member.name}</h3>
-                <p className="text-brand-red font-medium mb-2">{member.role}</p>
-                <p className="text-gray-600 text-sm">{member.bio}</p>
-              </div>
+              <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg overflow-hidden">
+                <CardHeader className="text-center pb-4">
+                  <div className="w-24 h-24 mx-auto rounded-full overflow-hidden ring-4 ring-brand-red/20 group-hover:ring-brand-red/40 transition-all duration-300">
+                    <img 
+                      src={member.photo} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <CardTitle className="text-xl mt-4">{member.name}</CardTitle>
+                  <p className="text-brand-red font-semibold">{member.role}</p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <CardDescription className="text-gray-600 text-sm leading-relaxed">
+                    {member.bio}
+                  </CardDescription>
+                  <div className="flex flex-wrap gap-1">
+                    {member.expertise.map((skill, skillIndex) => (
+                      <Badge key={skillIndex} variant="secondary" className="text-xs bg-brand-red/10 text-brand-red">
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose Us</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              What makes Apne Wale Coders different from other career platforms?
+          <div className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4 bg-brand-red/10 text-brand-red border-brand-red/20">
+              Why Choose Us
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">What Sets Us Apart</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover why thousands of tech professionals trust us with their career growth.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="p-6 rounded-lg shadow-md border border-gray-100 bg-white text-center">
-              <div className="text-brand-red text-3xl mb-4 mx-auto w-16 h-16 flex items-center justify-center bg-red-50 rounded-full">
-                <GraduationCap size={30} />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Personalized Approach</h3>
-              <p className="text-gray-600">
-                We tailor our guidance to your specific needs, goals, and career stage, ensuring relevant and actionable advice.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-red/20 transition-colors">
+                  <GraduationCap className="w-8 h-8 text-brand-red" />
+                </div>
+                <CardTitle className="text-xl">Personalized Approach</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-gray-600 leading-relaxed">
+                  We tailor our guidance to your specific needs, goals, and career stage, ensuring relevant and actionable advice that drives real results.
+                </CardDescription>
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>1-on-1 mentorship sessions</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>Customized career roadmaps</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
             
-            <div className="p-6 rounded-lg shadow-md border border-gray-100 bg-white text-center">
-              <div className="text-brand-red text-3xl mb-4 mx-auto w-16 h-16 flex items-center justify-center bg-red-50 rounded-full">
-                <Users size={30} />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Industry Experience</h3>
-              <p className="text-gray-600">
-                Our mentors bring real-world experience from top tech companies, offering insights that go beyond theoretical knowledge.
-              </p>
-            </div>
+            <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-red/20 transition-colors">
+                  <Users className="w-8 h-8 text-brand-red" />
+                </div>
+                <CardTitle className="text-xl">Industry Experience</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-gray-600 leading-relaxed">
+                  Our mentors bring real-world experience from top tech companies, offering insights that go beyond theoretical knowledge.
+                </CardDescription>
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>FAANG company experience</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>Current industry trends</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
             
-            <div className="p-6 rounded-lg shadow-md border border-gray-100 bg-white text-center">
-              <div className="text-brand-red text-3xl mb-4 mx-auto w-16 h-16 flex items-center justify-center bg-red-50 rounded-full">
-                <Award size={30} />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Affordable Excellence</h3>
-              <p className="text-gray-600">
-                We believe quality career guidance should be accessible to all, which is why we offer competitive pricing and flexible options.
-              </p>
+            <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand-red/20 transition-colors">
+                  <Award className="w-8 h-8 text-brand-red" />
+                </div>
+                <CardTitle className="text-xl">Proven Results</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-gray-600 leading-relaxed">
+                  Our track record speaks for itself with high success rates and satisfied clients who have achieved their career goals.
+                </CardDescription>
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>95% success rate</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>Average 40% salary increase</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-brand-red to-red-600">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-3xl mx-auto text-white">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Ready to Transform Your Career?</h2>
+            <p className="text-xl mb-8 opacity-90">
+              Join thousands of successful tech professionals who have accelerated their careers with our expert guidance.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/book-slot">
+                <Button className="bg-white text-brand-red hover:bg-gray-100 px-8 py-3 text-lg">
+                  Book Free Consultation
+                </Button>
+              </Link>
+              <Link to="/services">
+                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-brand-red px-8 py-3 text-lg">
+                  View All Services
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
