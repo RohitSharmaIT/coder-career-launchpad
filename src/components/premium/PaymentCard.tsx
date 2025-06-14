@@ -59,7 +59,7 @@ const PaymentCard = ({ isProcessing, paymentStatus, onPayment }: PaymentCardProp
           </Button>
           
           <p className="text-xs text-gray-500 text-center mt-4">
-            Secure payment via Razorpay • Test Mode • Instant activation
+            Secure payment via Razorpay • Instant activation
           </p>
         </CardContent>
       </Card>

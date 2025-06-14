@@ -129,7 +129,7 @@ export const usePaymentHandlers = () => {
     const orderId = 'order_' + Date.now();
     
     const options = {
-      key: 'rzp_test_11111111111111', // Use a valid Razorpay Test Key
+      key: 'YOUR_RAZORPAY_KEY_ID', // Replace with your actual Razorpay Key ID
       amount: 19900, // ₹199 in paisa (₹199 * 100)
       currency: 'INR',
       name: 'Premium Upgrade',
@@ -142,7 +142,7 @@ export const usePaymentHandlers = () => {
       prefill: {
         name: user?.name || '',
         email: user?.email || '',
-        contact: '9999999999' // Test phone number
+        contact: user?.phone || ''
       },
       theme: {
         color: '#F59E0B' // Yellow/orange theme
