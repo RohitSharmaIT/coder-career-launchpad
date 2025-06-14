@@ -53,7 +53,7 @@ const NavigationButtons = ({
           onClick={handleNextStep}
           disabled={isLoading || isNextDisabled}
         >
-          {isLoading ? "Processing..." : "Book a Free Consultation"}
+          {isLoading ? "Processing..." : "Pay & Confirm"}
         </Button>
       )}
     </div>
