@@ -157,53 +157,12 @@ const StudyMaterialCategoriesSidebar = () => {
           </Collapsible>
         </div>
 
-        {/* Desktop: Always visible categories */}
-        <div className="hidden lg:block space-y-4">
-          {/* All Materials */}
-          <Button
-            variant="outline"
-            className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-base py-3"
-            onClick={() => handleCategoryClick('all')}
-          >
-            All Materials
-          </Button>
-
-          {/* Topic-based categories */}
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Topics</p>
-            {topicCategories.map((category) => {
-              const IconComponent = category.icon;
-              return (
-                <Button
-                  key={category.id}
-                  variant="outline"
-                  className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
-                  onClick={() => handleCategoryClick(category.id)}
-                >
-                  <IconComponent size={14} className="mr-2 shrink-0" />
-                  <span className="truncate">{category.name}</span>
-                </Button>
-              );
-            })}
-          </div>
-
-          {/* Company-specific categories */}
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Companies</p>
-            {companyCategories.map((category) => {
-              const IconComponent = category.icon;
-              return (
-                <Button
-                  key={category.id}
-                  variant="outline"
-                  className="w-full justify-start text-left border-gray-200 text-gray-700 hover:bg-gray-100 text-sm py-2"
-                  onClick={() => handleCategoryClick(category.id)}
-                >
-                  <IconComponent size={14} className="mr-2 shrink-0" />
-                  <span className="truncate">{category.name}</span>
-                </Button>
-              );
-            })}
+        {/* Desktop: Simple navigation notice - no repeated categories */}
+        <div className="hidden lg:block mt-6">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-sm text-blue-700">
+              <strong>Quick Navigation:</strong> Use the "Browse Categories" dropdown above to explore all available study materials organized by topics and companies.
+            </p>
           </div>
         </div>
       </div>
