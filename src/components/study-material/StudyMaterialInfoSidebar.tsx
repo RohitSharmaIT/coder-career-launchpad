@@ -1,10 +1,13 @@
 
-import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Download, Calendar, User, FileText, Tag } from "lucide-react";
+import { useStudyMaterialDownload } from "@/hooks/useStudyMaterialDownload";
 
 interface StudyMaterial {
   id: number;
   title: string;
+  tagline?: string;
   description: string;
   content?: string;
   category: string;
@@ -12,8 +15,9 @@ interface StudyMaterial {
   size: string;
   isPremium: boolean;
   downloadCount: number;
-  tags?: string[];
+  date: string;
   author?: string;
+  tags?: string[];
 }
 
 interface StudyMaterialInfoSidebarProps {
@@ -21,47 +25,90 @@ interface StudyMaterialInfoSidebarProps {
 }
 
 const StudyMaterialInfoSidebar = ({ material }: StudyMaterialInfoSidebarProps) => {
+  const { handleDownload } = useStudyMaterialDownload();
+
+  const handleDownloadClick = () => {
+    handleDownload(material.id, material.isPremium);
+  };
+
   return (
-    <div className="lg:w-1/4 order-3 lg:order-3">
-      <div className="bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg lg:sticky lg:top-24">
-        <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-3 sm:mb-4 lg:mb-6">Material Info</h3>
-        <div className="space-y-2 sm:space-y-3 lg:space-y-4 text-xs sm:text-sm">
-          <div>
-            <span className="font-medium text-gray-900">Author:</span>
-            <p className="text-gray-600">{material.author || 'Unknown Author'}</p>
+    <div className="lg:w-1/4 order-1 lg:order-3">
+      <div className="bg-gray-50 p-4 sm:p-6 rounded-lg sticky top-6">
+        <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Material Info</h3>
+        
+        <div className="space-y-3 sm:space-y-4">
+          {/* Download Button */}
+          <Button
+            onClick={handleDownloadClick}
+            className="w-full bg-brand-red hover:bg-red-600 text-white"
+          >
+            <Download size={16} className="mr-2" />
+            Download Material
+          </Button>
+
+          {/* Material Details */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-sm">
+              <Calendar size={16} className="text-gray-500" />
+              <span className="text-gray-600">Published: {material.date}</span>
+            </div>
+
+            {material.author && (
+              <div className="flex items-center gap-2 text-sm">
+                <User size={16} className="text-gray-500" />
+                <span className="text-gray-600">Author: {material.author}</span>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2 text-sm">
+              <FileText size={16} className="text-gray-500" />
+              <span className="text-gray-600">Type: {material.type}</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm">
+              <FileText size={16} className="text-gray-500" />
+              <span className="text-gray-600">Size: {material.size}</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm">
+              <Download size={16} className="text-gray-500" />
+              <span className="text-gray-600">Downloads: {material.downloadCount}</span>
+            </div>
           </div>
+
+          {/* Category */}
           <div>
-            <span className="font-medium text-gray-900">Type:</span>
-            <p className="text-gray-600">{material.type}</p>
+            <h4 className="font-medium mb-2">Category</h4>
+            <Badge variant="outline" className="text-xs">
+              {material.category}
+            </Badge>
           </div>
-          <div>
-            <span className="font-medium text-gray-900">Size:</span>
-            <p className="text-gray-600">{material.size}</p>
-          </div>
+
+          {/* Tags */}
           {material.tags && material.tags.length > 0 && (
             <div>
-              <span className="font-medium text-gray-900">Tags:</span>
-              <div className="flex flex-wrap gap-1 mt-1">
+              <h4 className="font-medium mb-2 flex items-center gap-1">
+                <Tag size={14} />
+                Tags
+              </h4>
+              <div className="flex flex-wrap gap-1">
                 {material.tags.map((tag, index) => (
-                  <span key={index} className="px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs">
+                  <Badge key={index} variant="secondary" className="text-xs">
                     {tag}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             </div>
           )}
-        </div>
-        
-        <div className="mt-4 sm:mt-6 lg:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
-          <h4 className="text-sm sm:text-base lg:text-lg font-bold mb-3 sm:mb-4">Explore More</h4>
-          <p className="text-xs text-gray-600 mb-3 sm:mb-4">
-            Check out our other study materials to boost your preparation.
-          </p>
-          <Link to="/study-material">
-            <Button variant="outline" className="w-full text-xs sm:text-sm border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
-              View All Materials
-            </Button>
-          </Link>
+
+          {/* Premium Badge */}
+          {material.isPremium && (
+            <div className="pt-2">
+              <Badge className="bg-yellow-500 text-white">
+                Premium Content
+              </Badge>
+            </div>
+          )}
         </div>
       </div>
     </div>

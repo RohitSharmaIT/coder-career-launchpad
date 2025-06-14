@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { allMaterials } from "@/components/study-material/materialData";
+import { useStudyMaterials } from "@/contexts/StudyMaterialsContext";
 import StudyMaterialBreadcrumbs from "@/components/study-material/StudyMaterialBreadcrumbs";
 import StudyMaterialCategoriesSidebar from "@/components/study-material/StudyMaterialCategoriesSidebar";
 import StudyMaterialDetailsContent from "@/components/study-material/StudyMaterialDetailsContent";
@@ -10,8 +11,12 @@ import StudyMaterialInfoSidebar from "@/components/study-material/StudyMaterialI
 
 const StudyMaterialDetails = () => {
   const { id } = useParams();
+  const { studyMaterials } = useStudyMaterials();
   
-  const material = allMaterials.find(m => m.id === parseInt(id || '0'));
+  // Combine static materials with dynamic ones from context
+  const combinedMaterials = [...studyMaterials, ...allMaterials];
+  
+  const material = combinedMaterials.find(m => m.id === parseInt(id || '0'));
   
   if (!material) {
     return (

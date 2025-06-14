@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 export interface StudyMaterial {
   id: number;
   title: string;
+  tagline?: string;
   description: string;
+  content?: string;
   thumbnail: string;
   category: string;
   type: string;
@@ -16,7 +18,6 @@ export interface StudyMaterial {
   isPremium: boolean;
   downloadCount: number;
   date: string;
-  content?: string;
   author?: string;
   tags?: string[];
 }
@@ -53,6 +54,9 @@ const MaterialCard = ({ material, onDownload, onSpecialCardClick }: MaterialCard
           <div className="flex justify-between items-start">
             <div>
               <CardTitle className="line-clamp-1">{material.title}</CardTitle>
+              {material.tagline && (
+                <p className="text-sm text-gray-500 italic mb-1">{material.tagline}</p>
+              )}
               <CardDescription className="text-sm text-gray-500">
                 {material.date} • {material.type} • {material.size}
               </CardDescription>
