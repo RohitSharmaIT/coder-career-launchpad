@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -101,57 +100,104 @@ const BookingContent = () => {
     <>
       <Navbar />
       
-      <div className="py-10 bg-gray-50 min-h-screen">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Book a Service</h1>
+          <div className="max-w-6xl mx-auto">
+            {/* Only show title and steps if not on first step */}
+            {currentStep > 1 && (
+              <>
+                <div className="text-center mb-8">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">Book a Service</h1>
+                  <p className="text-gray-600">Complete your booking in a few simple steps</p>
+                </div>
+                
+                <BookingSteps
+                  steps={steps}
+                  currentStep={currentStep}
+                />
+              </>
+            )}
             
-            <BookingSteps
-              steps={steps}
-              currentStep={currentStep}
-            />
-            
-            <div className="bg-white rounded-lg shadow-md p-6 mt-8">
-              <BookingStepRenderer
-                currentStep={currentStep}
-                services={services}
-                service={service}
-                setService={setService}
-                setIsServiceValid={setIsServiceValid}
-                name={name}
-                setName={setName}
-                email={email}
-                setEmail={setEmail}
-                phone={phone}
-                setPhone={setPhone}
-                resumeLink={resumeLink}
-                setResumeLink={setResumeLink}
-                notes={notes}
-                setNotes={setNotes}
-                setIsPersonalInfoValid={setIsPersonalInfoValid}
-                date={date}
-                setDate={setDate}
-                time={time}
-                setTime={setTime}
-                timeSlots={timeSlots}
-                setIsDateTimeValid={setIsDateTimeValid}
-                isTermsAccepted={isTermsAccepted}
-                setIsTermsAccepted={setIsTermsAccepted}
-                onPaymentVerification={handlePaymentVerification}
-                onComplete={handleComplete}
-              />
+            <div className={`${currentStep === 1 ? 'mt-0' : 'mt-8'}`}>
+              {currentStep === 1 ? (
+                // Full-width layout for service selection
+                <div className="bg-white rounded-xl shadow-sm p-8">
+                  <BookingStepRenderer
+                    currentStep={currentStep}
+                    services={services}
+                    service={service}
+                    setService={setService}
+                    setIsServiceValid={setIsServiceValid}
+                    name={name}
+                    setName={setName}
+                    email={email}
+                    setEmail={setEmail}
+                    phone={phone}
+                    setPhone={setPhone}
+                    resumeLink={resumeLink}
+                    setResumeLink={setResumeLink}
+                    notes={notes}
+                    setNotes={setNotes}
+                    setIsPersonalInfoValid={setIsPersonalInfoValid}
+                    date={date}
+                    setDate={setDate}
+                    time={time}
+                    setTime={setTime}
+                    timeSlots={timeSlots}
+                    setIsDateTimeValid={setIsDateTimeValid}
+                    isTermsAccepted={isTermsAccepted}
+                    setIsTermsAccepted={setIsTermsAccepted}
+                    onPaymentVerification={handlePaymentVerification}
+                    onComplete={handleComplete}
+                  />
+                </div>
+              ) : (
+                // Standard layout for other steps
+                <div className="bg-white rounded-xl shadow-sm p-8">
+                  <BookingStepRenderer
+                    currentStep={currentStep}
+                    services={services}
+                    service={service}
+                    setService={setService}
+                    setIsServiceValid={setIsServiceValid}
+                    name={name}
+                    setName={setName}
+                    email={email}
+                    setEmail={setEmail}
+                    phone={phone}
+                    setPhone={setPhone}
+                    resumeLink={resumeLink}
+                    setResumeLink={setResumeLink}
+                    notes={notes}
+                    setNotes={setNotes}
+                    setIsPersonalInfoValid={setIsPersonalInfoValid}
+                    date={date}
+                    setDate={setDate}
+                    time={time}
+                    setTime={setTime}
+                    timeSlots={timeSlots}
+                    setIsDateTimeValid={setIsDateTimeValid}
+                    isTermsAccepted={isTermsAccepted}
+                    setIsTermsAccepted={setIsTermsAccepted}
+                    onPaymentVerification={handlePaymentVerification}
+                    onComplete={handleComplete}
+                  />
+                </div>
+              )}
               
               {/* Navigation Buttons */}
               {currentStep < 5 && (
-                <NavigationButtons
-                  currentStep={currentStep}
-                  handleBackStep={handleBackStep}
-                  handleNextStep={handleNextStep}
-                  isLoading={isLoading}
-                  isLastStep={isLastStep}
-                  isNextDisabled={isNextDisabled}
-                  isFreeConsultation={false}
-                />
+                <div className="mt-8">
+                  <NavigationButtons
+                    currentStep={currentStep}
+                    handleBackStep={handleBackStep}
+                    handleNextStep={handleNextStep}
+                    isLoading={isLoading}
+                    isLastStep={isLastStep}
+                    isNextDisabled={isNextDisabled}
+                    isFreeConsultation={false}
+                  />
+                </div>
               )}
             </div>
           </div>
