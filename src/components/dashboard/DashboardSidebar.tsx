@@ -3,6 +3,7 @@ import { User, FileText, Calendar, Settings, LogOut, Crown } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface DashboardSidebarProps {
@@ -37,8 +38,13 @@ const DashboardSidebar = ({ user, activeTab, setActiveTab, logout }: DashboardSi
         <CardContent className="p-6">
           {/* User Info */}
           <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-3 flex items-center justify-center">
-              <User size={24} className="text-gray-600" />
+            <div className="mx-auto mb-3 flex items-center justify-center">
+              <Avatar className="h-16 w-16">
+                <AvatarImage src={user?.profilePicture} alt={user?.name} />
+                <AvatarFallback className="text-lg bg-gray-200 text-gray-600">
+                  {user?.name?.charAt(0).toUpperCase() || 'U'}
+                </AvatarFallback>
+              </Avatar>
             </div>
             <h3 className="font-semibold text-lg">{user?.name}</h3>
             <p className="text-gray-600 text-sm">{user?.email}</p>
