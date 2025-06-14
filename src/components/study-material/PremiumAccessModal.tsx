@@ -22,7 +22,7 @@ const PremiumAccessModal = ({ isOpen, onClose, materialTitle }: PremiumAccessMod
 
   const handleUpgradeClick = () => {
     onClose();
-    navigate("/upgrade-premium");
+    navigate("/upgrade-simple");
   };
 
   return (
