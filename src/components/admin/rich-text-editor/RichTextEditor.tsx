@@ -34,7 +34,16 @@ const RichTextEditor = ({
     if (!editorRef.current) return;
     
     editorRef.current.focus();
-    document.execCommand(command, false, value);
+    
+    // Save the current selection before executing command
+    const selection = window.getSelection();
+    const range = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+    
+    try {
+      document.execCommand(command, false, value);
+    } catch (error) {
+      console.log('Command execution failed:', error);
+    }
     
     // Update the content after command execution
     setTimeout(() => {
@@ -42,7 +51,7 @@ const RichTextEditor = ({
         const newContent = editorRef.current.innerHTML;
         onChange(newContent);
       }
-    }, 0);
+    }, 50);
   }, [onChange]);
 
   const handleInput = useCallback((e: React.FormEvent<HTMLDivElement>) => {
@@ -61,23 +70,36 @@ const RichTextEditor = ({
     img.src = imageUrl;
     img.style.maxWidth = '100%';
     img.style.height = 'auto';
+    img.style.display = 'block';
+    img.style.margin = '10px 0';
     img.alt = 'Inserted image';
+    img.draggable = false;
     
-    // Insert the image at cursor position
+    // Insert the image at cursor position or at the end
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       range.deleteContents();
-      range.insertNode(img);
+      
+      // Create a new paragraph after the image
+      const br = document.createElement('br');
+      const div = document.createElement('div');
+      div.appendChild(img);
+      div.appendChild(br);
+      
+      range.insertNode(div);
       
       // Move cursor after the image
-      range.setStartAfter(img);
-      range.setEndAfter(img);
+      range.setStartAfter(div);
+      range.setEndAfter(div);
       selection.removeAllRanges();
       selection.addRange(range);
     } else {
       // If no selection, append to the end
-      editorRef.current.appendChild(img);
+      const div = document.createElement('div');
+      div.appendChild(img);
+      div.appendChild(document.createElement('br'));
+      editorRef.current.appendChild(div);
     }
     
     // Update content
@@ -86,41 +108,60 @@ const RichTextEditor = ({
         const newContent = editorRef.current.innerHTML;
         onChange(newContent);
       }
-    }, 0);
+    }, 50);
   }, [onChange]);
 
   const handleLinkInsert = useCallback((url: string) => {
+    if (!editorRef.current) return;
+    
+    editorRef.current.focus();
+    
     const selection = window.getSelection();
-    if (selection && selection.toString()) {
-      handleCommand('createLink', url);
+    if (selection && selection.toString().trim()) {
+      // If text is selected, make it a link
+      try {
+        document.execCommand('createLink', false, url);
+        // Set target="_blank" for the created link
+        setTimeout(() => {
+          const links = editorRef.current?.querySelectorAll('a[href="' + url + '"]');
+          links?.forEach(link => {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+          });
+        }, 10);
+      } catch (error) {
+        console.log('Link creation failed:', error);
+      }
     } else {
       // If no text is selected, insert the URL as both text and link
       const link = document.createElement('a');
       link.href = url;
       link.target = '_blank';
+      link.rel = 'noopener noreferrer';
       link.textContent = url;
+      link.style.color = '#0066cc';
+      link.style.textDecoration = 'underline';
       
-      if (editorRef.current) {
-        editorRef.current.focus();
-        const sel = window.getSelection();
-        if (sel && sel.rangeCount > 0) {
-          const range = sel.getRangeAt(0);
-          range.insertNode(link);
-          range.setStartAfter(link);
-          range.setEndAfter(link);
-          sel.removeAllRanges();
-          sel.addRange(range);
-        } else {
-          editorRef.current.appendChild(link);
-        }
-        
-        setTimeout(() => {
-          const newContent = editorRef.current!.innerHTML;
-          onChange(newContent);
-        }, 0);
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        range.insertNode(link);
+        range.setStartAfter(link);
+        range.setEndAfter(link);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      } else {
+        editorRef.current.appendChild(link);
       }
     }
-  }, [handleCommand, onChange]);
+    
+    // Update content
+    setTimeout(() => {
+      if (editorRef.current) {
+        const newContent = editorRef.current.innerHTML;
+        onChange(newContent);
+      }
+    }, 50);
+  }, [onChange]);
 
   const togglePreview = () => {
     setIsPreviewMode(!isPreviewMode);
@@ -144,6 +185,27 @@ const RichTextEditor = ({
           break;
       }
     }
+    
+    // Handle Enter key to maintain proper line breaks
+    if (e.key === 'Enter') {
+      // Let the browser handle Enter normally for better list behavior
+      setTimeout(() => {
+        if (editorRef.current) {
+          const newContent = editorRef.current.innerHTML;
+          onChange(newContent);
+        }
+      }, 10);
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    // Allow paste but clean up after
+    setTimeout(() => {
+      if (editorRef.current) {
+        const newContent = editorRef.current.innerHTML;
+        onChange(newContent);
+      }
+    }, 50);
   };
 
   return (
@@ -190,11 +252,14 @@ const RichTextEditor = ({
               contentEditable
               onInput={handleInput}
               onKeyDown={handleKeyDown}
+              onPaste={handlePaste}
               className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent prose prose-sm max-w-none"
               style={{ 
                 minHeight,
                 direction: 'ltr',
-                textAlign: 'left'
+                textAlign: 'left',
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word'
               }}
               suppressContentEditableWarning={true}
               data-placeholder={placeholder}

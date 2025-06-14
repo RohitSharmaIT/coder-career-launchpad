@@ -84,6 +84,14 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
     }
   };
 
+  // Handle list commands with proper focus management
+  const handleListCommand = (listType: 'insertUnorderedList' | 'insertOrderedList') => {
+    // Use setTimeout to ensure proper focus and command execution
+    setTimeout(() => {
+      onCommand(listType);
+    }, 10);
+  };
+
   return (
     <div className="flex flex-wrap items-center gap-2 p-2 bg-gray-50 rounded-lg">
       {/* Text Formatting */}
@@ -241,12 +249,12 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
 
       <Separator orientation="vertical" className="h-6" />
 
-      {/* Lists */}
+      {/* Lists - Fixed with proper focus management */}
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => onCommand('insertUnorderedList')}
+          onClick={() => handleListCommand('insertUnorderedList')}
           className="p-2 hover:bg-gray-200"
           type="button"
         >
@@ -255,7 +263,7 @@ const EditorToolbar = ({ onCommand, onImageInsert, onLinkInsert }: EditorToolbar
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => onCommand('insertOrderedList')}
+          onClick={() => handleListCommand('insertOrderedList')}
           className="p-2 hover:bg-gray-200"
           type="button"
         >
