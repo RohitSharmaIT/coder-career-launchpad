@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface Job {
@@ -17,6 +18,7 @@ export interface Job {
 interface JobsContextType {
   jobs: Job[];
   addJob: (job: Omit<Job, 'id' | 'postedDate'>) => void;
+  deleteJob: (id: number) => void;
 }
 
 const JobsContext = createContext<JobsContextType | undefined>(undefined);
@@ -141,8 +143,12 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
     setJobs([job, ...jobs]);
   };
 
+  const deleteJob = (id: number) => {
+    setJobs(prevJobs => prevJobs.filter(job => job.id !== id));
+  };
+
   return (
-    <JobsContext.Provider value={{ jobs, addJob }}>
+    <JobsContext.Provider value={{ jobs, addJob, deleteJob }}>
       {children}
     </JobsContext.Provider>
   );

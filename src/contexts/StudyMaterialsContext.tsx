@@ -21,6 +21,7 @@ export interface StudyMaterialItem {
 interface StudyMaterialsContextType {
   studyMaterials: StudyMaterialItem[];
   addStudyMaterial: (material: Omit<StudyMaterialItem, 'id' | 'downloadCount' | 'date'>) => void;
+  deleteStudyMaterial: (id: number) => void;
   getStudyMaterialsByCategory: (category: string) => StudyMaterialItem[];
 }
 
@@ -52,6 +53,10 @@ export const StudyMaterialsProvider = ({ children }: StudyMaterialsProviderProps
     setStudyMaterials(prev => [newMaterial, ...prev]);
   };
 
+  const deleteStudyMaterial = (id: number) => {
+    setStudyMaterials(prev => prev.filter(material => material.id !== id));
+  };
+
   const getStudyMaterialsByCategory = (category: string) => {
     if (category === 'all' || category === 'All') {
       return studyMaterials;
@@ -63,6 +68,7 @@ export const StudyMaterialsProvider = ({ children }: StudyMaterialsProviderProps
     <StudyMaterialsContext.Provider value={{
       studyMaterials,
       addStudyMaterial,
+      deleteStudyMaterial,
       getStudyMaterialsByCategory
     }}>
       {children}

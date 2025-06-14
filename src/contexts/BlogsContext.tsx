@@ -14,6 +14,7 @@ export interface Blog {
 interface BlogsContextType {
   blogs: Blog[];
   addBlog: (blog: Omit<Blog, 'id' | 'date'>) => void;
+  deleteBlog: (id: number) => void;
 }
 
 const BlogsContext = createContext<BlogsContextType | undefined>(undefined);
@@ -84,8 +85,12 @@ export const BlogsProvider = ({ children }: BlogsProviderProps) => {
     setBlogs(prevBlogs => [blog, ...prevBlogs]);
   };
 
+  const deleteBlog = (id: number) => {
+    setBlogs(prevBlogs => prevBlogs.filter(blog => blog.id !== id));
+  };
+
   return (
-    <BlogsContext.Provider value={{ blogs, addBlog }}>
+    <BlogsContext.Provider value={{ blogs, addBlog, deleteBlog }}>
       {children}
     </BlogsContext.Provider>
   );

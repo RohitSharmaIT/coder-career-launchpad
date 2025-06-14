@@ -27,6 +27,7 @@ import UpgradePremium from './pages/UpgradePremium';
 import UpgradeSimple from './pages/UpgradeSimple';
 import NotFound from './pages/NotFound';
 
+import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { JobsProvider } from './contexts/JobsContext';
 import { BlogsProvider } from './contexts/BlogsContext';
@@ -70,9 +71,21 @@ function App() {
                         <Route path="/register" element={<Signup />} />
                         <Route path="/upgrade-premium" element={<UpgradePremium />} />
                         <Route path="/upgrade-simple" element={<UpgradeSimple />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/admin-panel" element={<AdminPanel />} />
-                        <Route path="/admin" element={<AdminPanel />} />
+                        <Route path="/dashboard" element={
+                          <ProtectedRoute>
+                            <Dashboard />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/admin-panel" element={
+                          <ProtectedRoute requireAdmin={true}>
+                            <AdminPanel />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/admin" element={
+                          <ProtectedRoute requireAdmin={true}>
+                            <AdminPanel />
+                          </ProtectedRoute>
+                        } />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </TooltipProvider>
