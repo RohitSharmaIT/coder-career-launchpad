@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -8,6 +9,13 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from "sonner";
 import { Check, Crown, Download, Calendar, Zap, ArrowLeft } from "lucide-react";
+
+// Declare Razorpay type for TypeScript
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 const UpgradePremium = () => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -24,7 +32,17 @@ const UpgradePremium = () => {
     return Math.max(0, diffDays);
   };
 
-  const initializePayment = () => {
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const initializePayment = async () => {
     if (!isAuthenticated) {
       toast.error("Please log in to upgrade to Premium", {
         action: {
@@ -35,102 +53,131 @@ const UpgradePremium = () => {
       return;
     }
 
+    if (isProcessing) {
+      toast.info("Payment is already in progress. Please wait...");
+      return;
+    }
+
     setIsProcessing(true);
     setPaymentStatus('processing');
     
-    // Initialize Razorpay payment
+    // Load Razorpay script if not already loaded
+    const isRazorpayLoaded = await loadRazorpayScript();
+    
+    if (!isRazorpayLoaded) {
+      toast.error("Failed to load payment gateway. Please try again.");
+      setIsProcessing(false);
+      setPaymentStatus('failed');
+      return;
+    }
+
+    // Generate order ID (in real app, this would come from backend)
+    const orderId = 'order_' + Date.now();
+    
     const options = {
-      key: 'rzp_test_9999999999', // Replace with your Razorpay key
-      amount: 19900, // ₹199 in paisa
+      key: 'rzp_test_9999999999', // Razorpay Test Key
+      amount: 19900, // ₹199 in paisa (₹199 * 100)
       currency: 'INR',
       name: 'Premium Upgrade',
       description: '30 Days Premium Access',
-      order_id: '', // This should come from your backend
+      order_id: orderId,
       handler: function (response: any) {
-        // Payment successful
+        console.log('Payment successful:', response);
         handlePaymentSuccess(response);
       },
       prefill: {
         name: user?.name || '',
         email: user?.email || '',
+        contact: '' // Add phone number if available
       },
       theme: {
-        color: '#F59E0B'
+        color: '#F59E0B' // Yellow/orange theme
       },
       modal: {
         ondismiss: function() {
-          // Payment cancelled
+          console.log('Payment dismissed');
           handlePaymentCancel();
         }
+      },
+      retry: {
+        enabled: true,
+        max_count: 3
       }
     };
 
-    // Check if Razorpay is loaded
-    if (typeof (window as any).Razorpay !== 'undefined') {
-      const rzp = new (window as any).Razorpay(options);
+    try {
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (response: any) {
+        console.log('Payment failed:', response);
+        handlePaymentFailure(response);
+      });
+      
       rzp.open();
-    } else {
-      // Fallback: simulate payment for demo
-      simulatePayment();
+    } catch (error) {
+      console.error('Error opening Razorpay:', error);
+      toast.error("Failed to open payment gateway. Please try again.");
+      setIsProcessing(false);
+      setPaymentStatus('failed');
     }
   };
 
   const handlePaymentSuccess = async (response: any) => {
     try {
-      // Verify payment with backend (in a real app)
-      console.log('Payment successful:', response);
+      console.log('Processing successful payment:', response);
       
-      // Simulate payment verification
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // In a real application, verify payment with backend
+      // For now, we'll simulate verification
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Only upgrade after successful payment verification
+      // Update user to premium status
       upgradeToPremium();
       setPaymentStatus('success');
       
-      toast.success("🎉 Payment Successful! Premium Activated!", {
-        description: "You now have access to all premium content for 30 days"
+      // Calculate expiry date (1 month from now)
+      const expiryDate = new Date();
+      expiryDate.setMonth(expiryDate.getMonth() + 1);
+      const formattedDate = expiryDate.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
       });
       
-      // Redirect to dashboard after a short delay
+      toast.success("🎉 Payment Successful! Premium Activated!", {
+        description: `You are now a Premium Member! Valid till: ${formattedDate}`
+      });
+      
+      // Redirect to dashboard after success message
       setTimeout(() => {
         navigate("/dashboard");
-      }, 2000);
+      }, 3000);
       
     } catch (error) {
+      console.error('Payment verification failed:', error);
       setPaymentStatus('failed');
-      toast.error("Payment verification failed. Please contact support.");
+      toast.error("Payment verification failed. Please contact support with your payment ID: " + response.razorpay_payment_id);
     } finally {
       setIsProcessing(false);
     }
   };
 
+  const handlePaymentFailure = (response: any) => {
+    console.error('Payment failed:', response);
+    setIsProcessing(false);
+    setPaymentStatus('failed');
+    
+    const errorMsg = response.error?.description || "Payment failed. Please try again.";
+    toast.error("Payment Failed", {
+      description: errorMsg
+    });
+  };
+
   const handlePaymentCancel = () => {
+    console.log('Payment cancelled by user');
     setIsProcessing(false);
     setPaymentStatus('idle');
     toast.info("Payment cancelled. You can try again anytime.");
   };
 
-  const simulatePayment = async () => {
-    try {
-      // Simulate payment processing time
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Simulate successful payment response
-      const mockResponse = {
-        razorpay_payment_id: 'pay_mock_' + Date.now(),
-        razorpay_order_id: 'order_mock_' + Date.now(),
-        razorpay_signature: 'mock_signature'
-      };
-      
-      handlePaymentSuccess(mockResponse);
-    } catch (error) {
-      setPaymentStatus('failed');
-      setIsProcessing(false);
-      toast.error("Payment failed. Please try again.");
-    }
-  };
-
-  // ... keep existing code (features array)
   const features = [
     { icon: Download, text: "Access all exclusive content" },
     { icon: Crown, text: "Premium study materials" },
@@ -268,13 +315,13 @@ const UpgradePremium = () => {
                       <Button 
                         onClick={initializePayment}
                         disabled={isProcessing}
-                        className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white text-lg py-6"
+                        className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white text-lg py-6 disabled:opacity-50 disabled:cursor-not-allowed"
                         size="lg"
                       >
                         {isProcessing ? (
                           <div className="flex items-center gap-2">
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                            {paymentStatus === 'processing' ? 'Processing Payment...' : 'Please wait...'}
+                            {paymentStatus === 'processing' ? 'Opening Payment...' : 'Please wait...'}
                           </div>
                         ) : (
                           "Pay ₹199 - Upgrade Now"
@@ -282,7 +329,7 @@ const UpgradePremium = () => {
                       </Button>
                       
                       <p className="text-xs text-gray-500 text-center mt-4">
-                        Secure payment via Razorpay • No hidden fees • Instant activation
+                        Secure payment via Razorpay • Test Mode • Instant activation
                       </p>
                     </CardContent>
                   </Card>
