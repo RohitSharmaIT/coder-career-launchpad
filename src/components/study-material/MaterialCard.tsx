@@ -1,9 +1,9 @@
-
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Download, Lock, Unlock } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface StudyMaterial {
   id: number;
@@ -26,14 +26,29 @@ interface MaterialCardProps {
   material: StudyMaterial;
   onDownload: (id: number, isPremium: boolean) => void;
   onSpecialCardClick?: (material: StudyMaterial) => void;
+  onPremiumClick?: (material: StudyMaterial) => void;
 }
 
-const MaterialCard = ({ material, onDownload, onSpecialCardClick }: MaterialCardProps) => {
+const MaterialCard = ({ material, onDownload, onSpecialCardClick, onPremiumClick }: MaterialCardProps) => {
+  const { isAuthenticated, isPremium } = useAuth();
+  const isPremiumUser = isPremium();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // If it's a premium material and user doesn't have premium access
+    if (material.isPremium && (!isAuthenticated || !isPremiumUser)) {
+      e.preventDefault();
+      onPremiumClick?.(material);
+      return;
+    }
+    // Otherwise, let the Link handle navigation
+  };
+
   return (
     <Card key={material.id} className="overflow-hidden hover:shadow-lg transition-shadow">
       <Link 
         to={`/study-material/${material.id}`} 
         className="block"
+        onClick={handleCardClick}
       >
         <div className="h-48 overflow-hidden relative">
           <img 

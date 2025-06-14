@@ -5,9 +5,10 @@ interface MaterialsGridProps {
   materials: StudyMaterial[];
   onDownload: (id: number, isPremium: boolean) => void;
   onSpecialCardClick?: (material: StudyMaterial) => void;
+  onPremiumClick?: (material: StudyMaterial) => void;
 }
 
-const MaterialsGrid = ({ materials, onDownload, onSpecialCardClick }: MaterialsGridProps) => {
+const MaterialsGrid = ({ materials, onDownload, onSpecialCardClick, onPremiumClick }: MaterialsGridProps) => {
   if (materials.length === 0) {
     return (
       <div className="text-center py-10 bg-gray-50 rounded-lg">
@@ -27,6 +28,7 @@ const MaterialsGrid = ({ materials, onDownload, onSpecialCardClick }: MaterialsG
           material={material} 
           onDownload={onDownload}
           onSpecialCardClick={onSpecialCardClick}
+          onPremiumClick={onPremiumClick}
         />
       ))}
     </div>
