@@ -43,7 +43,9 @@ const Dashboard = () => {
   useEffect(() => {
     const bookingSuccess = sessionStorage.getItem('bookingSuccess');
     if (bookingSuccess) {
-      toast.success("Booking confirmed! Your new appointment appears below.");
+      // Automatically switch to services tab to show the new booking
+      setActiveTab("services");
+      toast.success("Booking confirmed! Your new appointment appears in the 'Upcoming' tab below.");
       sessionStorage.removeItem('bookingSuccess');
     }
   }, []);

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
@@ -139,8 +138,9 @@ const BookingContent = () => {
           };
           
           console.log("Creating new booking:", newBooking);
+          console.log("Booking will appear in upcoming tab - date:", bookingDate.toISOString());
           
-          // Add booking to context
+          // Add booking to context immediately
           addBooking(newBooking);
           
           // Send confirmation email
@@ -148,11 +148,14 @@ const BookingContent = () => {
           
           // Store booking ID for confirmation display
           sessionStorage.setItem('lastBookingId', bookingId);
+          
+          // Set success flag for dashboard
+          sessionStorage.setItem('bookingSuccess', 'true');
         }
         
         // Move to confirmation step
         setCurrentStep(currentStep + 1);
-        showToast("Booking confirmed! Details have been sent to your email.", 'success');
+        showToast("Booking confirmed! It will appear in your upcoming services.", 'success');
       } catch (error) {
         console.error("Error during booking confirmation:", error);
         showToast("Booking failed. Please try again.", 'error');
@@ -266,10 +269,12 @@ Apne Wale Coders Team
     // Clear any stored form data
     sessionStorage.removeItem('lastBookingId');
     
-    // Navigate to dashboard with a success message
+    // Navigate to dashboard with success message
     navigate('/dashboard');
+    
+    // Show success message after navigation
     setTimeout(() => {
-      showToast("Booking confirmed! Check your upcoming services.", 'success');
+      showToast("Your booking is confirmed! Check the 'Upcoming' tab in Services.", 'success');
     }, 500);
   };
   
