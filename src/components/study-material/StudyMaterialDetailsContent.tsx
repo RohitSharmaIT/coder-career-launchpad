@@ -1,11 +1,10 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Download, Eye, Lock, Calendar, User, BarChart3, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStudyMaterialDownload } from "@/hooks/useStudyMaterialDownload";
 import { useNavigate } from "react-router-dom";
+import StudyMaterialPreviewView from "./StudyMaterialPreviewView";
+import StudyMaterialFullContentView from "./StudyMaterialFullContentView";
 
 interface StudyMaterial {
   id: number;
@@ -51,182 +50,22 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
     handleDownload(material.id, material.isPremium);
   };
 
-  const handleUpgradeClick = () => {
-    navigate('/upgrade-simple');
-  };
-
-  const renderFullContent = (content: string) => {
-    if (material.isPremium && !isPremiumUser) {
-      const textContent = content.replace(/<[^>]*>/g, '');
-      const truncatedText = textContent.substring(0, 200) + '...';
-      return (
-        <div className="space-y-4">
-          <p className="text-gray-700 leading-relaxed">{truncatedText}</p>
-          <div className="bg-gradient-to-t from-white to-transparent p-6 text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-amber-100 rounded-full mb-3">
-              <Lock className="text-amber-600" size={20} />
-            </div>
-            <p className="text-sm text-gray-600 mb-4">
-              Upgrade to premium to access full content
-            </p>
-            <Button 
-              size="sm" 
-              className="bg-brand-red hover:bg-red-600"
-              onClick={handleUpgradeClick}
-            >
-              Upgrade Now
-            </Button>
-          </div>
-        </div>
-      );
-    }
-    
-    return (
-      <div 
-        className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
-    );
-  };
-
-  // If showing full content, render the full content view
   if (showFullContent) {
     return (
-      <div className="bg-white">
-        <div className="space-y-6">
-          {/* Back button */}
-          <Button
-            onClick={handleBackToPreview}
-            variant="outline"
-            className="mb-4"
-          >
-            <ArrowLeft size={18} className="mr-2" />
-            Back to Preview
-          </Button>
-
-          {/* Title */}
-          <div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
-              {material.title}
-            </h1>
-          </div>
-
-          {/* Tagline */}
-          <div>
-            <p className="text-lg text-blue-600 font-medium">
-              Master the fundamentals and advance your knowledge with comprehensive study materials
-            </p>
-          </div>
-
-          {/* Full Content */}
-          <div className="bg-white p-6 rounded-lg border">
-            <div className="text-gray-700">
-              {material.content ? (
-                renderFullContent(material.content)
-              ) : (
-                <p className="text-gray-600 leading-relaxed">{material.description}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Download Button */}
-          <div className="flex justify-center">
-            <Button
-              onClick={handleDownloadClick}
-              className="bg-brand-red hover:bg-red-600 text-white px-8 py-3 text-base font-medium"
-            >
-              <Download size={18} className="mr-2" />
-              Download Material
-            </Button>
-          </div>
-        </div>
-      </div>
+      <StudyMaterialFullContentView
+        material={material}
+        onBackToPreview={handleBackToPreview}
+        onDownload={handleDownloadClick}
+      />
     );
   }
 
-  // Regular preview view
   return (
-    <div className="bg-white">
-      <div className="space-y-6">
-        {/* 1. Title */}
-        <div>
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
-            {material.title}
-          </h1>
-        </div>
-
-        {/* 2. Tagline */}
-        <div>
-          <p className="text-lg text-blue-600 font-medium">
-            Master the fundamentals and advance your knowledge with comprehensive study materials
-          </p>
-        </div>
-
-        {/* 3. Content Description */}
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Content Description</h3>
-          <div className="text-gray-700">
-            <p className="text-gray-600 leading-relaxed">{material.description}</p>
-          </div>
-        </div>
-
-        {/* 4. View Full Content & Download Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button
-            onClick={handleViewContent}
-            className="bg-brand-red hover:bg-red-600 text-white px-8 py-3 text-base font-medium flex-1 sm:flex-none"
-            disabled={material.isPremium && !isPremiumUser}
-          >
-            <Eye size={18} className="mr-2" />
-            View Full Content
-          </Button>
-          
-          <Button
-            onClick={handleDownloadClick}
-            variant="outline"
-            className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-8 py-3 text-base font-medium flex-1 sm:flex-none"
-          >
-            <Download size={18} className="mr-2" />
-            Download Material
-          </Button>
-        </div>
-
-        {/* 5. Category, Interview Type, and Download Count */}
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <Badge className="w-4 h-4 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Category</p>
-                <p className="text-base font-semibold text-gray-900">{material.category}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                <Eye className="w-4 h-4 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Type</p>
-                <p className="text-base font-semibold text-gray-900">{material.type}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                <BarChart3 className="w-4 h-4 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500">Downloads</p>
-                <p className="text-base font-semibold text-gray-900">{material.downloadCount.toLocaleString()}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <StudyMaterialPreviewView
+      material={material}
+      onViewContent={handleViewContent}
+      onDownload={handleDownloadClick}
+    />
   );
 };
 
