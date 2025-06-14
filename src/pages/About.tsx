@@ -185,30 +185,40 @@ const About = () => {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge variant="secondary" className="mb-4 bg-brand-red/10 text-brand-red border-brand-red/20">
-              Our Story
-            </Badge>
+            <div className="text-sm text-brand-red uppercase tracking-wider font-semibold mb-2">
+              FROM A SMALL INITIATIVE TO A LEADING CAREER PLATFORM
+            </div>
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">Our Journey</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From humble beginnings to a thriving community of tech professionals.
-            </p>
           </div>
           
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="relative">
+              {/* Vertical Line */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-brand-red/20"></div>
+              
               {timeline.map((item, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg">
-                  <CardHeader className="text-center">
-                    <div className="text-4xl mb-3">{item.icon}</div>
-                    <div className="text-3xl font-bold text-brand-red mb-2">{item.year}</div>
-                    <CardTitle className="text-lg">{item.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-center text-gray-600">
-                      {item.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
+                <div key={index} className="relative mb-16 last:mb-0">
+                  <div className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
+                    {/* Content */}
+                    <div className={`w-5/12 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
+                      <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+                        <div className="text-2xl font-bold text-brand-red mb-2">{item.year}</div>
+                        <h3 className="text-xl font-semibold text-gray-800 mb-3">{item.title}</h3>
+                        <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                      </div>
+                    </div>
+                    
+                    {/* Center Icon */}
+                    <div className="w-2/12 flex justify-center">
+                      <div className="w-12 h-12 bg-brand-red rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                        {item.icon}
+                      </div>
+                    </div>
+                    
+                    {/* Empty space on the other side */}
+                    <div className="w-5/12"></div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -352,7 +362,7 @@ const About = () => {
                 </Button>
               </Link>
               <Link to="/services">
-                <Button className="bg-brand-red/20 text-white hover:bg-brand-red/30 border border-white/30 px-8 py-3 text-lg">
+                <Button variant="outline" className="bg-brand-red/20 text-white hover:bg-brand-red/30 border border-white/30 px-8 py-3 text-lg">
                   View All Services
                 </Button>
               </Link>
