@@ -23,6 +23,7 @@ import Services from './pages/Services';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import UpgradePremium from './pages/UpgradePremium';
+import UpgradeSimple from './pages/UpgradeSimple';
 import NotFound from './pages/NotFound';
 
 import { AuthProvider } from './contexts/AuthContext';
@@ -66,6 +67,7 @@ function App() {
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/register" element={<Signup />} />
                         <Route path="/upgrade-premium" element={<UpgradePremium />} />
+                        <Route path="/upgrade-simple" element={<UpgradeSimple />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/admin-panel" element={<AdminPanel />} />
                         <Route path="/admin" element={<AdminPanel />} />

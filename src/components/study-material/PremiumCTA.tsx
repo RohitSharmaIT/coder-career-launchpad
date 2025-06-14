@@ -24,24 +24,12 @@ const PremiumCTA = () => {
           Unlock premium study materials and ace your interviews and assessments with our expert resources.
         </p>
         
-        <div className="space-y-4">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="text-3xl">💰</span>
-            <span className="text-3xl font-bold text-orange-600">₹199</span>
-            <span className="text-gray-600">for 1 month</span>
-          </div>
-          
-          <Button 
-            onClick={() => navigate('/upgrade-premium')}
-            className="bg-brand-red hover:bg-red-600 text-white px-8 py-6 text-lg"
-          >
-            Upgrade to Premium
-          </Button>
-          
-          <p className="text-sm text-gray-500 mt-4">
-            Secure payment • Instant activation • 30-day access
-          </p>
-        </div>
+        <Button 
+          onClick={() => navigate('/upgrade-simple')}
+          className="bg-brand-red hover:bg-red-600 text-white px-8 py-6 text-lg"
+        >
+          Upgrade to Premium
+        </Button>
       </div>
     </section>
   );
