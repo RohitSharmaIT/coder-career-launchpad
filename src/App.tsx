@@ -13,6 +13,7 @@ import BlogPost from './pages/BlogPost';
 import StudyMaterial from './pages/StudyMaterial';
 import DsaTopicsPage from './pages/DsaTopicsPage';
 import StudyMaterialCategories from './pages/StudyMaterialCategories';
+import StudyMaterialCategory from './pages/StudyMaterialCategory';
 import StudyMaterialDetails from './pages/StudyMaterialDetails';
 import BookSlot from './pages/BookSlot';
 import PostJob from './pages/PostJob';
@@ -58,6 +59,7 @@ function App() {
                         <Route path="/blogs/:id" element={<BlogPost />} />
                         <Route path="/study-material" element={<StudyMaterial />} />
                         <Route path="/study-material/:id" element={<StudyMaterialDetails />} />
+                        <Route path="/study-material/category/:categoryId" element={<StudyMaterialCategory />} />
                         <Route path="/study-material/dsa-topics" element={<DsaTopicsPage />} />
                         <Route path="/study-material/categories" element={<StudyMaterialCategories />} />
                         <Route path="/book-a-consultation" element={<BookSlot />} />
