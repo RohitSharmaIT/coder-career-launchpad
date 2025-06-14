@@ -11,6 +11,7 @@ export interface Job {
   salary?: string;
   experience?: string;
   skills?: string[];
+  category?: string;
 }
 
 interface JobsContextType {
@@ -40,7 +41,8 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
       postedDate: "2 days ago",
       salary: "₹12-18 LPA",
       experience: "2-4 years",
-      skills: ["React", "JavaScript", "CSS", "HTML"]
+      skills: ["React", "JavaScript", "CSS", "HTML"],
+      category: "software-development"
     },
     {
       id: 2,
@@ -51,7 +53,8 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
       postedDate: "1 week ago",
       salary: "₹15-22 LPA",
       experience: "3-5 years",
-      skills: ["Python", "Django", "PostgreSQL", "AWS"]
+      skills: ["Python", "Django", "PostgreSQL", "AWS"],
+      category: "software-development"
     },
     {
       id: 3,
@@ -62,7 +65,8 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
       postedDate: "3 days ago",
       salary: "₹18-25 LPA",
       experience: "2-6 years",
-      skills: ["Python", "Machine Learning", "SQL", "Data Analysis"]
+      skills: ["Python", "Machine Learning", "SQL", "Data Analysis"],
+      category: "data-science"
     },
     {
       id: 4,
@@ -73,7 +77,8 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
       postedDate: "1 day ago",
       salary: "₹10-15 LPA",
       experience: "2-3 years",
-      skills: ["Figma", "Adobe XD", "UI Design", "User Research"]
+      skills: ["Figma", "Adobe XD", "UI Design", "User Research"],
+      category: "design"
     },
     {
       id: 5,
@@ -84,7 +89,8 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
       postedDate: "5 days ago",
       salary: "₹20-28 LPA",
       experience: "4-7 years",
-      skills: ["Product Strategy", "Agile", "Data Analysis", "User Experience"]
+      skills: ["Product Strategy", "Agile", "Data Analysis", "User Experience"],
+      category: "marketing"
     },
     {
       id: 6,
@@ -95,7 +101,8 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
       postedDate: "1 week ago",
       salary: "₹16-24 LPA",
       experience: "3-5 years",
-      skills: ["Docker", "Kubernetes", "CI/CD", "AWS"]
+      skills: ["Docker", "Kubernetes", "CI/CD", "AWS"],
+      category: "operations"
     },
     {
       id: 7,
@@ -106,7 +113,8 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
       postedDate: "2 days ago",
       salary: "₹12-18 LPA",
       experience: "2-4 years",
-      skills: ["React Native", "iOS", "Android", "JavaScript"]
+      skills: ["React Native", "iOS", "Android", "JavaScript"],
+      category: "software-development"
     },
     {
       id: 8,
@@ -117,7 +125,8 @@ export const JobsProvider = ({ children }: { children: ReactNode }) => {
       postedDate: "3 days ago",
       salary: "₹14-20 LPA",
       experience: "3-6 years",
-      skills: ["Node.js", "Express", "MongoDB", "RESTful APIs"]
+      skills: ["Node.js", "Express", "MongoDB", "RESTful APIs"],
+      category: "software-development"
     }
   ]);
 

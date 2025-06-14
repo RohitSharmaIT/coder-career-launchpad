@@ -2,28 +2,37 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MapPin, BriefcaseBusiness } from "lucide-react";
+import { MapPin, BriefcaseBusiness, Tag } from "lucide-react";
+
+interface Category {
+  value: string;
+  label: string;
+}
 
 interface JobsFiltersProps {
   selectedLocations: string[];
   selectedTypes: string[];
   selectedExperience: string[];
-  toggleFilter: (filter: string, type: 'location' | 'type' | 'experience') => void;
+  selectedCategories: string[];
+  toggleFilter: (filter: string, type: 'location' | 'type' | 'experience' | 'category') => void;
   resetFilters: () => void;
   locations: string[];
   jobTypes: string[];
   experienceLevels: string[];
+  categories: Category[];
 }
 
 const JobsFilters = ({ 
   selectedLocations,
   selectedTypes,
   selectedExperience,
+  selectedCategories,
   toggleFilter,
   resetFilters,
   locations,
   jobTypes,
-  experienceLevels
+  experienceLevels,
+  categories
 }: JobsFiltersProps) => {
   return (
     <div className="bg-gray-50 p-6 rounded-lg sticky top-24">
@@ -37,6 +46,31 @@ const JobsFilters = ({
         >
           Reset All
         </Button>
+      </div>
+      
+      {/* Category Filter */}
+      <div className="mb-6">
+        <h3 className="font-bold mb-3 flex items-center">
+          <Tag size={18} className="mr-2" /> Category
+        </h3>
+        <div className="space-y-2">
+          {categories.map((category) => (
+            <div key={category.value} className="flex items-center">
+              <Checkbox 
+                id={`category-${category.value}`}
+                checked={selectedCategories.includes(category.value)}
+                onCheckedChange={() => toggleFilter(category.value, 'category')}
+                className="mr-2"
+              />
+              <label 
+                htmlFor={`category-${category.value}`}
+                className="text-sm cursor-pointer"
+              >
+                {category.label}
+              </label>
+            </div>
+          ))}
+        </div>
       </div>
       
       {/* Location Filter */}

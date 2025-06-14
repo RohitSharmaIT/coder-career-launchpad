@@ -8,43 +8,30 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
 import { useBlogs } from '@/contexts/BlogsContext';
+import { useCategories } from '@/contexts/CategoriesContext';
 
 const Blogs = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const { blogs } = useBlogs();
+  const { blogCategories } = useCategories();
 
-  // Sample blog categories - mapping from admin form categories to display categories
-  const categories = [
-    'All',
-    'Interview',
-    'Resume',
-    'Career',
-    'Learning',
-    'Technology',
-    'Programming',
-    'Job Search'
-  ];
-
-  // Category mapping from admin form values to display values
-  const categoryMapping: Record<string, string> = {
-    'interviews': 'Interview',
-    'coding': 'Programming', 
-    'career': 'Career',
-    'resume': 'Resume',
-    'industry': 'Technology',
-    'company': 'Job Search'
-  };
+  // Convert categories from context to display format
+  const categories = ['All', ...blogCategories.map(cat => cat.label)];
 
   // Convert blogs to the format expected by the page
-  const allBlogs = blogs.map(blog => ({
-    id: blog.id,
-    title: blog.title,
-    excerpt: blog.excerpt,
-    thumbnail: blog.thumbnail,
-    category: categoryMapping[blog.category] || blog.category,
-    date: blog.date
-  }));
+  const allBlogs = blogs.map(blog => {
+    // Find the category label from the context
+    const categoryObj = blogCategories.find(cat => cat.value === blog.category);
+    return {
+      id: blog.id,
+      title: blog.title,
+      excerpt: blog.excerpt,
+      thumbnail: blog.thumbnail,
+      category: categoryObj ? categoryObj.label : blog.category,
+      date: blog.date
+    };
+  });
 
   // Filter blogs based on search term and active category
   const filteredBlogs = allBlogs.filter(blog => {
