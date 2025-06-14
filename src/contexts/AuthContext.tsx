@@ -1,29 +1,9 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'user' | 'admin';
-  bio?: string;
-  profilePicture?: string;
-  premium: boolean;
-  premiumExpiryDate?: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
-  signup: (name: string, email: string, password: string) => Promise<boolean>;
-  logout: () => void;
-  isAdmin: () => boolean;
-  isPremium: () => boolean;
-  updateProfile: (data: Partial<User> & { password?: string }) => Promise<void>;
-  upgradeToPremium: () => void;
-}
+import { User, AuthContextType } from '@/types/auth';
+import { authService } from '@/services/authService';
+import { authStorage } from '@/utils/authStorage';
+import { authUtils } from '@/utils/authUtils';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -33,55 +13,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     // Check if user is logged in from localStorage
-    const storedUser = localStorage.getItem('user');
+    const storedUser = authStorage.getUser();
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      // Check if premium has expired
-      if (parsedUser.premium && parsedUser.premiumExpiryDate) {
-        const expiryDate = new Date(parsedUser.premiumExpiryDate);
-        const now = new Date();
-        if (now > expiryDate) {
-          parsedUser.premium = false;
-          parsedUser.premiumExpiryDate = undefined;
-          localStorage.setItem('user', JSON.stringify(parsedUser));
-        }
-      }
-      setUser(parsedUser);
+      setUser(storedUser);
     }
     setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // For demo purposes, we'll use fixed credentials
-    // In a real app, this would call an API endpoint
     setIsLoading(true);
     
     try {
-      // Admin user
-      if (email === 'apnewalecoders@gmail.com' && password === 'apne') {
-        const adminUser: User = {
-          id: '1',
-          name: 'Apne Wale Coders',
-          email: 'apnewalecoders@gmail.com',
-          role: 'admin',
-          premium: true
-        };
-        setUser(adminUser);
-        localStorage.setItem('user', JSON.stringify(adminUser));
-        return true;
-      } 
+      const authenticatedUser = await authService.login(email, password);
       
-      // Demo regular user
-      else if (email === 'user@example.com' && password === 'password') {
-        const regularUser: User = {
-          id: '2',
-          name: 'Demo User',
-          email: 'user@example.com',
-          role: 'user',
-          premium: false
-        };
-        setUser(regularUser);
-        localStorage.setItem('user', JSON.stringify(regularUser));
+      if (authenticatedUser) {
+        setUser(authenticatedUser);
+        authStorage.setUser(authenticatedUser);
         return true;
       }
       
@@ -92,21 +39,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signup = async (name: string, email: string, password: string): Promise<boolean> => {
-    // In a real app, this would call an API endpoint to register
     setIsLoading(true);
     
     try {
-      // Create new user
-      const newUser: User = {
-        id: Date.now().toString(), // Generate a temporary ID
-        name,
-        email,
-        role: 'user',
-        premium: false
-      };
-      
+      const newUser = await authService.signup(name, email, password);
       setUser(newUser);
-      localStorage.setItem('user', JSON.stringify(newUser));
+      authStorage.setUser(newUser);
       return true;
     } finally {
       setIsLoading(false);
@@ -118,19 +56,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     setIsLoading(true);
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const updatedUser: User = {
-        ...user,
-        ...data
-      };
+      const updatedUser = await authService.updateProfile(user, data);
       
       // Remove password from user object (it shouldn't be stored)
       delete (data as any).password;
       
       setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      authStorage.setUser(updatedUser);
     } finally {
       setIsLoading(false);
     }
@@ -139,38 +71,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const upgradeToPremium = () => {
     if (!user) return;
     
-    const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + 30); // 30 days from now
-    
-    const updatedUser: User = {
-      ...user,
-      premium: true,
-      premiumExpiryDate: expiryDate.toISOString()
-    };
-    
+    const updatedUser = authUtils.upgradeToPremium(user);
     setUser(updatedUser);
-    localStorage.setItem('user', JSON.stringify(updatedUser));
+    authStorage.setUser(updatedUser);
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    authStorage.removeUser();
   };
   
   const isAdmin = () => {
-    return user?.role === 'admin';
+    return authUtils.isAdmin(user);
   };
 
   const isPremium = () => {
-    if (!user || !user.premium) return false;
-    
-    if (user.premiumExpiryDate) {
-      const expiryDate = new Date(user.premiumExpiryDate);
-      const now = new Date();
-      return now <= expiryDate;
-    }
-    
-    return user.premium;
+    return authUtils.isPremium(user);
   };
 
   return (
