@@ -9,7 +9,7 @@ import { categories } from "@/components/study-material/materialData";
 
 const StudyMaterialCategoriesSidebar = () => {
   const navigate = useNavigate();
-  const [showCategories, setShowCategories] = useState(true);
+  const [showCategories, setShowCategories] = useState(false);
 
   const handleCategoryClick = (categoryId: string) => {
     if (categoryId === 'all') {
@@ -17,7 +17,7 @@ const StudyMaterialCategoriesSidebar = () => {
     } else {
       navigate(`/study-material/category/${categoryId}`);
     }
-    // Don't close categories on desktop, only on mobile
+    // Close categories on mobile after selection
     if (window.innerWidth < 1024) {
       setShowCategories(false);
     }
@@ -37,62 +37,62 @@ const StudyMaterialCategoriesSidebar = () => {
       <div className="bg-gray-50 p-4 lg:p-6 rounded-lg lg:sticky lg:top-24">
         <div className="flex items-center justify-between mb-4 lg:mb-6">
           <h2 className="text-lg lg:text-xl font-bold">Categories</h2>
-          
-          {/* Desktop: Browse Categories Dropdown */}
-          <div className="hidden lg:block">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  className="bg-brand-red hover:bg-red-600 text-white text-sm flex items-center"
-                  size="sm"
-                >
-                  <Plus size={16} className="mr-2" />
-                  Browse Categories
-                  <ChevronDown size={16} className="ml-2" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-white z-[100] shadow-lg border">
-                <DropdownMenuItem onClick={() => handleCategoryClick('all')} className="cursor-pointer">
-                  All Materials
-                </DropdownMenuItem>
-                
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel>Topics</DropdownMenuLabel>
-                {topicCategories.map((category) => {
-                  const IconComponent = category.icon;
-                  return (
-                    <DropdownMenuItem
-                      key={category.id}
-                      onClick={() => handleCategoryClick(category.id)}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <IconComponent size={14} className="mr-2" />
-                      {category.name}
-                    </DropdownMenuItem>
-                  );
-                })}
-                
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel>Companies</DropdownMenuLabel>
-                {companyCategories.map((category) => {
-                  const IconComponent = category.icon;
-                  return (
-                    <DropdownMenuItem
-                      key={category.id}
-                      onClick={() => handleCategoryClick(category.id)}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <IconComponent size={14} className="mr-2" />
-                      {category.name}
-                    </DropdownMenuItem>
-                  );
-                })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
         </div>
         
-        {/* Mobile/Tablet: Collapsible with Browse Categories button */}
+        {/* Desktop: Browse Categories Dropdown */}
+        <div className="hidden lg:block">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                className="w-full bg-brand-red hover:bg-red-600 text-white text-sm flex items-center justify-center"
+                size="sm"
+              >
+                <Plus size={16} className="mr-2" />
+                Browse Categories
+                <ChevronDown size={16} className="ml-2" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center" className="w-56 bg-white z-[100] shadow-lg border">
+              <DropdownMenuItem onClick={() => handleCategoryClick('all')} className="cursor-pointer">
+                All Materials
+              </DropdownMenuItem>
+              
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel>Topics</DropdownMenuLabel>
+              {topicCategories.map((category) => {
+                const IconComponent = category.icon;
+                return (
+                  <DropdownMenuItem
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.id)}
+                    className="flex items-center cursor-pointer"
+                  >
+                    <IconComponent size={14} className="mr-2" />
+                    {category.name}
+                  </DropdownMenuItem>
+                );
+              })}
+              
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel>Companies</DropdownMenuLabel>
+              {companyCategories.map((category) => {
+                const IconComponent = category.icon;
+                return (
+                  <DropdownMenuItem
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.id)}
+                    className="flex items-center cursor-pointer"
+                  >
+                    <IconComponent size={14} className="mr-2" />
+                    {category.name}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        
+        {/* Mobile/Tablet: Collapsible Categories */}
         <div className="lg:hidden">
           <Collapsible open={showCategories} onOpenChange={setShowCategories}>
             <CollapsibleTrigger asChild>
@@ -156,13 +156,6 @@ const StudyMaterialCategoriesSidebar = () => {
               </div>
             </CollapsibleContent>
           </Collapsible>
-        </div>
-
-        {/* Desktop: Simple help text */}
-        <div className="hidden lg:block mt-4">
-          <p className="text-xs text-gray-500 text-center">
-            Use the dropdown above to browse all categories
-          </p>
         </div>
       </div>
     </div>
