@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Separator } from "@/components/ui/separator";
 
 interface ServicesHeaderProps {
   title: string;
@@ -10,13 +9,27 @@ interface ServicesHeaderProps {
 
 const ServicesHeader = ({ title, subtitle, category }: ServicesHeaderProps) => {
   return (
-    <div className="mb-12">
-      {category && <div className="text-brand-red uppercase font-medium mb-2">{category}</div>}
-      <h2 className="text-3xl md:text-4xl font-bold mb-6">{title}</h2>
-      <p className="text-gray-600 max-w-2xl">
+    <div className="text-center max-w-4xl mx-auto">
+      {category && (
+        <div className="inline-block mb-4">
+          <span className="text-brand-red uppercase font-semibold text-sm tracking-wider bg-red-50 px-4 py-2 rounded-full">
+            {category}
+          </span>
+        </div>
+      )}
+      
+      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+        {title}
+      </h2>
+      
+      <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
         {subtitle}
       </p>
-      <Separator className="mt-6 bg-brand-red h-1 w-24" />
+      
+      {/* Decorative element */}
+      <div className="mt-8 flex justify-center">
+        <div className="w-24 h-1 bg-gradient-to-r from-brand-red to-red-400 rounded-full"></div>
+      </div>
     </div>
   );
 };
