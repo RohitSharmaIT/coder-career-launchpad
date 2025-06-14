@@ -19,10 +19,22 @@ export const usePaymentHandlers = () => {
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
+      // Check if Razorpay is already loaded
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+
       const script = document.createElement('script');
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
+      script.onload = () => {
+        console.log('Razorpay script loaded successfully');
+        resolve(true);
+      };
+      script.onerror = () => {
+        console.error('Failed to load Razorpay script');
+        resolve(false);
+      };
       document.body.appendChild(script);
     });
   };
@@ -117,7 +129,7 @@ export const usePaymentHandlers = () => {
     const orderId = 'order_' + Date.now();
     
     const options = {
-      key: 'rzp_test_9999999999', // Razorpay Test Key
+      key: 'rzp_test_11111111111111', // Use a valid Razorpay Test Key
       amount: 19900, // ₹199 in paisa (₹199 * 100)
       currency: 'INR',
       name: 'Premium Upgrade',
@@ -130,7 +142,7 @@ export const usePaymentHandlers = () => {
       prefill: {
         name: user?.name || '',
         email: user?.email || '',
-        contact: '' // Add phone number if available
+        contact: '9999999999' // Test phone number
       },
       theme: {
         color: '#F59E0B' // Yellow/orange theme
@@ -148,12 +160,15 @@ export const usePaymentHandlers = () => {
     };
 
     try {
+      console.log('Initializing Razorpay with options:', options);
       const rzp = new window.Razorpay(options);
+      
       rzp.on('payment.failed', function (response: any) {
-        console.log('Payment failed:', response);
+        console.log('Payment failed event:', response);
         handlePaymentFailure(response);
       });
       
+      console.log('Opening Razorpay checkout...');
       rzp.open();
     } catch (error) {
       console.error('Error opening Razorpay:', error);
