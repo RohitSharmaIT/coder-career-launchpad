@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Plus, ChevronDown, ChevronUp } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
 import { categories } from "@/components/study-material/materialData";
 
 const StudyMaterialCategoriesSidebar = () => {
   const navigate = useNavigate();
-  const [showCategories, setShowCategories] = useState(true); // Changed to true by default
+  const [showCategories, setShowCategories] = useState(true);
 
   const handleCategoryClick = (categoryId: string) => {
     if (categoryId === 'all') {
@@ -34,7 +35,62 @@ const StudyMaterialCategoriesSidebar = () => {
   return (
     <div className="w-full">
       <div className="bg-gray-50 p-4 lg:p-6 rounded-lg lg:sticky lg:top-24">
-        <h2 className="text-lg lg:text-xl font-bold mb-4 lg:mb-6">Categories</h2>
+        <div className="flex items-center justify-between mb-4 lg:mb-6">
+          <h2 className="text-lg lg:text-xl font-bold">Categories</h2>
+          
+          {/* Desktop: Browse Categories Dropdown */}
+          <div className="hidden lg:block">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-brand-red border-brand-red hover:bg-brand-red hover:text-white"
+                >
+                  Browse Categories
+                  <ChevronDown size={16} className="ml-2" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-white">
+                <DropdownMenuItem onClick={() => handleCategoryClick('all')}>
+                  All Materials
+                </DropdownMenuItem>
+                
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Topics</DropdownMenuLabel>
+                {topicCategories.map((category) => {
+                  const IconComponent = category.icon;
+                  return (
+                    <DropdownMenuItem
+                      key={category.id}
+                      onClick={() => handleCategoryClick(category.id)}
+                      className="flex items-center"
+                    >
+                      <IconComponent size={14} className="mr-2" />
+                      {category.name}
+                    </DropdownMenuItem>
+                  );
+                })}
+                
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Companies</DropdownMenuLabel>
+                {companyCategories.map((category) => {
+                  const IconComponent = category.icon;
+                  return (
+                    <DropdownMenuItem
+                      key={category.id}
+                      onClick={() => handleCategoryClick(category.id)}
+                      className="flex items-center"
+                    >
+                      <IconComponent size={14} className="mr-2" />
+                      {category.name}
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
         
         {/* Mobile/Tablet: Collapsible with Browse Categories button */}
         <div className="lg:hidden">
