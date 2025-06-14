@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { allMaterials } from "@/components/study-material/materialData";
 import StudyMaterialBreadcrumbs from "@/components/study-material/StudyMaterialBreadcrumbs";
 import StudyMaterialCategoriesSidebar from "@/components/study-material/StudyMaterialCategoriesSidebar";
-import StudyMaterialContent from "@/components/study-material/StudyMaterialContent";
+import StudyMaterialDetailsContent from "@/components/study-material/StudyMaterialDetailsContent";
 import StudyMaterialInfoSidebar from "@/components/study-material/StudyMaterialInfoSidebar";
 
 const StudyMaterialDetails = () => {
@@ -41,7 +41,7 @@ const StudyMaterialDetails = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-10">
             <StudyMaterialCategoriesSidebar />
-            <StudyMaterialContent material={material} />
+            <StudyMaterialDetailsContent material={material} />
             <StudyMaterialInfoSidebar material={material} />
           </div>
         </div>
