@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Download, Eye, Lock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -25,7 +24,7 @@ interface StudyMaterialDetailsContentProps {
 const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentProps) => {
   const { user } = useAuth();
   const { handleDownload } = useStudyMaterialDownload();
-  const isPremiumUser = user?.isPremium || false;
+  const isPremiumUser = user?.premium || false;
 
   const handleViewContent = () => {
     if (material.isPremium && !isPremiumUser) {
