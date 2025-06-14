@@ -43,15 +43,16 @@ const StudyMaterialCategoriesSidebar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  className="bg-brand-red hover:bg-red-600 text-white text-sm"
+                  className="bg-brand-red hover:bg-red-600 text-white text-sm flex items-center"
+                  size="sm"
                 >
                   <Plus size={16} className="mr-2" />
                   Browse Categories
                   <ChevronDown size={16} className="ml-2" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-white z-50">
-                <DropdownMenuItem onClick={() => handleCategoryClick('all')}>
+              <DropdownMenuContent align="end" className="w-56 bg-white z-[100] shadow-lg border">
+                <DropdownMenuItem onClick={() => handleCategoryClick('all')} className="cursor-pointer">
                   All Materials
                 </DropdownMenuItem>
                 
@@ -63,7 +64,7 @@ const StudyMaterialCategoriesSidebar = () => {
                     <DropdownMenuItem
                       key={category.id}
                       onClick={() => handleCategoryClick(category.id)}
-                      className="flex items-center"
+                      className="flex items-center cursor-pointer"
                     >
                       <IconComponent size={14} className="mr-2" />
                       {category.name}
@@ -79,7 +80,7 @@ const StudyMaterialCategoriesSidebar = () => {
                     <DropdownMenuItem
                       key={category.id}
                       onClick={() => handleCategoryClick(category.id)}
-                      className="flex items-center"
+                      className="flex items-center cursor-pointer"
                     >
                       <IconComponent size={14} className="mr-2" />
                       {category.name}
