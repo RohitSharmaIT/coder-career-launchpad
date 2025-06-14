@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -54,8 +55,8 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
     navigate('/upgrade-simple');
   };
 
-  const renderContentPreview = (content: string, isPreview: boolean = false) => {
-    if (isPreview && material.isPremium && !isPremiumUser) {
+  const renderFullContent = (content: string) => {
+    if (material.isPremium && !isPremiumUser) {
       const textContent = content.replace(/<[^>]*>/g, '');
       const truncatedText = textContent.substring(0, 200) + '...';
       return (
@@ -121,7 +122,7 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
           <div className="bg-white p-6 rounded-lg border">
             <div className="text-gray-700">
               {material.content ? (
-                renderContentPreview(material.content, false)
+                renderFullContent(material.content)
               ) : (
                 <p className="text-gray-600 leading-relaxed">{material.description}</p>
               )}
@@ -161,15 +162,11 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
           </p>
         </div>
 
-        {/* 3. Content Preview */}
+        {/* 3. Content Description */}
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Content Preview</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Content Description</h3>
           <div className="text-gray-700">
-            {material.content ? (
-              renderContentPreview(material.content, true)
-            ) : (
-              <p className="text-gray-600 leading-relaxed">{material.description}</p>
-            )}
+            <p className="text-gray-600 leading-relaxed">{material.description}</p>
           </div>
         </div>
 
