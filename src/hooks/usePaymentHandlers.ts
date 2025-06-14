@@ -142,7 +142,7 @@ export const usePaymentHandlers = () => {
       prefill: {
         name: user?.name || '',
         email: user?.email || '',
-        contact: user?.phone || ''
+        contact: ''
       },
       theme: {
         color: '#F59E0B' // Yellow/orange theme
