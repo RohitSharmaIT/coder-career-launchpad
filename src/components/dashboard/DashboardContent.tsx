@@ -79,9 +79,9 @@ const DashboardContent = ({
       return (
         <div className="md:col-span-3 space-y-6">
           <StatsCards 
-            upcomingServices={upcomingServices}
-            pastServices={pastServices}
-            jobApplications={jobApplications}
+            upcomingServicesCount={upcomingServices.length}
+            pastServicesCount={pastServices.length}
+            jobApplicationsCount={jobApplications.length}
           />
           {/* Recent activity or other overview content */}
         </div>
@@ -104,7 +104,7 @@ const DashboardContent = ({
     case "profile":
       return (
         <div className="md:col-span-3">
-          <ProfileEditForm />
+          <ProfileEditForm onCancel={() => setActiveTab("overview")} />
         </div>
       );
     case "upgrade":
@@ -117,9 +117,9 @@ const DashboardContent = ({
       return (
         <div className="md:col-span-3 space-y-6">
           <StatsCards 
-            upcomingServices={upcomingServices}
-            pastServices={pastServices}
-            jobApplications={jobApplications}
+            upcomingServicesCount={upcomingServices.length}
+            pastServicesCount={pastServices.length}
+            jobApplicationsCount={jobApplications.length}
           />
         </div>
       );
