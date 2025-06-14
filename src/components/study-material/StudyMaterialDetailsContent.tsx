@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Download, Eye, Lock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStudyMaterialDownload } from "@/hooks/useStudyMaterialDownload";
@@ -32,11 +33,9 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
 
   const handleViewContent = () => {
     if (material.isPremium && !isPremiumUser) {
-      // Show upgrade prompt
       alert("This is premium content. Please upgrade to access full content.");
       return;
     }
-    // Logic to view full content
     console.log("Viewing content for:", material.title);
   };
 
@@ -48,15 +47,13 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
     navigate('/upgrade-simple');
   };
 
-  // Helper function to render content with proper HTML formatting
   const renderContent = (content: string, isPreview: boolean = false) => {
     if (isPreview && material.isPremium && !isPremiumUser) {
-      // Show truncated version for premium content
       const textContent = content.replace(/<[^>]*>/g, '');
       const truncatedText = textContent.substring(0, 200) + '...';
       return (
         <div className="space-y-3">
-          <p>{truncatedText}</p>
+          <p className="text-gray-700">{truncatedText}</p>
           <div className="bg-gradient-to-t from-white to-transparent h-20 flex items-end justify-center">
             <div className="text-center p-4 bg-white rounded-lg shadow-sm border">
               <Lock className="mx-auto mb-2 text-amber-600" size={24} />
@@ -76,85 +73,74 @@ const StudyMaterialDetailsContent = ({ material }: StudyMaterialDetailsContentPr
       );
     }
     
-    // Render full HTML content
     return (
       <div 
-        className="prose prose-sm sm:prose max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-strong:text-gray-900 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-white"
+        className="prose prose-sm max-w-none text-gray-700"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     );
   };
 
   return (
-    <div className="lg:w-1/2 order-2 lg:order-2">
-      <div className="space-y-4 sm:space-y-6">
-        <div>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 lg:mb-4">
-            {material.title}
-          </h1>
-          {material.tagline && (
-            <p className="text-lg sm:text-xl text-gray-500 mb-2 sm:mb-3 italic">
-              {material.tagline}
-            </p>
-          )}
-          <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 lg:mb-6">
-            {material.description}
+    <div className="space-y-6">
+      {/* Title and Description */}
+      <div>
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
+          {material.title}
+        </h1>
+        {material.tagline && (
+          <p className="text-lg text-blue-600 mb-4">
+            {material.tagline}
           </p>
-        </div>
-
-        {/* Premium Badge */}
-        {material.isPremium && (
-          <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-2 rounded-lg">
-            <Lock size={16} />
-            <span className="text-sm font-medium">Premium Content</span>
-          </div>
         )}
+      </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <Button
-            onClick={handleViewContent}
-            className="flex items-center gap-2 bg-brand-red hover:bg-red-600 text-white px-4 sm:px-6 py-2 sm:py-3"
-            disabled={material.isPremium && !isPremiumUser}
-          >
-            <Eye size={16} />
-            {material.isPremium && !isPremiumUser ? "View Preview" : "View Full Content"}
-          </Button>
-          
-          <Button
-            onClick={handleDownloadClick}
-            variant="outline"
-            className="flex items-center gap-2 border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-4 sm:px-6 py-2 sm:py-3"
-          >
-            <Download size={16} />
-            Download
-          </Button>
-        </div>
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-3">
+        <Button
+          onClick={handleViewContent}
+          className="bg-brand-red hover:bg-red-600 text-white px-6 py-2"
+          disabled={material.isPremium && !isPremiumUser}
+        >
+          <Eye size={16} className="mr-2" />
+          View Full Content
+        </Button>
+        
+        <Button
+          onClick={handleDownloadClick}
+          variant="outline"
+          className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-6 py-2"
+        >
+          <Download size={16} className="mr-2" />
+          Download
+        </Button>
+      </div>
 
-        {/* Content Preview */}
-        <div className="bg-gray-50 p-4 sm:p-6 rounded-lg">
-          <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">Content Preview</h3>
+      {/* Content Preview */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Content Preview</h3>
+        <div className="text-gray-700">
           {material.content ? (
             renderContent(material.content, true)
           ) : (
-            <p className="text-gray-500 italic">No preview available</p>
+            <p className="text-gray-600">{material.description}</p>
           )}
         </div>
+      </div>
 
-        {/* Additional Info */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
-          <div className="bg-gray-50 p-3 rounded">
-            <span className="font-medium text-gray-900">Category:</span>
-            <p className="text-gray-600">{material.category}</p>
-          </div>
-          <div className="bg-gray-50 p-3 rounded">
-            <span className="font-medium text-gray-900">Downloads:</span>
-            <p className="text-gray-600">{material.downloadCount}</p>
-          </div>
-          <div className="bg-gray-50 p-3 rounded sm:col-span-1 col-span-2">
-            <span className="font-medium text-gray-900">Type:</span>
-            <p className="text-gray-600">{material.type}</p>
-          </div>
+      {/* Material Details */}
+      <div className="grid grid-cols-3 gap-4 pt-4 border-t">
+        <div>
+          <span className="text-sm font-medium text-gray-500">Category:</span>
+          <p className="text-sm text-blue-600">{material.category}</p>
+        </div>
+        <div>
+          <span className="text-sm font-medium text-gray-500">Downloads:</span>
+          <p className="text-sm text-gray-900">{material.downloadCount}</p>
+        </div>
+        <div>
+          <span className="text-sm font-medium text-gray-500">Type:</span>
+          <p className="text-sm text-gray-900">{material.type}</p>
         </div>
       </div>
     </div>

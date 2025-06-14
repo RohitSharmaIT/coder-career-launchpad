@@ -44,10 +44,21 @@ const StudyMaterialDetails = () => {
       {/* Main Content */}
       <section className="py-6 sm:py-8 lg:py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-10">
-            <StudyMaterialCategoriesSidebar />
-            <StudyMaterialDetailsContent material={material} />
-            <StudyMaterialInfoSidebar material={material} />
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Left Sidebar - Categories */}
+            <div className="lg:w-1/4">
+              <StudyMaterialCategoriesSidebar />
+            </div>
+            
+            {/* Main Content Area */}
+            <div className="lg:w-1/2">
+              <StudyMaterialDetailsContent material={material} />
+            </div>
+            
+            {/* Right Sidebar - Material Info */}
+            <div className="lg:w-1/4">
+              <StudyMaterialInfoSidebar material={material} />
+            </div>
           </div>
         </div>
       </section>
