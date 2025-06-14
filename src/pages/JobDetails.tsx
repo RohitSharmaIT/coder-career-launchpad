@@ -1,17 +1,21 @@
-
 import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Share, MapPin, Clock, Calendar, BriefcaseBusiness, DollarSign, FileText, BookmarkPlus } from "lucide-react";
+import { Share, MapPin, Clock, Calendar, BriefcaseBusiness, DollarSign, FileText, BookmarkPlus, Bookmark } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from '@/contexts/AuthContext';
+import { useSavedJobs } from '@/contexts/SavedJobsContext';
 
 const JobDetails = () => {
   const { id } = useParams<{ id: string }>();
   const jobId = parseInt(id || "1");
+  const { isAuthenticated } = useAuth();
+  const { saveJob, removeSavedJob, isJobSaved } = useSavedJobs();
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const jobSaved = isJobSaved(jobId);
 
   // Sample job data - in a real app, this would come from an API or database
   const job = {
@@ -120,22 +124,49 @@ const JobDetails = () => {
     }
   };
 
+  const handleSaveJob = () => {
+    if (!isAuthenticated) {
+      toast.error("Please log in to save jobs", {
+        action: {
+          label: "Login",
+          onClick: () => {
+            window.location.href = "/login";
+          }
+        }
+      });
+      return;
+    }
+
+    if (jobSaved) {
+      removeSavedJob(jobId);
+      toast.success("Job removed from saved jobs");
+    } else {
+      saveJob({
+        id: job.id,
+        title: job.title,
+        company: job.company,
+        location: job.location,
+        type: job.type,
+        postedDate: job.postedDate,
+        salary: job.salary,
+        experience: job.experience,
+        skills: job.skills
+      });
+      toast.success("Job saved successfully!");
+    }
+  };
+
   const handleApply = () => {
-    // Check if user is logged in (implement this based on your auth system)
-    const isLoggedIn = false;
-    
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       toast.error("Please log in to apply for this job", {
         action: {
           label: "Login",
           onClick: () => {
-            // Redirect to login page
             window.location.href = "/login";
           }
         }
       });
     } else {
-      // Implement application logic here
       toast.success("Your application has been submitted");
     }
   };
@@ -185,10 +216,10 @@ const JobDetails = () => {
                   <Button
                     variant="outline"
                     size="icon"
-                    className={`${isBookmarked ? 'text-brand-red bg-red-50' : ''}`}
-                    onClick={toggleBookmark}
+                    className={`${jobSaved ? 'text-brand-red bg-red-50' : ''}`}
+                    onClick={handleSaveJob}
                   >
-                    <BookmarkPlus size={20} />
+                    {jobSaved ? <Bookmark size={20} /> : <BookmarkPlus size={20} />}
                   </Button>
                   
                   <Button
@@ -305,10 +336,10 @@ const JobDetails = () => {
               <Button 
                 variant="outline" 
                 className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white"
-                onClick={toggleBookmark}
+                onClick={handleSaveJob}
               >
-                <BookmarkPlus size={20} className="mr-2" />
-                {isBookmarked ? "Saved" : "Save Job"}
+                {jobSaved ? <Bookmark size={20} className="mr-2" /> : <BookmarkPlus size={20} className="mr-2" />}
+                {jobSaved ? "Saved" : "Save Job"}
               </Button>
               
               <Button 
