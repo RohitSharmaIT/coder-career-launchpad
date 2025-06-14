@@ -61,25 +61,25 @@ const ServicesList = () => {
     },
     {
       id: 3,
-      title: "Interview Preparation",
-      shortDescription: "Practice with industry experts in realistic interview scenarios with detailed feedback.",
-      longDescription: "Our mock interview service prepares you for real-world interviews by simulating the actual experience. You'll practice with industry experts who will challenge you with common and difficult questions, provide constructive feedback, and help you refine your responses. We cover technical, behavioral, and situational interviews.",
+      title: "Mock Interview Sessions",
+      shortDescription: "Practice with industry experts in realistic interview scenarios with detailed feedback to improve your performance.",
+      longDescription: "Our mock interview service prepares you for real-world interviews by simulating the actual experience. You'll practice with industry experts who will challenge you with common and difficult questions, provide constructive feedback, and help you refine your responses. We cover technical, behavioral, and situational interviews with role-specific preparation and company-focused interview strategies.",
       icon: <MessageSquare className="w-8 h-8" />,
       price: "₹10",
-      imageSrc: "/lovable-uploads/cff881fb-3608-47ae-86a8-aec53fd7fa66.png",
-      imageAlt: "Mock interview session",
+      imageSrc: "/lovable-uploads/2fa0e0c0-5d16-4404-a0bd-43c106e676d5.png",
+      imageAlt: "Mock interview session with industry expert",
       buttons: {
-        learnMore: true,
+        learnMore: false,
         bookSlot: true,
         viewPricing: false
       },
       serviceId: "interview",
       includes: [
+        "Role-Specific Preparation - Tailored interview preparation for front-end, back-end, full-stack, or specialized tech roles",
+        "Company-Focused Interview - Strategically prepare for specific company interview styles including FAANG, startups, and enterprise organizations",
+        "Comprehensive Feedback - Receive detailed assessments of your performance with actionable insights for continuous improvement",
         "1-hour mock interview session",
-        "Industry-specific questions",
-        "Detailed feedback report",
-        "Response improvement suggestions",
-        "Follow-up session (optional)"
+        "Industry-specific questions"
       ]
     },
     {
