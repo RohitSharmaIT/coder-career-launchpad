@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -49,7 +50,6 @@ const StudyMaterial = () => {
   };
 
   const handleDsaTopicHeaderClick = () => {
-    // Navigate to a dedicated DSA topics page
     navigate('/study-material/dsa-topics');
   };
 
@@ -58,14 +58,14 @@ const StudyMaterial = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Navbar />
       
       <div className="pt-20">
-        {/* Hero Section with Search */}
+        {/* Enhanced Hero Section */}
         <StudyHero searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         
-        {/* Main Content */}
+        {/* Main Content with proper spacing */}
         <StudyMaterialContent
           filteredMaterials={filteredMaterials}
           onDownload={handleDownload}
@@ -74,7 +74,7 @@ const StudyMaterial = () => {
           onCategoriesClick={handleCategoriesClick}
         />
 
-        {/* DSA Topics Section - Only visible when special card is clicked */}
+        {/* DSA Topics Section */}
         <DsaTopicsSection
           selectedSpecialMaterial={selectedSpecialMaterial}
           onDownload={handleDownload}
