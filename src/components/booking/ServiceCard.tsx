@@ -60,7 +60,7 @@ const ServiceCard = ({
           onSelect(id);
         }}
       >
-        {isSelected ? 'Selected' : 'Book Now'}
+        {isSelected ? 'Selected' : 'Select Service'}
       </Button>
     </div>
   );
