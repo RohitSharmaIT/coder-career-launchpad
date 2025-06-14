@@ -17,14 +17,14 @@ const PaymentCard = ({ isProcessing, paymentStatus, onPayment }: PaymentCardProp
         <CardHeader className="text-center bg-gradient-to-r from-yellow-100 to-orange-100">
           <div className="flex justify-center mb-2">
             <Badge className="bg-yellow-500 text-white text-lg px-4 py-1">
-              Free Upgrade
+              Premium Plan
             </Badge>
           </div>
           <CardTitle className="text-3xl font-bold">Premium Access</CardTitle>
           <div className="text-4xl font-bold text-green-600 mt-4">
-            🎉 FREE
+            ₹199
           </div>
-          <p className="text-gray-600">No payment required</p>
+          <p className="text-gray-600">One-time payment</p>
         </CardHeader>
         <CardContent className="p-6">
           <div className="space-y-4 mb-6">
@@ -51,15 +51,15 @@ const PaymentCard = ({ isProcessing, paymentStatus, onPayment }: PaymentCardProp
             {isProcessing ? (
               <div className="flex items-center gap-2">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                {paymentStatus === 'processing' ? 'Activating Premium...' : 'Please wait...'}
+                {paymentStatus === 'processing' ? 'Processing Payment...' : 'Please wait...'}
               </div>
             ) : (
-              "Activate Premium - FREE"
+              "Pay ₹199 - Upgrade to Premium"
             )}
           </Button>
           
           <p className="text-xs text-gray-500 text-center mt-4">
-            Instant activation • No payment required
+            Secure payment • One-time charge of ₹199
           </p>
         </CardContent>
       </Card>

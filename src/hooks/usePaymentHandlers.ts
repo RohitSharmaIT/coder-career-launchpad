@@ -22,7 +22,7 @@ export const usePaymentHandlers = () => {
     }
 
     if (isProcessing) {
-      toast.info("Upgrade is already in progress. Please wait...");
+      toast.info("Payment is already in progress. Please wait...");
       return;
     }
 
@@ -30,35 +30,47 @@ export const usePaymentHandlers = () => {
     setPaymentStatus('processing');
     
     try {
-      // Simulate processing time
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Simulate payment processing
+      toast.info("Processing payment of ₹199...");
       
-      // Update user to premium status
-      upgradeToPremium();
-      setPaymentStatus('success');
+      // Simulate payment gateway processing time
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Calculate expiry date (1 month from now)
-      const expiryDate = new Date();
-      expiryDate.setMonth(expiryDate.getMonth() + 1);
-      const formattedDate = expiryDate.toLocaleDateString('en-IN', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      });
+      // Simulate payment success (in real implementation, this would be handled by payment gateway)
+      const paymentSuccess = Math.random() > 0.1; // 90% success rate for demo
       
-      toast.success("🎉 Premium Activated Successfully!", {
-        description: `You are now a Premium Member! Valid till: ${formattedDate}`
-      });
-      
-      // Redirect to dashboard after success message
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 3000);
+      if (paymentSuccess) {
+        // Update user to premium status
+        upgradeToPremium();
+        setPaymentStatus('success');
+        
+        // Calculate expiry date (1 month from now)
+        const expiryDate = new Date();
+        expiryDate.setMonth(expiryDate.getMonth() + 1);
+        const formattedDate = expiryDate.toLocaleDateString('en-IN', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+        
+        toast.success("🎉 Payment Successful! Premium Activated!", {
+          description: `You are now a Premium Member! Valid till: ${formattedDate}`
+        });
+        
+        // Redirect to dashboard after success message
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 3000);
+      } else {
+        // Simulate payment failure
+        setPaymentStatus('failed');
+        toast.error("Payment failed. Please try again or contact support.");
+      }
       
     } catch (error) {
-      console.error('Upgrade failed:', error);
+      console.error('Payment processing failed:', error);
       setPaymentStatus('failed');
-      toast.error("Upgrade failed. Please try again.");
+      toast.error("Payment processing failed. Please try again.");
     } finally {
       setIsProcessing(false);
     }
