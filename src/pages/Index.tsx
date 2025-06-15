@@ -20,17 +20,29 @@ const HomePage = () => {
         </div>
         {/* Container for Main Content */}
         <div className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8 space-y-20">
-          <ServicesSection />
-          <StatsSection />
-          <JobsSection />
-          <BlogsSection />
-          <TestimonialsSection />
-          <SubscribeBox />
+          {/* Animate-in for each section */}
+          <div className="animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: "both" }}>
+            <ServicesSection />
+          </div>
+          <div className="animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: "both" }}>
+            <StatsSection />
+          </div>
+          <div className="animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: "both" }}>
+            <JobsSection />
+          </div>
+          <div className="animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: "both" }}>
+            <BlogsSection />
+          </div>
+          <div className="animate-fade-in" style={{ animationDelay: '0.5s', animationFillMode: "both" }}>
+            <TestimonialsSection />
+          </div>
+          <div className="animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: "both" }}>
+            <SubscribeBox />
+          </div>
         </div>
       </main>
       <Footer />
     </div>
   );
 };
-
 export default HomePage;
