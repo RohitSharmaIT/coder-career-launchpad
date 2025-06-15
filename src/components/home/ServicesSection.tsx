@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Briefcase, BookOpen, Users } from "lucide-react";
@@ -28,29 +29,29 @@ const services = [
 
 const ServicesSection = () => {
   return (
-    <section className="section-gradient py-12 sm:py-20">
+    <section className="section-gradient py-12 md:py-20 w-full">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
-        <div className="text-center mb-20 animate-fade-in" style={{animationDelay: '0.1s', animationFillMode:'both'}}>
-          <div className="inline-flex items-center gap-2 bg-brand-red/10 text-brand-red rounded-full px-6 py-3 mb-6 font-medium text-lg animate-scale-in" style={{animationDelay: '0.2s', animationFillMode:'both'}}>
+        <div className="text-center mb-12 md:mb-20 animate-fade-in">
+          <div className="inline-flex items-center gap-2 bg-brand-red/10 text-brand-red rounded-full px-6 py-3 mb-4 md:mb-6 font-medium text-lg animate-scale-in">
             <Zap className="h-5 w-5" />
             PROFESSIONAL SERVICES
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent animate-fade-in" style={{animationDelay: '0.3s', animationFillMode:'both'}}>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-8 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent animate-fade-in">
             Transform Your Career Journey
           </h2>
-          <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed animate-fade-in" style={{animationDelay: '0.4s', animationFillMode:'both'}}>
+          <p className="text-base md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in">
             We offer a comprehensive range of services designed to accelerate your professional growth and help you achieve your career aspirations.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-6">
           {services.map((service, index) => (
-            <div key={service.id} className="animate-fade-in" style={{animationDelay: `${0.2 + index*0.1}s`, animationFillMode:"both"}}>
-              <div className="service-card p-10 h-full hover:scale-105 transition-transform">
-                <div className="text-brand-red mb-8 group-hover:scale-110 transition-transform duration-300 animate-scale-in">{service.icon}</div>
-                <h3 className="text-3xl font-bold mb-6 text-gray-900">{service.title}</h3>
-                <p className="text-gray-600 mb-8 leading-relaxed text-lg">{service.description}</p>
+            <div key={service.id} className="animate-fade-in">
+              <div className="service-card p-8 md:p-10 h-full hover:scale-105 transition-transform">
+                <div className="text-brand-red mb-6 group-hover:scale-110 transition-transform duration-300 animate-scale-in">{service.icon}</div>
+                <h3 className="text-xl md:text-3xl font-bold mb-4 md:mb-6 text-gray-900 text-center">{service.title}</h3>
+                <p className="text-gray-600 mb-6 md:mb-8 leading-relaxed text-base md:text-lg text-center">{service.description}</p>
                 <Link to={service.link}>
-                  <Button className="w-full bg-brand-red hover:bg-red-600 text-white font-semibold py-4 rounded-xl transition-all duration-300 group-hover:shadow-lg text-lg animate-shake" style={{animationDelay: `${0.5 + index*0.1}s` }}>
+                  <Button className="w-full bg-brand-red hover:bg-red-600 text-white font-semibold py-3 md:py-4 rounded-xl transition-all duration-300 group-hover:shadow-lg text-base md:text-lg animate-shake">
                     Learn More
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
@@ -59,9 +60,9 @@ const ServicesSection = () => {
             </div>
           ))}
         </div>
-        <div className="text-center animate-fade-in" style={{animationDelay: '0.6s', animationFillMode:'both'}}>
+        <div className="text-center mt-6 md:mt-8 animate-fade-in">
           <Link to="/services">
-            <Button variant="outline" className="border-2 border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-12 py-6 rounded-xl font-semibold text-xl transition-all duration-300 hover:shadow-lg">
+            <Button variant="outline" className="border-2 border-brand-red text-brand-red hover:bg-brand-red hover:text-white px-8 py-4 md:px-12 md:py-6 rounded-xl font-semibold text-lg md:text-xl transition-all duration-300 hover:shadow-lg">
               View All Services
             </Button>
           </Link>
