@@ -1,37 +1,35 @@
-
-import Counter from "@/components/Counter";
+import React from 'react';
+import { Rocket, Users, CheckCircle } from 'lucide-react';
 
 const StatsSection = () => {
   return (
-    <section className="bg-gradient-to-r from-brand-red via-red-600 to-red-700 relative overflow-hidden section-padding">
-      <div className="absolute inset-0 bg-black/10"></div>
-      <div className="absolute top-0 left-0 w-full h-full opacity-10">
-        <div className="absolute inset-0 bg-white/5 bg-[radial-gradient(circle_at_50%_50%,_white_1px,_transparent_1px)] bg-[length:40px_40px]"></div>
-      </div>
-      
-      <div className="container-full relative">
-        <div className="text-center mb-20 animate-fade-in">
-          <h2 className="text-5xl md:text-6xl font-bold mb-8 text-white">
-            Our Impact in Numbers
-          </h2>
-          <p className="text-2xl text-red-100 max-w-4xl mx-auto leading-relaxed">
-            Building success stories across the tech industry with measurable results and lasting impact.
-          </p>
+    <section className="bg-white py-12">
+      <div className="max-w-5xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-3 gap-8">
+        {/* Stat Card 1 */}
+        <div className="flex flex-col items-center justify-center p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <div className="w-12 h-12 rounded-full bg-brand-red/20 text-brand-red flex items-center justify-center mb-4">
+            <Rocket className="w-6 h-6" />
+          </div>
+          <div className="text-3xl font-bold text-gray-900">5000+</div>
+          <div className="text-gray-600">Placements</div>
         </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-          <div className="text-center animate-fade-in" style={{animationDelay: '0.1s'}}>
-            <Counter target={5000} label="Subscribers" suffix="+" />
+
+        {/* Stat Card 2 */}
+        <div className="flex flex-col items-center justify-center p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <div className="w-12 h-12 rounded-full bg-blue-200 text-blue-600 flex items-center justify-center mb-4">
+            <Users className="w-6 h-6" />
           </div>
-          <div className="text-center animate-fade-in" style={{animationDelay: '0.2s'}}>
-            <Counter target={500000} label="Views" suffix="+" />
+          <div className="text-3xl font-bold text-gray-900">1000+</div>
+          <div className="text-gray-600">Happy Students</div>
+        </div>
+
+        {/* Stat Card 3 */}
+        <div className="flex flex-col items-center justify-center p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          <div className="w-12 h-12 rounded-full bg-green-200 text-green-600 flex items-center justify-center mb-4">
+            <CheckCircle className="w-6 h-6" />
           </div>
-          <div className="text-center animate-fade-in" style={{animationDelay: '0.3s'}}>
-            <Counter target={1200} label="Mock Interviews" suffix="+" />
-          </div>
-          <div className="text-center animate-fade-in" style={{animationDelay: '0.4s'}}>
-            <Counter target={1100} label="Learners Helped" suffix="+" />
-          </div>
+          <div className="text-3xl font-bold text-gray-900">95%</div>
+          <div className="text-gray-600">Success Rate</div>
         </div>
       </div>
     </section>

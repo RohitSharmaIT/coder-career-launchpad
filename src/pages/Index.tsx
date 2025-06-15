@@ -11,42 +11,23 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen w-full overflow-x-hidden">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col">
       <Navbar />
-      
-      {/* Full-screen Hero Section */}
-      <HeroSection />
-
-      {/* Full-width Services Section */}
-      <div className="full-width">
-        <ServicesSection />
-      </div>
-
-      {/* Full-width Stats Section */}
-      <div className="full-width">
-        <StatsSection />
-      </div>
-
-      {/* Full-width Featured Jobs Section */}
-      <div className="full-width">
-        <JobsSection />
-      </div>
-
-      {/* Full-width Recent Blogs Section */}
-      <div className="full-width">
-        <BlogsSection />
-      </div>
-
-      {/* Full-width Testimonials Section */}
-      <div className="full-width">
-        <TestimonialsSection />
-      </div>
-
-      {/* Full-width Subscribe Section */}
-      <div className="full-width">
-        <SubscribeBox />
-      </div>
-      
+      {/* Hero Section with Padding */}
+      <main className="flex-1">
+        <div className="pt-20 pb-16">
+          <HeroSection />
+        </div>
+        {/* Container for Main Content */}
+        <div className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8 space-y-20">
+          <ServicesSection />
+          <StatsSection />
+          <JobsSection />
+          <BlogsSection />
+          <TestimonialsSection />
+          <SubscribeBox />
+        </div>
+      </main>
       <Footer />
     </div>
   );

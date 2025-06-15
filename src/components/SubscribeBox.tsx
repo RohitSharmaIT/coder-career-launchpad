@@ -1,86 +1,30 @@
-
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import React from 'react';
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { Mail, Users, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Mail } from "lucide-react";
 
 const SubscribeBox = () => {
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      // In a real app, you would send this email to your server
-      console.log(`Email submitted: ${email}`);
-      toast.success("Thanks for subscribing! We'll be in touch soon.");
-      setEmail('');
-      setIsSubmitting(false);
-    }, 1000);
-  };
-
   return (
-    <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-brand-red relative overflow-hidden section-padding">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-white/5 bg-[radial-gradient(circle_at_25%_25%,_white_2px,_transparent_2px)] bg-[length:40px_40px]"></div>
-      </div>
-      
-      <div className="relative container-full">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 glass-effect rounded-full px-6 py-3 mb-8 animate-fade-in">
-            <Mail className="h-5 w-5 text-yellow-400" />
-            <span className="text-white font-medium text-lg">Stay Connected</span>
-          </div>
-          
-          {/* Main Content */}
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 animate-fade-in" style={{animationDelay: '0.1s'}}>
-            Join Our Growing Community
-          </h2>
-          <p className="text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed animate-fade-in" style={{animationDelay: '0.2s'}}>
-            Get exclusive access to the latest tech interview questions, career tips, job opportunities, and industry insights delivered straight to your inbox.
-          </p>
-          
-          {/* Subscribe Form */}
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-6 max-w-2xl mx-auto mb-16 animate-fade-in" style={{animationDelay: '0.3s'}}>
-            <Input
-              type="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="flex-grow py-6 px-8 rounded-xl border-white/20 glass-effect text-white placeholder:text-gray-300 focus:ring-2 focus:ring-white/50 focus:border-transparent text-lg"
-            />
-            <Button 
-              type="submit" 
-              disabled={isSubmitting} 
-              className="bg-white text-gray-900 hover:bg-gray-100 font-semibold py-6 px-12 rounded-xl transition-all duration-300 hover:shadow-lg disabled:opacity-50 text-lg"
-            >
-              {isSubmitting ? 'Subscribing...' : 'Subscribe Now'}
-            </Button>
-          </form>
-          
-          {/* Benefits */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fade-in" style={{animationDelay: '0.4s'}}>
-            <div className="flex items-center justify-center gap-4 text-white/80">
-              <Users className="h-6 w-6 text-yellow-400" />
-              <span className="text-lg font-medium">5000+ Members</span>
-            </div>
-            <div className="flex items-center justify-center gap-4 text-white/80">
-              <Mail className="h-6 w-6 text-yellow-400" />
-              <span className="text-lg font-medium">Weekly Updates</span>
-            </div>
-            <div className="flex items-center justify-center gap-4 text-white/80">
-              <Zap className="h-6 w-6 text-yellow-400" />
-              <span className="text-lg font-medium">Exclusive Content</span>
-            </div>
-          </div>
+    <section className="py-12 bg-white">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 rounded-2xl shadow-lg text-center">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Subscribe to Our Newsletter</h2>
+        <p className="text-gray-600 mb-8">
+          Stay up to date with the latest news, articles, and resources.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            className="border-gray-300 rounded-md py-3 px-4 text-gray-700 focus:ring-brand-red focus:border-brand-red"
+          />
+          <Button className="bg-brand-red hover:bg-red-600 text-white rounded-md py-3 px-6 flex items-center gap-2">
+            <Mail className="h-5 w-5" />
+            Subscribe
+          </Button>
         </div>
+        <p className="text-gray-500 mt-4">
+          We respect your privacy and won't share your email with anyone.
+        </p>
       </div>
     </section>
   );

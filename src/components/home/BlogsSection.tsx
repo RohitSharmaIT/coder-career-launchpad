@@ -1,72 +1,69 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import BlogCard from "@/components/BlogCard";
-import { Award } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { useBlogs } from '@/contexts/BlogsContext';
 
 const BlogsSection = () => {
-  const blogs = [
-    {
-      id: 1,
-      title: "Top 10 Interview Questions for Frontend Developers",
-      excerpt: "Prepare for your next frontend interview with these commonly asked questions and expert answers.",
-      thumbnail: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=80",
-      category: "Interview",
-      date: "May 10, 2024"
-    },
-    {
-      id: 2,
-      title: "How to Optimize Your Resume for ATS Systems",
-      excerpt: "Learn how to structure your resume to pass through Applicant Tracking Systems and reach human recruiters.",
-      thumbnail: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=800&q=80",
-      category: "Resume",
-      date: "May 5, 2024"
-    },
-    {
-      id: 3,
-      title: "Learning Data Structures: A Complete Guide",
-      excerpt: "Master the fundamentals of data structures to ace your coding interviews and become a better programmer.",
-      thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-      category: "Learning",
-      date: "April 28, 2024"
-    }
-  ];
-
+  const { blogs } = useBlogs();
+  
+  // Get the 3 most recent blogs
+  const recentBlogs = blogs.slice(0, 3);
+  
   return (
-    <section className="section-gradient section-padding">
-      <div className="container-full">
-        <div className="text-center mb-20 animate-fade-in">
-          <div className="inline-flex items-center gap-2 bg-purple-50 text-purple-600 rounded-full px-6 py-3 mb-6 font-medium text-lg">
-            <Award className="h-5 w-5" />
-            KNOWLEDGE HUB
-          </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-            Latest Insights & Tips
-          </h2>
-          <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Stay ahead with expert insights, career advice, and industry trends from our knowledge base.
+    <section className="py-12 bg-white">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Latest from Our Blog</h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Stay updated with the latest trends, tips, and insights in the tech industry
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-          {blogs.map((blog, index) => (
-            <div key={blog.id} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
-              <BlogCard
-                id={blog.id}
-                title={blog.title}
-                excerpt={blog.excerpt}
-                thumbnail={blog.thumbnail}
-                category={blog.category}
-                date={blog.date}
-              />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+          {recentBlogs.map((blog) => (
+            <div key={blog.id} className="blog-card group">
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={blog.coverImage} 
+                  alt={blog.title} 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4">
+                  <span className="bg-brand-red text-white text-xs font-medium px-2 py-1 rounded">
+                    {blog.category}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2 group-hover:text-brand-red transition-colors">
+                  {blog.title}
+                </h3>
+                <p className="text-gray-600 mb-4 line-clamp-2">
+                  {blog.excerpt}
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <img 
+                      src={blog.author.avatar} 
+                      alt={blog.author.name} 
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
+                    <span className="text-sm text-gray-600">{blog.author.name}</span>
+                  </div>
+                  <span className="text-sm text-gray-500">{blog.date}</span>
+                </div>
+              </div>
             </div>
           ))}
         </div>
         
-        <div className="text-center animate-fade-in" style={{animationDelay: '0.4s'}}>
+        <div className="text-center mt-12">
           <Link to="/blogs">
-            <Button variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-12 py-6 rounded-xl font-semibold text-xl transition-all duration-300 hover:shadow-lg">
-              Read More Articles
+            <Button variant="outline" className="border-brand-red text-brand-red hover:bg-brand-red hover:text-white">
+              View All Articles
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>

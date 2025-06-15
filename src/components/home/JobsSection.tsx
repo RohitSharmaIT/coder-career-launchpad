@@ -1,40 +1,12 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import JobCard from "@/components/JobCard";
 import { Users } from "lucide-react";
 
 const JobsSection = () => {
-  const jobs = [
-    {
-      id: 1,
-      title: "Frontend Developer",
-      company: "TechCorp Inc.",
-      location: "Bangalore, India",
-      type: "Full-time",
-      postedDate: "2 days ago"
-    },
-    {
-      id: 2,
-      title: "Software Engineer",
-      company: "InnovateTech",
-      location: "Remote",
-      type: "Full-time",
-      postedDate: "1 week ago"
-    },
-    {
-      id: 3,
-      title: "Data Scientist",
-      company: "DataMinds",
-      location: "Mumbai, India",
-      type: "Part-time",
-      postedDate: "3 days ago"
-    }
-  ];
-
   return (
-    <section className="bg-white section-padding">
-      <div className="container-full">
+    <section className="py-12 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
         <div className="text-center mb-20 animate-fade-in">
           <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-6 py-3 mb-6 font-medium text-lg">
             <Users className="h-5 w-5" />
@@ -48,7 +20,7 @@ const JobsSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {jobs.map((job, index) => (
             <div key={job.id} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
               <JobCard

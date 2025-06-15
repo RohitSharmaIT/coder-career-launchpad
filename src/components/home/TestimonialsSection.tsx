@@ -1,35 +1,10 @@
-
 import TestimonialCard from "@/components/TestimonialCard";
 import { CheckCircle } from "lucide-react";
 
 const TestimonialsSection = () => {
-  const testimonials = [
-    {
-      name: "Rahul Sharma",
-      role: "Software Engineer",
-      company: "Google",
-      testimonial: "The mock interview sessions were incredibly helpful. The feedback was detailed and actionable, which helped me improve rapidly. I landed my dream job at Google!",
-      avatar: "https://randomuser.me/api/portraits/men/1.jpg"
-    },
-    {
-      name: "Priya Patel",
-      role: "Frontend Developer",
-      company: "Microsoft",
-      testimonial: "Apne Wale Coders helped me refine my resume and prepare for technical interviews. Their guidance was invaluable in my job search journey.",
-      avatar: "https://randomuser.me/api/portraits/women/2.jpg"
-    },
-    {
-      name: "Amit Kumar",
-      role: "Data Scientist",
-      company: "Amazon",
-      testimonial: "The personalized career strategy sessions helped me transition from a junior to senior role. Highly recommended for anyone looking to advance their tech career.",
-      avatar: "https://randomuser.me/api/portraits/men/3.jpg"
-    }
-  ];
-
   return (
-    <section className="bg-white section-padding">
-      <div className="container-full">
+    <section className="py-12 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
         <div className="text-center mb-20 animate-fade-in">
           <div className="inline-flex items-center gap-2 bg-green-50 text-green-600 rounded-full px-6 py-3 mb-6 font-medium text-lg">
             <CheckCircle className="h-5 w-5" />
@@ -43,7 +18,7 @@ const TestimonialsSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
               <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-2 p-2">
