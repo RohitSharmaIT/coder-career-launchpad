@@ -1,5 +1,33 @@
+
 import TestimonialCard from "@/components/TestimonialCard";
 import { CheckCircle } from "lucide-react";
+
+const testimonials = [
+  {
+    name: "Priya Sharma",
+    role: "Software Engineer",
+    company: "TechCorp",
+    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+    testimonial:
+      "This platform helped me ace my interviews and land a dream job. The community and guidance were top-notch!"
+  },
+  {
+    name: "Rajat Mehra",
+    role: "Frontend Developer",
+    company: "InnovateTech",
+    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+    testimonial:
+      "The mentorship and study resources are amazing. The job board is regularly updated with great opportunities."
+  },
+  {
+    name: "Sarah Ali",
+    role: "Data Scientist",
+    company: "DataMinds",
+    avatar: "https://randomuser.me/api/portraits/women/55.jpg",
+    testimonial:
+      "Super supportive community and excellent interview preparation modules. Highly recommend!"
+  }
+];
 
 const TestimonialsSection = () => {
   return (

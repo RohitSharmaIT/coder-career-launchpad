@@ -1,9 +1,13 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import JobCard from "@/components/JobCard";
 import { Users } from "lucide-react";
+import { useJobs } from "@/contexts/JobsContext";
 
 const JobsSection = () => {
+  const { jobs } = useJobs();
+
   return (
     <section className="py-12 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
@@ -21,7 +25,7 @@ const JobsSection = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-          {jobs.map((job, index) => (
+          {jobs.slice(0, 3).map((job, index) => (
             <div key={job.id} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
               <JobCard
                 id={job.id}

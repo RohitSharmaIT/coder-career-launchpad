@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -22,9 +23,9 @@ const BlogsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {recentBlogs.map((blog) => (
             <div key={blog.id} className="blog-card group">
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-48 overflow-hidden rounded-t-xl">
                 <img 
-                  src={blog.coverImage} 
+                  src={blog.thumbnail} 
                   alt={blog.title} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
@@ -44,14 +45,6 @@ const BlogsSection = () => {
                   {blog.excerpt}
                 </p>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <img 
-                      src={blog.author.avatar} 
-                      alt={blog.author.name} 
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                    <span className="text-sm text-gray-600">{blog.author.name}</span>
-                  </div>
                   <span className="text-sm text-gray-500">{blog.date}</span>
                 </div>
               </div>

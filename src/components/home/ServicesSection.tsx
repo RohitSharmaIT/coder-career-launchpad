@@ -1,6 +1,31 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight, Zap, Briefcase, BookOpen, Users } from "lucide-react";
+
+const services = [
+  {
+    id: 1,
+    icon: <Briefcase className="w-10 h-10" />,
+    title: "Career Coaching",
+    description: "Expert 1:1 guidance to advance your professional journey and land your dream role.",
+    link: "/services/career-coaching"
+  },
+  {
+    id: 2,
+    icon: <BookOpen className="w-10 h-10" />,
+    title: "Interview Prep",
+    description: "Comprehensive preparation for interviews in tech, business, and more.",
+    link: "/services/interview-prep"
+  },
+  {
+    id: 3,
+    icon: <Users className="w-10 h-10" />,
+    title: "Networking Events",
+    description: "Exclusive access to our network and opportunities for career expansion.",
+    link: "/services/networking"
+  }
+];
 
 const ServicesSection = () => {
   return (
