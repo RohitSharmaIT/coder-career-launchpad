@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -92,10 +93,13 @@
 
   html, body, #root {
     @apply h-full w-full m-0 p-0 overflow-x-hidden;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-background text-foreground font-[Poppins] antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -112,7 +116,7 @@
   }
 
   .section-padding {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-12 md:py-16 lg:py-20;
   }
 
   .container-full {
@@ -133,6 +137,15 @@
   html, body, #root {
     @apply w-full min-w-0 max-w-full overflow-x-hidden;
   }
+
+  /* Improved focus styles for accessibility */
+  *:focus {
+    @apply outline-none;
+  }
+  
+  *:focus-visible {
+    @apply ring-2 ring-brand-red ring-offset-2;
+  }
 }
 
 @layer components {
@@ -146,19 +159,19 @@
   }
   
   .service-card {
-    @apply bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-3 hover:scale-105;
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-2 hover:scale-105;
   }
   
   .job-card {
-    @apply bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-1;
+    @apply bg-white/90 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-1;
   }
   
   .blog-card {
-    @apply bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-1;
+    @apply bg-white/90 backdrop-blur-sm rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100 hover:border-brand-red/20 transform hover:-translate-y-1;
   }
   
   .team-card {
-    @apply bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-brand-red/20 text-center transform hover:-translate-y-1;
+    @apply bg-white/90 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-brand-red/20 text-center transform hover:-translate-y-1;
   }
 
   .hero-overlay {
@@ -176,29 +189,192 @@
   .section-gradient {
     @apply bg-gradient-to-br from-gray-50 via-white to-blue-50/30;
   }
+
+  /* Professional card styles */
+  .professional-card {
+    @apply bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:border-brand-red/20;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    @apply bg-brand-red hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply border-2 border-brand-red text-brand-red hover:bg-brand-red hover:text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-lg;
+  }
 }
 
 @layer utilities {
+  /* Enhanced animations */
   .animate-fade-in {
-    animation: fade-in 0.7s cubic-bezier(.4,0,.2,1) both;
+    animation: fade-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  
   .animate-scale-in {
-    animation: scale-in 0.7s cubic-bezier(.4,0,.2,1) both;
+    animation: scale-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
-  .animate-bounce {
-    animation: bounce 1s infinite;
+  
+  .animate-slide-in-left {
+    animation: slide-in-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
-  .animate-shake {
-    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  
+  .animate-slide-in-right {
+    animation: slide-in-right 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0);}
-    50% { transform: translateY(-8px);}
+  
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s infinite;
   }
-  @keyframes shake {
-    10%, 90% { transform: translateX(-1px); }
-    20%, 80% { transform: translateX(2px);}
-    30%, 50%, 70% { transform: translateX(-4px);}
-    40%, 60% { transform: translateX(4px);}
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Staggered animations */
+  .animate-stagger-1 { animation-delay: 0.1s; }
+  .animate-stagger-2 { animation-delay: 0.2s; }
+  .animate-stagger-3 { animation-delay: 0.3s; }
+  .animate-stagger-4 { animation-delay: 0.4s; }
+  .animate-stagger-5 { animation-delay: 0.5s; }
+
+  /* Responsive text sizes */
+  .text-responsive-xs { @apply text-xs sm:text-sm; }
+  .text-responsive-sm { @apply text-sm sm:text-base; }
+  .text-responsive-base { @apply text-base sm:text-lg; }
+  .text-responsive-lg { @apply text-lg sm:text-xl; }
+  .text-responsive-xl { @apply text-xl sm:text-2xl; }
+  .text-responsive-2xl { @apply text-2xl sm:text-3xl; }
+  .text-responsive-3xl { @apply text-3xl sm:text-4xl lg:text-5xl; }
+
+  /* Enhanced keyframes */
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slide-in-left {
+    0% {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-in-right {
+    0% {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes bounce-gentle {
+    0%, 100% { 
+      transform: translateY(0);
+    }
+    50% { 
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  /* Improved hover effects */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-2;
+  }
+
+  .hover-glow {
+    @apply transition-shadow duration-300 hover:shadow-xl hover:shadow-brand-red/10;
+  }
+
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+
+  /* Enhanced focus states for better accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-red focus:ring-offset-2;
+  }
+
+  /* Mobile-first responsive utilities */
+  .mobile-padding { @apply px-4 sm:px-6 lg:px-8; }
+  .mobile-text { @apply text-sm sm:text-base; }
+  .mobile-heading { @apply text-xl sm:text-2xl lg:text-3xl; }
+}
+
+/* Enhanced media queries for better responsive design */
+@media (max-width: 640px) {
+  .mobile-stack {
+    @apply flex-col space-y-4 space-x-0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
