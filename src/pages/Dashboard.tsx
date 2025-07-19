@@ -110,10 +110,10 @@ const Dashboard = () => {
           </div>
           
           {/* Main Dashboard */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8 animate-fade-in">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 animate-fade-in">
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 overflow-hidden sticky top-24">
+              <div className="sticky top-24">
                 <DashboardSidebar 
                   user={user} 
                   activeTab={activeTab} 
@@ -124,15 +124,17 @@ const Dashboard = () => {
             </div>
             
             {/* Main Content */}
-            <div className="lg:col-span-3">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                <DashboardContent 
-                  activeTab={activeTab}
-                  upcomingServices={upcomingServices}
-                  pastServices={pastServices}
-                  jobApplications={jobApplications}
-                  setActiveTab={setActiveTab}
-                />
+            <div className="lg:col-span-4">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100/50 overflow-hidden min-h-[600px]">
+                <div className="p-6 lg:p-8">
+                  <DashboardContent 
+                    activeTab={activeTab}
+                    upcomingServices={upcomingServices}
+                    pastServices={pastServices}
+                    jobApplications={jobApplications}
+                    setActiveTab={setActiveTab}
+                  />
+                </div>
               </div>
             </div>
           </div>
