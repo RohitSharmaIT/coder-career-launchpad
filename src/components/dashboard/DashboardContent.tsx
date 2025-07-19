@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import ServicesTab from './ServicesTab';
 import ApplicationsTab from './ApplicationsTab';
 import ProfileEditForm from './ProfileEditForm';
+import ProblemsSection from './sections/ProblemsSection';
+import MockTestsSection from './sections/MockTestsSection';
+import MockAssessmentSection from './sections/MockAssessmentSection';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +24,11 @@ import {
   CheckCircle,
   Flame,
   Award,
-  TrendingUp
+  TrendingUp,
+  Zap,
+  BookOpen,
+  Activity,
+  Timer
 } from "lucide-react";
 
 interface DashboardContentProps {
@@ -40,6 +47,7 @@ const DashboardContent = ({
   setActiveTab 
 }: DashboardContentProps) => {
   const navigate = useNavigate();
+  const [selectedSection, setSelectedSection] = useState<string | null>(null);
 
   // Mock data for achievements and progress
   const achievements = {
@@ -78,7 +86,7 @@ const DashboardContent = ({
       icon: Code,
       color: "from-green-500 to-green-600",
       count: achievements.problemsSolved,
-      action: () => navigate("/study-material")
+      action: () => setSelectedSection("problems")
     },
     {
       id: "mock-tests",
@@ -87,7 +95,7 @@ const DashboardContent = ({
       icon: FileText,
       color: "from-purple-500 to-purple-600",
       count: achievements.mockTestsCompleted,
-      action: () => navigate("/mock-tests")
+      action: () => setSelectedSection("mock-tests")
     },
     {
       id: "mock-assessment",
@@ -96,7 +104,7 @@ const DashboardContent = ({
       icon: Target,
       color: "from-orange-500 to-orange-600",
       count: 3,
-      action: () => navigate("/assessments")
+      action: () => setSelectedSection("mock-assessment")
     },
     {
       id: "job-applications",
@@ -110,105 +118,170 @@ const DashboardContent = ({
   ];
 
   const renderAchievementTracker = () => (
-    <div className="space-y-6 mb-8">
-      {/* Level and Experience */}
-      <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-background border-primary/20">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="bg-primary/20 p-3 rounded-full">
-                <Award className="w-6 h-6 text-primary" />
+    <div className="space-y-8 mb-10">
+      {/* Enhanced Level and Experience */}
+      <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/5 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+        <CardContent className="p-8 relative">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <div className="bg-gradient-to-br from-primary/20 to-primary/10 p-4 rounded-2xl border border-primary/20">
+                <Award className="w-8 h-8 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">Level {achievements.level} Coder</h3>
-                <p className="text-muted-foreground">Keep coding to reach the next level!</p>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  Level {achievements.level} Elite Coder
+                </h3>
+                <p className="text-muted-foreground text-lg">
+                  {achievements.nextLevelExp - achievements.experience} XP to next level
+                </p>
               </div>
             </div>
-            <Badge variant="secondary" className="text-lg px-3 py-1">
-              {achievements.experience}/{achievements.nextLevelExp} XP
-            </Badge>
+            <div className="text-right">
+              <Badge variant="secondary" className="text-xl px-4 py-2 bg-gradient-to-r from-primary/10 to-primary/5">
+                {achievements.experience}/{achievements.nextLevelExp} XP
+              </Badge>
+              <div className="mt-2 text-sm text-muted-foreground">
+                {Math.round((achievements.experience / achievements.nextLevelExp) * 100)}% Complete
+              </div>
+            </div>
           </div>
           <Progress 
             value={(achievements.experience / achievements.nextLevelExp) * 100} 
-            className="h-3"
+            className="h-4 bg-gradient-to-r from-primary/10 to-primary/5"
           />
         </CardContent>
       </Card>
 
-      {/* Achievement Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200">
-          <CardContent className="p-4 text-center">
-            <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-2">
-              <Code className="w-6 h-6 text-blue-600" />
+      {/* Enhanced Achievement Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <Card className="group bg-gradient-to-br from-blue-50 via-blue-50/50 to-white border-blue-200/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-1">
+          <CardContent className="p-6 text-center">
+            <div className="bg-gradient-to-br from-blue-100 to-blue-200 p-4 rounded-2xl w-fit mx-auto mb-4 group-hover:scale-110 transition-transform">
+              <Code className="w-8 h-8 text-blue-600" />
             </div>
-            <div className="text-2xl font-bold text-blue-700">{achievements.problemsSolved}</div>
-            <div className="text-sm text-blue-600">Problems Solved</div>
+            <div className="text-3xl font-bold text-blue-700 mb-1">{achievements.problemsSolved}</div>
+            <div className="text-sm text-blue-600 font-medium">Problems Solved</div>
+            <div className="mt-2 text-xs text-blue-500">
+              +{Math.round(achievements.problemsSolved * 0.1)} this week
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-green-100/50 border-green-200">
-          <CardContent className="p-4 text-center">
-            <div className="bg-green-100 p-3 rounded-full w-fit mx-auto mb-2">
-              <FileText className="w-6 h-6 text-green-600" />
+        <Card className="group bg-gradient-to-br from-green-50 via-green-50/50 to-white border-green-200/50 hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300 hover:-translate-y-1">
+          <CardContent className="p-6 text-center">
+            <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-2xl w-fit mx-auto mb-4 group-hover:scale-110 transition-transform">
+              <FileText className="w-8 h-8 text-green-600" />
             </div>
-            <div className="text-2xl font-bold text-green-700">{achievements.mockTestsCompleted}</div>
-            <div className="text-sm text-green-600">Mock Tests</div>
+            <div className="text-3xl font-bold text-green-700 mb-1">{achievements.mockTestsCompleted}</div>
+            <div className="text-sm text-green-600 font-medium">Mock Tests</div>
+            <div className="mt-2 text-xs text-green-500">
+              Avg Score: 87%
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 border-orange-200">
-          <CardContent className="p-4 text-center">
-            <div className="bg-orange-100 p-3 rounded-full w-fit mx-auto mb-2">
-              <Briefcase className="w-6 h-6 text-orange-600" />
+        <Card className="group bg-gradient-to-br from-orange-50 via-orange-50/50 to-white border-orange-200/50 hover:shadow-lg hover:shadow-orange-500/10 transition-all duration-300 hover:-translate-y-1">
+          <CardContent className="p-6 text-center">
+            <div className="bg-gradient-to-br from-orange-100 to-orange-200 p-4 rounded-2xl w-fit mx-auto mb-4 group-hover:scale-110 transition-transform">
+              <Briefcase className="w-8 h-8 text-orange-600" />
             </div>
-            <div className="text-2xl font-bold text-orange-700">{achievements.jobApplications}</div>
-            <div className="text-sm text-orange-600">Applications</div>
+            <div className="text-3xl font-bold text-orange-700 mb-1">{achievements.jobApplications}</div>
+            <div className="text-sm text-orange-600 font-medium">Applications</div>
+            <div className="mt-2 text-xs text-orange-500">
+              {Math.round(achievements.jobApplications * 0.3)} interviews
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-red-50 to-red-100/50 border-red-200">
-          <CardContent className="p-4 text-center">
-            <div className="bg-red-100 p-3 rounded-full w-fit mx-auto mb-2">
-              <Flame className="w-6 h-6 text-red-600" />
+        <Card className="group bg-gradient-to-br from-red-50 via-red-50/50 to-white border-red-200/50 hover:shadow-lg hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1">
+          <CardContent className="p-6 text-center">
+            <div className="bg-gradient-to-br from-red-100 to-red-200 p-4 rounded-2xl w-fit mx-auto mb-4 group-hover:scale-110 transition-transform">
+              <Flame className="w-8 h-8 text-red-600" />
             </div>
-            <div className="text-2xl font-bold text-red-700">{achievements.currentStreak}</div>
-            <div className="text-sm text-red-600">Day Streak</div>
+            <div className="text-3xl font-bold text-red-700 mb-1">{achievements.currentStreak}</div>
+            <div className="text-sm text-red-600 font-medium">Day Streak</div>
+            <div className="mt-2 text-xs text-red-500">
+              Best: 14 days
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Milestones */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-500" />
-            Recent Achievements
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {milestones.map((milestone, index) => {
-              const IconComponent = milestone.icon;
-              return (
-                <Badge
-                  key={index}
-                  variant={milestone.completed ? "default" : "outline"}
-                  className={`flex items-center gap-1 px-3 py-1 ${
-                    milestone.completed 
-                      ? "bg-green-100 text-green-700 border-green-200" 
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {milestone.completed && <CheckCircle className="w-3 h-3" />}
-                  <IconComponent className="w-3 h-3" />
-                  {milestone.title}
-                </Badge>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Enhanced Milestones Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Achievements */}
+        <Card className="bg-gradient-to-br from-yellow-50/50 via-white to-yellow-50/30 border-yellow-200/50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3">
+              <div className="bg-gradient-to-br from-yellow-100 to-yellow-200 p-2 rounded-lg">
+                <Trophy className="w-6 h-6 text-yellow-600" />
+              </div>
+              Recent Achievements
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {milestones.filter(m => m.completed).map((milestone, index) => {
+                const IconComponent = milestone.icon;
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 p-3 bg-gradient-to-r from-green-50 to-green-50/50 border border-green-200/50 rounded-lg"
+                  >
+                    <div className="bg-green-100 p-2 rounded-full">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    </div>
+                    <div className="flex items-center gap-2 flex-1">
+                      <IconComponent className="w-4 h-4 text-green-600" />
+                      <span className="font-medium text-green-700">{milestone.title}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Quick Stats */}
+        <Card className="bg-gradient-to-br from-purple-50/50 via-white to-purple-50/30 border-purple-200/50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3">
+              <div className="bg-gradient-to-br from-purple-100 to-purple-200 p-2 rounded-lg">
+                <Activity className="w-6 h-6 text-purple-600" />
+              </div>
+              Activity Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-blue-50/50 border border-blue-200/50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <BookOpen className="w-5 h-5 text-blue-600" />
+                  <span className="font-medium">Study Time</span>
+                </div>
+                <span className="text-blue-700 font-bold">24 hrs</span>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-green-50/50 border border-green-200/50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <Zap className="w-5 h-5 text-green-600" />
+                  <span className="font-medium">Efficiency</span>
+                </div>
+                <span className="text-green-700 font-bold">92%</span>
+              </div>
+              
+              <div className="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-orange-50/50 border border-orange-200/50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <Timer className="w-5 h-5 text-orange-600" />
+                  <span className="font-medium">Avg. Speed</span>
+                </div>
+                <span className="text-orange-700 font-bold">18 min</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 
@@ -216,37 +289,48 @@ const DashboardContent = ({
     <div className="space-y-8">
       {renderAchievementTracker()}
       
-      {/* Main Sections Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Enhanced Main Sections Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {mainSections.map((section) => {
           const IconComponent = section.icon;
           return (
             <Card 
               key={section.id}
-              className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 border-l-4 border-l-transparent hover:border-l-primary"
+              className="group cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 border-2 border-transparent hover:border-primary/20 bg-gradient-to-br from-white via-white to-gray-50/30 overflow-hidden relative"
               onClick={section.action}
             >
-              <CardContent className="p-6">
-                <div className={`bg-gradient-to-r ${section.color} p-3 rounded-full w-fit mb-4 group-hover:scale-110 transition-transform`}>
-                  <IconComponent className="w-6 h-6 text-white" />
+              {/* Background decoration */}
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/5 to-transparent rounded-full -translate-y-10 translate-x-10 group-hover:scale-150 transition-transform duration-500"></div>
+              
+              <CardContent className="p-8 relative">
+                <div className={`bg-gradient-to-br ${section.color} p-4 rounded-2xl w-fit mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
+                  <IconComponent className="w-8 h-8 text-white" />
                 </div>
                 
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
                     {section.title}
                   </h3>
-                  <Badge variant="secondary" className="ml-2">
+                  <Badge 
+                    variant="secondary" 
+                    className="ml-2 bg-gradient-to-r from-primary/10 to-primary/5 text-primary border-primary/20 group-hover:scale-110 transition-transform"
+                  >
                     {section.count}
                   </Badge>
                 </div>
                 
-                <p className="text-muted-foreground text-sm mb-4">
+                <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
                   {section.description}
                 </p>
                 
-                <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
-                  <span>Explore</span>
-                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <div className="flex items-center text-primary text-sm font-semibold group-hover:gap-3 transition-all duration-300">
+                  <span className="group-hover:text-primary/80">Explore Details</span>
+                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-2 group-hover:scale-110 transition-all duration-300" />
+                </div>
+                
+                {/* Progress indicator */}
+                <div className="mt-4 h-1 bg-gray-100 rounded-full overflow-hidden">
+                  <div className={`h-full bg-gradient-to-r ${section.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}></div>
                 </div>
               </CardContent>
             </Card>
@@ -304,10 +388,25 @@ const DashboardContent = ({
     </Card>
   );
 
+  // Handle section views
+  if (selectedSection) {
+    switch (selectedSection) {
+      case "problems":
+        return <ProblemsSection onBack={() => setSelectedSection(null)} />;
+      case "mock-tests":
+        return <MockTestsSection onBack={() => setSelectedSection(null)} />;
+      case "mock-assessment":
+        return <MockAssessmentSection onBack={() => setSelectedSection(null)} />;
+      default:
+        setSelectedSection(null);
+        break;
+    }
+  }
+
   switch (activeTab) {
     case "overview":
       return (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {renderMainDashboard()}
         </div>
       );
@@ -340,7 +439,7 @@ const DashboardContent = ({
       );
     default:
       return (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {renderMainDashboard()}
         </div>
       );
