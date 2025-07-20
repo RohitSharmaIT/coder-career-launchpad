@@ -92,27 +92,31 @@ const Dashboard = () => {
   console.log("Dashboard - Past services:", pastServices.length);
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/10">
       <Navbar />
       
-      <div className="pt-20 pb-16">
+      <div className="pt-20 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header Section */}
-          <div className="mb-8 md:mb-12 animate-fade-in">
+          {/* Enhanced Header Section */}
+          <div className="mb-12 md:mb-16 animate-fade-in">
             <div className="text-center md:text-left">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent leading-tight">
                 Welcome back, {user?.name || 'User'}!
               </h1>
-              <p className="text-lg text-gray-600">
-                Here's an overview of your career journey and activities.
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
+                Track your progress, manage your journey, and accelerate your career growth.
               </p>
+              <div className="flex items-center gap-2 mt-4 justify-center md:justify-start">
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                <span className="text-sm text-primary font-medium">Online now</span>
+              </div>
             </div>
           </div>
           
-          {/* Main Dashboard */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 animate-fade-in">
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
+          {/* Enhanced Main Dashboard */}
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 xl:gap-12 animate-fade-in">
+            {/* Enhanced Sidebar */}
+            <div className="xl:col-span-1">
               <div className="sticky top-24">
                 <DashboardSidebar 
                   user={user} 
@@ -123,10 +127,10 @@ const Dashboard = () => {
               </div>
             </div>
             
-            {/* Main Content */}
-            <div className="lg:col-span-4">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100/50 overflow-hidden min-h-[600px]">
-                <div className="p-6 lg:p-8">
+            {/* Enhanced Main Content */}
+            <div className="xl:col-span-4">
+              <div className="dashboard-card border-2 border-border/50 hover:border-primary/20 overflow-hidden min-h-[800px]">
+                <div className="p-8 lg:p-12">
                   <DashboardContent 
                     activeTab={activeTab}
                     upcomingServices={upcomingServices}

@@ -40,17 +40,17 @@ const DashboardSidebar = ({ user, activeTab, setActiveTab, logout }: DashboardSi
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* User Profile Card */}
-      <Card className="bg-gradient-to-br from-primary/5 via-background to-primary/5">
-        <CardContent className="p-6">
+      <Card className="dashboard-card border-2 border-primary/10 hover:border-primary/20">
+        <CardContent className="p-8">
           {/* Notification Bell */}
-          <div className="flex justify-end mb-4">
+          <div className="flex justify-end mb-6">
             <div className="relative">
-              <Button variant="outline" size="sm" className="relative">
+              <Button variant="outline" size="sm" className="relative border-primary/20 hover:bg-primary/5 hover:border-primary/30 transition-all duration-300">
                 <Bell className="w-4 h-4" />
                 {notificationCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 text-xs bg-red-500">
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 text-xs bg-gradient-to-r from-red-500 to-red-600 border-0 animate-pulse">
                     {notificationCount}
                   </Badge>
                 )}
@@ -59,34 +59,42 @@ const DashboardSidebar = ({ user, activeTab, setActiveTab, logout }: DashboardSi
           </div>
           
           {/* User Info */}
-          <div className="text-center mb-6">
-            <div className="relative mx-auto mb-3 w-fit">
-              <Avatar className="h-20 w-20 border-4 border-primary/20">
+          <div className="text-center mb-8">
+            <div className="relative mx-auto mb-4 w-fit">
+              <Avatar className="h-24 w-24 border-4 border-primary/30 shadow-lg">
                 <AvatarImage src={user?.profilePicture} alt={user?.name} />
-                <AvatarFallback className="text-xl bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-bold">
+                <AvatarFallback className="text-2xl bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-bold">
                   {user?.name?.charAt(0).toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
-              <div className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+              <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold border-4 border-card shadow-lg">
                 {userLevel}
               </div>
             </div>
             
-            <h3 className="font-bold text-xl mb-1">{user?.name}</h3>
-            <p className="text-muted-foreground text-sm mb-2">{user?.email}</p>
+            <h3 className="font-bold text-2xl mb-1 text-foreground">{user?.name}</h3>
+            <p className="text-muted-foreground text-sm mb-4">{user?.email}</p>
             
             {/* User Rank and Level */}
-            <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-3 mb-4">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Star className="w-4 h-4 text-yellow-500" />
-                <span className="font-semibold text-sm">{userRank}</span>
+            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 rounded-xl p-4 mb-6 border border-primary/20">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Star className="w-5 h-5 text-amber-500" />
+                <span className="font-bold text-lg text-foreground">{userRank}</span>
               </div>
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span>Level {userLevel}</span>
-                  <span>Level {userLevel + 1}</span>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm font-medium">
+                  <span className="text-muted-foreground">Level {userLevel}</span>
+                  <span className="text-muted-foreground">Level {userLevel + 1}</span>
                 </div>
-                <Progress value={levelProgress} className="h-2" />
+                <div className="h-3 bg-secondary/50 rounded-full overflow-hidden">
+                  <div 
+                    className="progress-bar h-full transition-all duration-1000"
+                    style={{ width: `${levelProgress}%` }}
+                  ></div>
+                </div>
+                <div className="text-center text-xs text-primary font-medium">
+                  {levelProgress}% Complete
+                </div>
               </div>
             </div>
             
@@ -123,35 +131,37 @@ const DashboardSidebar = ({ user, activeTab, setActiveTab, logout }: DashboardSi
       </Card>
 
       {/* Navigation Menu */}
-      <Card>
-        <CardContent className="p-4">
-
-          <nav className="space-y-2">
+      <Card className="dashboard-card border-2 border-border/50">
+        <CardContent className="p-6">
+          <nav className="space-y-3">
             {menuItems.map((item) => {
               const IconComponent = item.icon;
               return (
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 group ${
+                  className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl text-left transition-all duration-300 group relative overflow-hidden ${
                     activeTab === item.id
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                      : "text-muted-foreground hover:bg-primary/5 hover:text-primary"
+                      ? "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-xl shadow-primary/30 border border-primary/20"
+                      : "text-muted-foreground hover:bg-primary/5 hover:text-primary hover:shadow-md border border-transparent hover:border-primary/10"
                   }`}
                 >
-                  <IconComponent size={18} className="group-hover:scale-110 transition-transform" />
-                  <span className="font-medium">{item.label}</span>
+                  <IconComponent size={20} className="group-hover:scale-110 transition-all duration-300 relative z-10" />
+                  <span className="font-semibold relative z-10">{item.label}</span>
+                  {activeTab === item.id && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-20"></div>
+                  )}
                 </button>
               );
             })}
             
-            <div className="border-t pt-2 mt-4">
+            <div className="border-t border-border/50 pt-4 mt-6">
               <button
                 onClick={logout}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-muted-foreground hover:bg-red-50 hover:text-red-600 transition-all duration-200 group"
+                className="w-full flex items-center gap-4 px-5 py-4 rounded-xl text-left text-muted-foreground hover:bg-destructive/5 hover:text-destructive transition-all duration-300 group border border-transparent hover:border-destructive/20 hover:shadow-md"
               >
-                <LogOut size={18} className="group-hover:scale-110 transition-transform" />
-                <span className="font-medium">Logout</span>
+                <LogOut size={20} className="group-hover:scale-110 transition-all duration-300" />
+                <span className="font-semibold">Logout</span>
               </button>
             </div>
           </nav>
