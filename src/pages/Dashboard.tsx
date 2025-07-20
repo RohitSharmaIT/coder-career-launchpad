@@ -95,29 +95,29 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/10">
       <Navbar />
       
-      <div className="pt-20 pb-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Enhanced Header Section */}
-          <div className="mb-12 md:mb-16 animate-fade-in">
-            <div className="text-center md:text-left">
-              <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent leading-tight">
+      <div className="pt-16 sm:pt-20 pb-16 sm:pb-20 mobile-padding">
+        <div className="container mx-auto">
+          {/* Enhanced Mobile-First Header Section */}
+          <div className="mb-8 sm:mb-12 lg:mb-16 animate-fade-in">
+            <div className="text-center sm:text-left">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent leading-tight">
                 Welcome back, {user?.name || 'User'}!
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto sm:mx-0">
                 Track your progress, manage your journey, and accelerate your career growth.
               </p>
-              <div className="flex items-center gap-2 mt-4 justify-center md:justify-start">
+              <div className="flex items-center gap-2 mt-3 sm:mt-4 justify-center sm:justify-start">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <span className="text-sm text-primary font-medium">Online now</span>
+                <span className="text-xs sm:text-sm text-primary font-medium">Online now</span>
               </div>
             </div>
           </div>
           
-          {/* Enhanced Main Dashboard */}
-          <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 xl:gap-12 animate-fade-in">
-            {/* Enhanced Sidebar */}
-            <div className="xl:col-span-1">
-              <div className="sticky top-24">
+          {/* Enhanced Mobile-Responsive Dashboard */}
+          <div className="flex flex-col xl:flex-row gap-6 sm:gap-8 xl:gap-12 animate-fade-in">
+            {/* Mobile-Optimized Sidebar */}
+            <div className="w-full xl:w-80 xl:flex-shrink-0 order-2 xl:order-1">
+              <div className="xl:sticky xl:top-24">
                 <DashboardSidebar 
                   user={user} 
                   activeTab={activeTab} 
@@ -127,10 +127,10 @@ const Dashboard = () => {
               </div>
             </div>
             
-            {/* Enhanced Main Content */}
-            <div className="xl:col-span-4">
-              <div className="dashboard-card border-2 border-border/50 hover:border-primary/20 overflow-hidden min-h-[800px]">
-                <div className="p-8 lg:p-12">
+            {/* Mobile-Optimized Main Content */}
+            <div className="flex-1 order-1 xl:order-2 min-w-0">
+              <div className="dashboard-card border border-border/30 hover:border-primary/20 overflow-hidden min-h-[600px] sm:min-h-[700px] lg:min-h-[800px]">
+                <div className="mobile-card-padding">
                   <DashboardContent 
                     activeTab={activeTab}
                     upcomingServices={upcomingServices}

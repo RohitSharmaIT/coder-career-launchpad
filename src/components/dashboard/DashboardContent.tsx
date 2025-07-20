@@ -118,45 +118,45 @@ const DashboardContent = ({
   ];
 
   const renderAchievementTracker = () => (
-    <div className="space-y-10 mb-12">
-      {/* Enhanced Level and Experience */}
-      <Card className="dashboard-card overflow-hidden relative border-2 border-primary/10 hover:border-primary/30">
-        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-primary/8 to-transparent rounded-full -translate-y-20 translate-x-20"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-secondary/20 to-transparent rounded-full translate-y-16 -translate-x-16"></div>
-        <CardContent className="p-10 relative">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
-            <div className="flex items-center gap-6">
-              <div className="bg-gradient-to-br from-primary/20 via-primary/15 to-primary/10 p-5 rounded-3xl border-2 border-primary/20 shadow-lg">
-                <Award className="w-10 h-10 text-primary" />
+    <div className="space-y-6 sm:space-y-8 lg:space-y-10 mb-8 sm:mb-10 lg:mb-12">
+      {/* Mobile-Optimized Level and Experience */}
+      <Card className="dashboard-card overflow-hidden relative border border-primary/10 hover:border-primary/30">
+        <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 lg:w-40 lg:h-40 bg-gradient-to-br from-primary/8 to-transparent rounded-full -translate-y-10 translate-x-10 sm:-translate-y-16 sm:translate-x-16 lg:-translate-y-20 lg:translate-x-20"></div>
+        <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 bg-gradient-to-tr from-secondary/20 to-transparent rounded-full translate-y-8 -translate-x-8 sm:translate-y-12 sm:-translate-x-12 lg:translate-y-16 lg:-translate-x-16"></div>
+        <CardContent className="mobile-card-padding relative">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
+              <div className="bg-gradient-to-br from-primary/20 via-primary/15 to-primary/10 p-3 sm:p-4 lg:p-5 rounded-2xl sm:rounded-3xl border border-primary/20 shadow-lg flex-shrink-0">
+                <Award className="mobile-icon-size text-primary" />
               </div>
-              <div>
-                <h3 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent leading-tight">
+              <div className="min-w-0">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent leading-tight">
                   Level {achievements.level} Elite Coder
                 </h3>
-                <p className="text-muted-foreground text-lg mt-1">
+                <p className="text-muted-foreground text-sm sm:text-base lg:text-lg mt-1">
                   {achievements.nextLevelExp - achievements.experience} XP to next level
                 </p>
-                <div className="flex items-center gap-2 mt-2">
-                  <TrendingUp className="w-4 h-4 text-primary" />
-                  <span className="text-sm text-primary font-medium">+125 XP this week</span>
+                <div className="flex items-center justify-center sm:justify-start gap-2 mt-2">
+                  <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+                  <span className="text-xs sm:text-sm text-primary font-medium">+125 XP this week</span>
                 </div>
               </div>
             </div>
-            <div className="text-center lg:text-right">
-              <div className="milestone-badge text-xl px-6 py-3 mb-3">
+            <div className="text-center sm:text-right flex-shrink-0">
+              <div className="milestone-badge text-sm sm:text-base lg:text-xl px-3 sm:px-4 lg:px-6 py-2 sm:py-2 lg:py-3 mb-2 sm:mb-3">
                 {achievements.experience}/{achievements.nextLevelExp} XP
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-xs sm:text-sm text-muted-foreground">
                 {Math.round((achievements.experience / achievements.nextLevelExp) * 100)}% Complete
               </div>
             </div>
           </div>
           <div className="space-y-2">
-            <div className="flex justify-between text-sm text-muted-foreground">
+            <div className="flex justify-between text-xs sm:text-sm text-muted-foreground">
               <span>Level Progress</span>
               <span>{Math.round((achievements.experience / achievements.nextLevelExp) * 100)}%</span>
             </div>
-            <div className="h-4 bg-secondary/30 rounded-full overflow-hidden">
+            <div className="h-3 sm:h-4 bg-secondary/30 rounded-full overflow-hidden">
               <div 
                 className="progress-bar h-full transition-all duration-1000 ease-out"
                 style={{ width: `${(achievements.experience / achievements.nextLevelExp) * 100}%` }}
@@ -166,75 +166,75 @@ const DashboardContent = ({
         </CardContent>
       </Card>
 
-      {/* Enhanced Achievement Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {/* Mobile-Optimized Achievement Stats */}
+      <div className="mobile-stats-grid">
         <Card className="achievement-card group hover:shadow-xl hover:shadow-primary/10 border-primary/10 hover:border-primary/20">
-          <CardContent className="p-6 text-center">
-            <div className="bg-gradient-to-br from-primary/15 to-primary/10 p-4 rounded-2xl w-fit mx-auto mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-primary/20">
-              <Code className="w-8 h-8 text-primary" />
+          <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
+            <div className="bg-gradient-to-br from-primary/15 to-primary/10 p-2 sm:p-3 lg:p-4 rounded-xl sm:rounded-2xl w-fit mx-auto mb-2 sm:mb-3 lg:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-primary/20">
+              <Code className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-primary" />
             </div>
-            <div className="text-3xl font-bold text-foreground mb-1">{achievements.problemsSolved}</div>
-            <div className="text-sm text-primary font-semibold">Problems Solved</div>
-            <div className="mt-2 text-xs text-muted-foreground">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1">{achievements.problemsSolved}</div>
+            <div className="text-xs sm:text-sm text-primary font-semibold">Problems Solved</div>
+            <div className="mt-1 sm:mt-2 text-xs text-muted-foreground">
               +{Math.round(achievements.problemsSolved * 0.1)} this week
             </div>
-            <div className="mt-3 h-1 bg-secondary rounded-full overflow-hidden">
+            <div className="mt-2 sm:mt-3 h-1 bg-secondary rounded-full overflow-hidden">
               <div className="progress-bar h-full w-3/4"></div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="achievement-card group hover:shadow-xl hover:shadow-emerald-500/10 border-emerald-200/30 hover:border-emerald-300/50">
-          <CardContent className="p-6 text-center">
-            <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 p-4 rounded-2xl w-fit mx-auto mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-emerald-300/30">
-              <FileText className="w-8 h-8 text-emerald-600" />
+          <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
+            <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 p-2 sm:p-3 lg:p-4 rounded-xl sm:rounded-2xl w-fit mx-auto mb-2 sm:mb-3 lg:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-emerald-300/30">
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-emerald-600" />
             </div>
-            <div className="text-3xl font-bold text-foreground mb-1">{achievements.mockTestsCompleted}</div>
-            <div className="text-sm text-emerald-600 font-semibold">Mock Tests</div>
-            <div className="mt-2 text-xs text-muted-foreground">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1">{achievements.mockTestsCompleted}</div>
+            <div className="text-xs sm:text-sm text-emerald-600 font-semibold">Mock Tests</div>
+            <div className="mt-1 sm:mt-2 text-xs text-muted-foreground">
               Avg Score: 87%
             </div>
-            <div className="mt-3 h-1 bg-secondary rounded-full overflow-hidden">
+            <div className="mt-2 sm:mt-3 h-1 bg-secondary rounded-full overflow-hidden">
               <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-full w-5/6 rounded-full"></div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="achievement-card group hover:shadow-xl hover:shadow-amber-500/10 border-amber-200/30 hover:border-amber-300/50">
-          <CardContent className="p-6 text-center">
-            <div className="bg-gradient-to-br from-amber-100 to-amber-200 p-4 rounded-2xl w-fit mx-auto mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-amber-300/30">
-              <Briefcase className="w-8 h-8 text-amber-600" />
+          <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
+            <div className="bg-gradient-to-br from-amber-100 to-amber-200 p-2 sm:p-3 lg:p-4 rounded-xl sm:rounded-2xl w-fit mx-auto mb-2 sm:mb-3 lg:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-amber-300/30">
+              <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-amber-600" />
             </div>
-            <div className="text-3xl font-bold text-foreground mb-1">{achievements.jobApplications}</div>
-            <div className="text-sm text-amber-600 font-semibold">Applications</div>
-            <div className="mt-2 text-xs text-muted-foreground">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1">{achievements.jobApplications}</div>
+            <div className="text-xs sm:text-sm text-amber-600 font-semibold">Applications</div>
+            <div className="mt-1 sm:mt-2 text-xs text-muted-foreground">
               {Math.round(achievements.jobApplications * 0.3)} interviews
             </div>
-            <div className="mt-3 h-1 bg-secondary rounded-full overflow-hidden">
+            <div className="mt-2 sm:mt-3 h-1 bg-secondary rounded-full overflow-hidden">
               <div className="bg-gradient-to-r from-amber-500 to-amber-600 h-full w-2/3 rounded-full"></div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="achievement-card group hover:shadow-xl hover:shadow-rose-500/10 border-rose-200/30 hover:border-rose-300/50">
-          <CardContent className="p-6 text-center">
-            <div className="bg-gradient-to-br from-rose-100 to-rose-200 p-4 rounded-2xl w-fit mx-auto mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-rose-300/30">
-              <Flame className="w-8 h-8 text-rose-600" />
+          <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
+            <div className="bg-gradient-to-br from-rose-100 to-rose-200 p-2 sm:p-3 lg:p-4 rounded-xl sm:rounded-2xl w-fit mx-auto mb-2 sm:mb-3 lg:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-rose-300/30">
+              <Flame className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-rose-600" />
             </div>
-            <div className="text-3xl font-bold text-foreground mb-1">{achievements.currentStreak}</div>
-            <div className="text-sm text-rose-600 font-semibold">Day Streak</div>
-            <div className="mt-2 text-xs text-muted-foreground">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1">{achievements.currentStreak}</div>
+            <div className="text-xs sm:text-sm text-rose-600 font-semibold">Day Streak</div>
+            <div className="mt-1 sm:mt-2 text-xs text-muted-foreground">
               Best: 14 days
             </div>
-            <div className="mt-3 h-1 bg-secondary rounded-full overflow-hidden">
+            <div className="mt-2 sm:mt-3 h-1 bg-secondary rounded-full overflow-hidden">
               <div className="bg-gradient-to-r from-rose-500 to-rose-600 h-full w-1/2 rounded-full"></div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Enhanced Milestones Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Mobile-Optimized Milestones Section */}
+      <div className="mobile-milestone-grid">
         {/* Recent Achievements */}
         <Card className="dashboard-card border-2 border-amber-200/30 hover:border-amber-300/50">
           <CardHeader className="pb-4">
@@ -334,54 +334,52 @@ const DashboardContent = ({
     <div className="space-y-8">
       {renderAchievementTracker()}
       
-      {/* Enhanced Main Sections Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Mobile-Optimized Main Sections Grid */}
+      <div className="mobile-dashboard-grid">
         {mainSections.map((section) => {
           const IconComponent = section.icon;
           return (
             <Card 
               key={section.id}
-              className="dashboard-card group cursor-pointer border-2 border-border/50 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-3 overflow-hidden relative"
+              className="dashboard-card group cursor-pointer border border-border/30 hover:border-primary/30 hover:shadow-xl sm:hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 sm:hover:-translate-y-2 lg:hover:-translate-y-3 overflow-hidden relative transition-all duration-500"
               onClick={section.action}
             >
-              {/* Enhanced background decorations */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/8 to-transparent rounded-full -translate-y-12 translate-x-12 group-hover:scale-125 transition-transform duration-700"></div>
-              <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-secondary/15 to-transparent rounded-full translate-y-8 -translate-x-8 group-hover:scale-110 transition-transform duration-500"></div>
+              {/* Mobile-Optimized background decorations */}
+              <div className="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-primary/8 to-transparent rounded-full -translate-y-8 translate-x-8 sm:-translate-y-10 sm:translate-x-10 lg:-translate-y-12 lg:translate-x-12 group-hover:scale-125 transition-transform duration-700"></div>
+              <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-tr from-secondary/15 to-transparent rounded-full translate-y-6 -translate-x-6 sm:translate-y-7 sm:-translate-x-7 lg:translate-y-8 lg:-translate-x-8 group-hover:scale-110 transition-transform duration-500"></div>
               
-              <CardContent className="p-8 relative">
-                <div className={`bg-gradient-to-br ${section.color} p-5 rounded-3xl w-fit mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl border border-white/20`}>
-                  <IconComponent className="w-8 h-8 text-white" />
+              <CardContent className="mobile-card-padding relative">
+                <div className={`bg-gradient-to-br ${section.color} p-3 sm:p-4 lg:p-5 rounded-2xl sm:rounded-3xl w-fit mb-4 sm:mb-5 lg:mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg sm:shadow-xl border border-white/20`}>
+                  <IconComponent className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 
-                <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
+                  <h3 className="mobile-heading-responsive font-bold text-foreground group-hover:text-primary transition-colors duration-300 min-w-0">
                     {section.title}
                   </h3>
-                  <div className="milestone-badge group-hover:scale-110 transition-transform">
+                  <div className="milestone-badge group-hover:scale-110 transition-transform flex-shrink-0 text-xs sm:text-sm">
                     {section.count}
                   </div>
                 </div>
                 
-                <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+                <p className="text-muted-foreground text-xs sm:text-sm mb-4 sm:mb-5 lg:mb-6 leading-relaxed">
                   {section.description}
                 </p>
                 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center text-primary text-sm font-semibold group-hover:gap-3 transition-all duration-300">
-                    <span className="group-hover:text-primary">Explore Details</span>
-                    <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-2 group-hover:scale-110 transition-all duration-300" />
+                  <div className="flex items-center text-primary text-xs sm:text-sm font-semibold group-hover:gap-2 sm:group-hover:gap-3 transition-all duration-300">
+                    <span className="group-hover:translate-x-0.5 sm:group-hover:translate-x-1 transition-transform duration-300">
+                      View Details
+                    </span>
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-0.5 sm:group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
-                  
-                  {/* Activity indicator */}
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-primary/20 rounded-full group-hover:bg-primary group-hover:animate-pulse transition-all duration-300"></div>
-                    <div className="w-2 h-2 bg-primary/20 rounded-full group-hover:bg-primary group-hover:animate-pulse transition-all duration-300 delay-100"></div>
-                    <div className="w-2 h-2 bg-primary/20 rounded-full group-hover:bg-primary group-hover:animate-pulse transition-all duration-300 delay-200"></div>
+                  <div className="text-xs text-muted-foreground hidden sm:block">
+                    Click to explore
                   </div>
                 </div>
                 
-                {/* Enhanced progress indicator */}
-                <div className="mt-6 h-1.5 bg-secondary rounded-full overflow-hidden">
+                {/* Mobile-Optimized progress indicator */}
+                <div className="mt-4 sm:mt-5 lg:mt-6 h-1 sm:h-1.5 bg-secondary rounded-full overflow-hidden">
                   <div className={`h-full bg-gradient-to-r ${section.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left`}></div>
                 </div>
               </CardContent>
